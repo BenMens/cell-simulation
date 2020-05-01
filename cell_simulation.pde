@@ -1,19 +1,19 @@
 BodyModel bodyModel;
+BodyView bodyView;
+BodyController bodyController;
+
 
 void setup() {
   size(500, 500);
   
-  bodyModel = new BodyModel();
+  bodyModel = new BodyModel("Marvin");
+  bodyView = new BodyView();
+  bodyController = new BodyController(bodyModel, bodyView);
 }
 
 
 void draw() {
   background(255);
   
-  noStroke();
-  fill(0);
-  textSize(30);
-  textAlign(LEFT, TOP);
-  
-  text("Hello all of the worlds!!!!", 0, 0);
+  bodyView.draw();
 }
