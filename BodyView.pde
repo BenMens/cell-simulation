@@ -1,19 +1,27 @@
-class BodyView {
-    BodyViewClient clientController;
+class BodyView extends ViewBase {
+    ArrayList<BodyViewClient> clients = new ArrayList<BodyViewClient>();
+    BodyModel bodyModel;
 
-    BodyView() {
+
+    BodyView(BodyModel bodyModel) {
+        this.bodyModel = bodyModel;
     }
 
-    void setController(BodyViewClient clientController) {
-        this.clientController = clientController;
+
+    void registerClient(BodyViewClient client) {
+        if(!clients.contains(client)) {
+            clients.add(client);
+        }
     }
 
-    void draw() {
-        noStroke();
-        fill(0);
-        textSize(30);
-        textAlign(LEFT, TOP);
-        
-        text("De body heet: " + clientController.getBodyModel().name, 0, 0);
+    void unregisterClient(BodyViewClient client) {
+        clients.remove(client);
+    }
+
+
+    void beforeDrawChildren() {
+        // if(bodyModel.keysPressed['g'] == true) {
+
+        // }
     }
 }

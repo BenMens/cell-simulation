@@ -1,21 +1,30 @@
-interface BodyViewClient {
-    BodyModel getBodyModel();
-}
-
-
-class BodyController implements BodyViewClient {
+class BodyController implements BodyModelClient, BodyViewClient {
     BodyModel bodyModel;
     BodyView bodyView;
 
-    BodyController(BodyModel bodyModel, BodyView bodyView) {
+    ArrayList<CellController> cellControllers = new ArrayList<CellController>();
+
+
+    BodyController(BodyModel bodyModel) {
         this.bodyModel = bodyModel;
-        this.bodyView = bodyView;
+        this.bodyView = viewFactory.createView(bodyModel);
 
-        this.bodyView.setController(this);
+        this.bodyModel.registerClient(this);
+        this.bodyView.registerClient(this);
     }
 
-    BodyModel getBodyModel() {
-        return this.bodyModel;
+
+    void tick() {
+        for (CellController cellController: cellControllers) {
+            cellController.tick();
+        }
     }
 
+
+    void onAddCell(BodyModel bodyModel, CellModel cellModel) {
+        CellController newCellController = new CellController(cellModel);
+        bodyView.addChildView(newCellController.cellView);
+
+        cellControllers.add(newCellController);
+    }
 }

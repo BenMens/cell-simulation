@@ -1,19 +1,65 @@
 BodyModel bodyModel;
-BodyView bodyView;
 BodyController bodyController;
+
+ViewFactory viewFactory = new DefaultViewFactory();
+
+float scaling = 1;
+PVector translation = new PVector(0, 0);
+
+boolean[] keysPressed = new boolean[128];
+
+int lastMovementUpdateTimestamp;
+int lastTickTimestamp;
+int millisBetweenMovementUpdates = 40;
+int millisBetweenTicks = 1000;
 
 
 void setup() {
-  size(500, 500);
-  
-  bodyModel = new BodyModel("Marvin");
-  bodyView = new BodyView();
-  bodyController = new BodyController(bodyModel, bodyView);
+    size(2500, 1545);
+
+    bodyModel = new BodyModel(new PVector(10, 10));
+
+    bodyController = new BodyController(bodyModel);
 }
 
 
 void draw() {
-  background(255);
-  
-  bodyView.draw();
+    background(255);
+    translate(translation.x, translation.y);
+    scale(scaling);
+
+    if(millis() - lastMovementUpdateTimestamp >= millisBetweenMovementUpdates) {
+        updateMovement();
+        lastMovementUpdateTimestamp = millis();
+    }
+
+    if(millis() - lastTickTimestamp >= millisBetweenTicks) {
+        bodyController.tick();
+        lastTickTimestamp = millis();
+    }
+
+    bodyController.bodyView.draw();
+}
+
+
+void updateMovement() {
+    
+}
+
+
+void keyPressed(int key) {
+    if(key < keysPressed.length) {
+        keysPressed[key] = true;
+    }
+}
+
+
+void keyReleased(int key, boolean keyPressed) {
+    if(keyPressed) {
+        if(key < keysPressed.length) {
+            keysPressed[key] = false;
+        }
+    } else {
+        keysPressed = new boolean[128];
+    }
 }
