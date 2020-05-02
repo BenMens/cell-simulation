@@ -1,5 +1,6 @@
 BodyModel bodyModel;
 BodyController bodyController;
+ParticleLayerController particleLayerController;
 
 ViewFactory viewFactory = new DefaultViewFactory();
 
@@ -20,6 +21,8 @@ void setup() {
     bodyModel = new BodyModel(new PVector(10, 10));
 
     bodyController = new BodyController(bodyModel);
+
+    particleLayerController = new ParticleLayerController(bodyModel);
 }
 
 
@@ -39,11 +42,13 @@ void draw() {
     }
 
     bodyController.bodyView.draw();
+
+    particleLayerController.particleLayerView.draw();
 }
 
 
 void updateMovement() {
-    
+    particleLayerController.updateMovement();    
 }
 
 
