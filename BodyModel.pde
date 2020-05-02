@@ -3,6 +3,8 @@ class BodyModel {
 
     ArrayList<CellModel> cellModels = new ArrayList<CellModel>();
 
+    ArrayList<ParticleBaseModel> particles = new ArrayList<ParticleBaseModel>();
+
     PVector gridSize;
 
 
@@ -20,6 +22,10 @@ class BodyModel {
             for(CellModel cellModel: cellModels) {
                 client.onAddCell(this, cellModel);
             }
+
+            for(ParticleBaseModel particleModel: particles) {
+                client.onAddParticle(this, particleModel);
+            }
         }
     }
 
@@ -34,5 +40,14 @@ class BodyModel {
         for(BodyModelClient client: clients) {
             client.onAddCell(this, cellModel);
         }
+    }
+
+    void addParticle(ParticleBaseModel particleModel) {
+
+        particles.add(particleModel);
+
+        for(BodyModelClient client: clients) {
+            client.onAddParticle(this, particleModel);
+        }        
     }
 }

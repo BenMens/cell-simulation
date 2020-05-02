@@ -1,9 +1,14 @@
 class DefaultViewFactory implements ViewFactory {
     CellView createView(CellModel cellModel) {
-        return new cell_simulation.CellView(cellModel);
+        return new CellView(cellModel);
     }
 
     BodyView createView(BodyModel bodyModel) {
-        return new cell_simulation.BodyView(bodyModel);
+        return new BodyView(bodyModel);
     }
+
+    ParticleView createView(ParticleBaseModel particleModel) {
+        return new ParticleView(particleModel);
+    }
+
 }

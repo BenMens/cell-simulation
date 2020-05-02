@@ -27,4 +27,6 @@ class BodyController implements BodyModelClient, BodyViewClient {
 
         cellControllers.add(newCellController);
     }
+
+    void onAddParticle(BodyModel bodyModel, ParticleBaseModel particleModel) {}
 }
