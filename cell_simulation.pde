@@ -2,7 +2,6 @@ PApplet applet = this;
 
 BodyModel bodyModel;
 BodyController bodyController;
-ParticleLayerController particleLayerController;
 
 ViewFactory viewFactory = new DefaultViewFactory();
 
@@ -16,7 +15,7 @@ float mouseScrollSensetivity = 1.1;
 float dragSpeed = 1.2;
 
 int lastTickTimestamp;
-int millisBetweenTicks = 1000;
+int millisBetweenTicks = 40;
 
 
 void setup() {
@@ -24,9 +23,6 @@ void setup() {
 
     bodyModel = new BodyModel(new PVector(10, 10));
     bodyController = new BodyController(bodyModel);
-
-
-    particleLayerController = new ParticleLayerController(bodyModel);
 
     scaling = min(width * 0.009 / (bodyModel.gridSize.x + 0.3), height * 0.009 / (bodyModel.gridSize.y + 0.3));
     translation = new PVector(width * -0.45 / scaling + 15, height * -0.45 / scaling + 15);
@@ -48,14 +44,10 @@ void draw() {
     }
 
     bodyController.bodyView.draw();
-
-    particleLayerController.particleLayerView.draw();
 }
 
 
 void updateMovement() {
-
-    particleLayerController.updateMovement();    
 
     if(mousePressed) {
         translation.x += (mouseX - pmouseX) * dragSpeed / scaling;
