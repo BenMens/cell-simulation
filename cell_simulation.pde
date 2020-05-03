@@ -14,7 +14,7 @@ float mouseScrollSensetivity = 1.1;
 float dragSpeed = 1.2;
 
 int lastTickTimestamp;
-int millisBetweenTicks = 1000;
+int millisBetweenTicks = 40;
 
 
 void setup() {
@@ -22,7 +22,6 @@ void setup() {
 
     bodyModel = new BodyModel(new PVector(10, 10));
     bodyController = new BodyController(bodyModel);
-
 
     particleLayerController = new ParticleLayerController(bodyModel);
 
@@ -42,6 +41,7 @@ void draw() {
 
     if(millis() - lastTickTimestamp >= millisBetweenTicks) {
         bodyController.tick();
+        particleLayerController.tick();    
         lastTickTimestamp = millis();
     }
 
@@ -51,11 +51,7 @@ void draw() {
 }
 
 
-void updateMovement() {
-
-    particleLayerController.updateMovement();    
-
-    if(mousePressed) {
+void updateMovement() {    if(mousePressed) {
         translation.x += (mouseX - pmouseX) * dragSpeed / scaling;
         translation.y += (mouseY - pmouseY) * dragSpeed / scaling;
     }

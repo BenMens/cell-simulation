@@ -7,7 +7,7 @@ class ParticleController {
         this.particleView = viewFactory.createView(particleModel);
     }
 
-    void updateMovement() {
+    void tick() {
         PVector position = particleModel.getPosition();
         PVector speed = particleModel.getSpeed();
         PVector bodySize = particleModel.bodyModel.gridSize.copy().mult(100);

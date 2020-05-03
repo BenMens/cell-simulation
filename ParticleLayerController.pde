@@ -28,9 +28,9 @@ class ParticleLayerController implements BodyModelClient {
         particleLayerView.addChildView(particleController.particleView);
     }
 
-    void updateMovement() {
+    void tick() {
         for (ParticleController particleController: particleControllers) {
-            particleController.updateMovement();
+            particleController.tick();
         }
     }
 }
