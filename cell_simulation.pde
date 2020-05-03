@@ -40,7 +40,6 @@ void draw() {
 
     if(millis() - lastTickTimestamp >= millisBetweenTicks) {
         bodyController.tick();
-        particleLayerController.tick();    
         lastTickTimestamp = millis();
     }
 
