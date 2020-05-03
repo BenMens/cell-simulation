@@ -9,8 +9,15 @@ class ParticleLayerController implements BodyModelClient {
         this.particleLayerView = new ParticleLayerView();
 
 
-        for (int i = 1; i < 100; i++) {
+        for (int i = 1; i < 50; i++) {
             ParticleBaseModel particleModel = new FoodParticleModel(bodyModel);
+
+            particleModel.setPosition(new PVector(random(bodyModel.gridSize.x * 100), random(bodyModel.gridSize.y * 100)));
+            particleModel.setSpeed(new PVector(random(10) - 5, random(10) - 5));
+        }   
+
+        for (int i = 1; i < 50; i++) {
+            ParticleBaseModel particleModel = new WasteParticleModel(bodyModel);
 
             particleModel.setPosition(new PVector(random(bodyModel.gridSize.x * 100), random(bodyModel.gridSize.y * 100)));
             particleModel.setSpeed(new PVector(random(10) - 5, random(10) - 5));
