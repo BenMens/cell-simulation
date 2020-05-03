@@ -1,3 +1,5 @@
+PApplet applet = this;
+
 BodyModel bodyModel;
 BodyController bodyController;
 ParticleLayerController particleLayerController;
