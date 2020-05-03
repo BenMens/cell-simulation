@@ -10,7 +10,6 @@ public class ImageCache {
   static PImage getImage(PApplet applet, String name) {
     PImage resultImage = imageCache.get(name);
 
-
     if (resultImage == null) {
       resultImage = applet.loadImage(name);
       imageCache.put(name, resultImage);

@@ -2,9 +2,18 @@ class BodyView extends ViewBase {
     ArrayList<BodyViewClient> clients = new ArrayList<BodyViewClient>();
     BodyModel bodyModel;
 
+    ViewBase cellLayerView;
+    ViewBase particleLayerView;
+
 
     BodyView(BodyModel bodyModel) {
         this.bodyModel = bodyModel;
+
+        cellLayerView = new ViewBase();
+        this.addChildView(cellLayerView);
+
+        particleLayerView = new ViewBase();
+        this.addChildView(particleLayerView);
     }
 
 

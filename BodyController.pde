@@ -3,6 +3,7 @@ class BodyController implements BodyModelClient, BodyViewClient {
     BodyView bodyView;
 
     ArrayList<CellController> cellControllers = new ArrayList<CellController>();
+    ArrayList<ParticleController> particleControllers = new ArrayList<ParticleController>();
 
 
     BodyController(BodyModel bodyModel) {
@@ -11,10 +12,29 @@ class BodyController implements BodyModelClient, BodyViewClient {
 
         this.bodyModel.registerClient(this);
         this.bodyView.registerClient(this);
+
+        for (int i = 1; i < 50; i++) {
+            ParticleBaseModel particleModel = new FoodParticleModel(bodyModel);
+
+            particleModel.setPosition(new PVector(random(bodyModel.gridSize.x * 100), random(bodyModel.gridSize.y * 100)));
+            particleModel.setSpeed(new PVector(random(10) - 5, random(10) - 5));
+        }   
+
+        for (int i = 1; i < 50; i++) {
+            ParticleBaseModel particleModel = new WasteParticleModel(bodyModel);
+
+            particleModel.setPosition(new PVector(random(bodyModel.gridSize.x * 100), random(bodyModel.gridSize.y * 100)));
+            particleModel.setSpeed(new PVector(random(10) - 5, random(10) - 5));
+        }
+
     }
 
 
     void tick() {
+        for (ParticleController particleController: particleControllers) {
+            particleController.tick();
+        }
+
         for (CellController cellController: cellControllers) {
             cellController.tick();
         }
@@ -23,10 +43,17 @@ class BodyController implements BodyModelClient, BodyViewClient {
 
     void onAddCell(BodyModel bodyModel, CellModel cellModel) {
         CellController newCellController = new CellController(cellModel);
-        bodyView.addChildView(newCellController.cellView);
+        bodyView.cellLayerView.addChildView(newCellController.cellView);
 
         cellControllers.add(newCellController);
     }
 
-    void onAddParticle(BodyModel bodyModel, ParticleBaseModel particleModel) {}
+
+    void onAddParticle(BodyModel bodyModel, ParticleBaseModel particleModel) { 
+        ParticleController particleController = new ParticleController(particleModel);
+ 
+        particleControllers.add(particleController);
+        bodyView.particleLayerView.addChildView(particleController.particleView);
+    }
+
 }

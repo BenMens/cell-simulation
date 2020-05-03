@@ -1,3 +1,0 @@
-class ParticleLayerView extends ViewBase {
-    
-}
