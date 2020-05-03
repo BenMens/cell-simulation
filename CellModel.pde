@@ -1,6 +1,7 @@
 class CellModel {
     ArrayList<CellModelClient> clients = new ArrayList<CellModelClient>();
     PVector position;
+    float wallHealth = 1;
 
 
     CellModel(PVector position) {
@@ -17,4 +18,12 @@ class CellModel {
     void unregisterClient(CellModelClient client) {
         clients.remove(client);
     }
+
+    void tick() {}
+
+
+    void handleCollision(ParticleBaseModel particle) {
+        wallHealth = wallHealth - (wallHealth / 10);
+    }
+
 }

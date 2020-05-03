@@ -3,15 +3,13 @@ class BodyModel {
 
     ArrayList<CellModel> cellModels = new ArrayList<CellModel>();
 
-    ArrayList<ParticleBaseModel> particles = new ArrayList<ParticleBaseModel>();
+    ArrayList<ParticleBaseModel> particleModels = new ArrayList<ParticleBaseModel>();
 
     PVector gridSize;
 
 
     BodyModel(PVector gridSize) {
         this.gridSize = gridSize;
-
-        addCell(new CellModel(new PVector(0, 0)));
     }
 
 
@@ -23,7 +21,7 @@ class BodyModel {
                 client.onAddCell(this, cellModel);
             }
 
-            for(ParticleBaseModel particleModel: particles) {
+            for(ParticleBaseModel particleModel: particleModels) {
                 client.onAddParticle(this, particleModel);
             }
         }
@@ -44,10 +42,31 @@ class BodyModel {
 
     void addParticle(ParticleBaseModel particleModel) {
 
-        particles.add(particleModel);
+        particleModels.add(particleModel);
 
         for(BodyModelClient client: clients) {
             client.onAddParticle(this, particleModel);
         }        
     }
+
+    CellModel findCellAtPosition(int x, int y) {
+        for (CellModel cellModel: cellModels) {
+            if (cellModel.position.x == x && cellModel.position.y == y) {
+                return cellModel;
+            }
+        }
+
+        return null;
+    }
+
+    void tick() {
+        for (ParticleBaseModel particle: particleModels) {
+            particle.tick();
+        }
+
+        for (CellModel cell: cellModels) {
+            cell.tick();
+        }
+    }
+
 }

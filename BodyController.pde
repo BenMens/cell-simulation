@@ -30,17 +30,6 @@ class BodyController implements BodyModelClient, BodyViewClient {
     }
 
 
-    void tick() {
-        for (ParticleController particleController: particleControllers) {
-            particleController.tick();
-        }
-
-        for (CellController cellController: cellControllers) {
-            cellController.tick();
-        }
-    }
-
-
     void onAddCell(BodyModel bodyModel, CellModel cellModel) {
         CellController newCellController = new CellController(cellModel);
         bodyView.cellLayerView.addChildView(newCellController.cellView);
