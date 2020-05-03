@@ -34,16 +34,16 @@ class BodyView extends ViewBase {
         strokeWeight(10);
         stroke(0);
         noFill();
-        rect(-5, -5, gridSize.x * 100 + 10, gridSize.y * 100 + 10);
+        rect(5, 5, gridSize.x * 100 + 10, gridSize.y * 100 + 10);
 
-        if(keysPressed['g'] == true) {
+        if (keysPressed['g'] == true) {
             strokeWeight(5);
             stroke(100);
             noFill();
 
             for(int x = 0; x < gridSize.x; x++) {
                 for(int y = 0; y < gridSize.y; y++) {
-                    rect(x * 100, y * 100, 100, 100);
+                    rect(x * 100 + 5, y * 100 + 5, 100, 100);
                 }
             }
         }

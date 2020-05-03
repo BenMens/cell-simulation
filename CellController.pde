@@ -7,6 +7,8 @@ class CellController implements CellModelClient, CellViewClient {
         this.cellModel = cellModel;
         this.cellView = viewFactory.createView(cellModel);
 
+        this.cellView.position = cellModel.position.copy().mult(100).add(10, 10);
+
         this.cellModel.registerClient(this);
         this.cellView.registerClient(this);
     }
@@ -19,4 +21,5 @@ class CellController implements CellModelClient, CellViewClient {
 
     void tick() {
     }
+
 }

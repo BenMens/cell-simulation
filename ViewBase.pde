@@ -2,6 +2,9 @@ class ViewBase {
     private ViewBase parentView = null;
     private ArrayList<ViewBase> childViews = new ArrayList<ViewBase>();
 
+    PVector position = new PVector();
+    PVector clipSize;
+    float scale = 1;
 
     final ViewBase getParentView() {
         return parentView;
@@ -39,6 +42,16 @@ class ViewBase {
 
 
     final void draw() {
+        pushMatrix();
+
+        translate(position.x, position.y);
+
+        scale(scale);
+
+        if (clipSize != null) {
+            clip(0, 0, clipSize.x, clipSize.y);
+        }
+
         beforeDrawChildren();
 
         for (ViewBase childView: childViews) {
@@ -46,7 +59,14 @@ class ViewBase {
         }
 
         afterDrawChildren();
+
+        popMatrix();
+        if (clipSize != null) {
+            noClip();
+        }
+
     }
+
     void beforeDrawChildren() {}
     void afterDrawChildren() {}
 }

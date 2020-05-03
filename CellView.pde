@@ -20,8 +20,15 @@ class CellView extends ViewBase {
 
 
     void beforeDrawChildren() {
+        pushMatrix();
+
         noStroke();
         fill(255, 165, 135);
-        rect(cellModel.position.x, cellModel.position.y, 100, 100);
+        rect(0, 0, 100, 100);
+
+        fill(0, 0, 0);
+        text(String.valueOf(cellModel.wallHealth) , 10, 50);
+
+        popMatrix();
     }
 }
