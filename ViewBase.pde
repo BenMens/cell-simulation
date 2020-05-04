@@ -1,3 +1,5 @@
+import java.awt.geom.Rectangle2D;
+
 class ViewBase {
     private ViewBase parentView = null;
     private ArrayList<ViewBase> childViews = new ArrayList<ViewBase>();
@@ -42,15 +44,19 @@ class ViewBase {
 
 
     final void draw() {
+        Rectangle2D clipBoundary = getClipBoundary();
+
         pushMatrix();
+
+        if (clipBoundary != null) {
+            clip((float)clipBoundary.getX(), (float)clipBoundary.getY(), (float)clipBoundary.getWidth(), (float)clipBoundary.getHeight());
+        } else {
+            noClip();
+        }
 
         translate(position.x, position.y);
 
         scale(scale);
-
-        if (clipSize != null) {
-            clip(0, 0, clipSize.x, clipSize.y);
-        }
 
         beforeDrawChildren();
 
@@ -61,12 +67,76 @@ class ViewBase {
         afterDrawChildren();
 
         popMatrix();
-        if (clipSize != null) {
-            noClip();
-        }
-
     }
 
     void beforeDrawChildren() {}
     void afterDrawChildren() {}
+
+    PVector windowSizeToScreenSize(PVector size) {
+        PVector result = size.copy();
+
+        result.mult(scale);
+
+        if (parentView != null) {
+            result = parentView.windowSizeToScreenSize(result);
+        }
+
+        return result;
+    }
+
+    PVector windowPosToScreenPos(PVector pos) {
+        PVector result = pos.copy();
+
+        result.mult(scale);
+        result.add(position);
+
+        if (parentView != null) {
+            result = parentView.windowPosToScreenPos(result);
+        }
+
+        return result;
+    }
+
+    PVector screenPosToWindowPos(PVector pos) {
+        PVector result = pos.copy();
+
+        if (parentView != null) {
+            result = parentView.screenPosToWindowPos(result);
+        }
+
+        result.sub(position);
+        result.div(scale);
+
+        return result;
+    }
+
+    
+    Rectangle2D getClipBoundary() {
+        Rectangle2D viewClip = null;
+        Rectangle2D parentViewClip = null;
+
+        if (clipSize != null) {
+            PVector upperLeft = windowPosToScreenPos(new PVector(0, 0));
+            PVector size = windowSizeToScreenSize(clipSize);
+
+            viewClip = new Rectangle2D.Float(upperLeft.x, upperLeft.y, size.x, size.y);
+        }
+
+        if (parentView != null) {
+          parentViewClip = parentView.getClipBoundary();
+        }
+
+        if (viewClip != null && parentViewClip != null) {
+
+            return parentViewClip.createIntersection(viewClip);
+
+        } else if (viewClip != null) {
+            return viewClip;
+        } else if (parentViewClip != null) {
+            return parentViewClip;
+        }
+
+        return null;
+    }
+
 }

@@ -43,7 +43,7 @@ class BodyView extends ViewBase {
 
             for(int x = 0; x < gridSize.x; x++) {
                 for(int y = 0; y < gridSize.y; y++) {
-                    rect(x * 100 + 5, y * 100 + 5, 100, 100);
+                    rect(x * 100 + 10, y * 100 + 10, 100, 100);
                 }
             }
         }
