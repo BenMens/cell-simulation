@@ -6,16 +6,17 @@ BodyModel bodyModel;
 GuiController guiController;
 
 boolean[] keysPressed = new boolean[128];
+boolean pmousePressed;
+float relativeMousePositionX;
+float relativeMousePositionY;
 float mouseScroll;
 
 int lastTickTimestamp = millis();
 int millisBetweenTicks;
 
-
 void setup() {
-    size(2500, 1545, P2D);
 
-    frameRate(60);
+    size(2500, 1545, P2D);
 
     bodyModel = new BodyModel(new PVector(10, 10));
     bodyModel.addCell(new CellModel(new PVector(0, 0)));
@@ -61,4 +62,9 @@ void keyReleased() {
     } else {
         keysPressed = new boolean[128];
     }
+}
+
+
+void mousePressed() {
+    guiController.guiView.mousePressed();
 }
