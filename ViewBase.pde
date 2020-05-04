@@ -7,6 +7,7 @@ class ViewBase {
     PVector position = new PVector();
     PVector clipSize;
     float scale = 1;
+    boolean isVisible = true;
 
     final ViewBase getParentView() {
         return parentView;
@@ -55,16 +56,19 @@ class ViewBase {
         }
 
         translate(position.x, position.y);
-
         scale(scale);
 
         beforeDrawChildren();
+        
+        if (isVisible) {
+            beforeDrawChildren();
 
-        for (ViewBase childView: childViews) {
-            childView.draw();
+            for (ViewBase childView: childViews) {
+                childView.draw();
+            }
+
+            afterDrawChildren();
         }
-
-        afterDrawChildren();
 
         popMatrix();
     }
@@ -72,36 +76,36 @@ class ViewBase {
     void beforeDrawChildren() {}
     void afterDrawChildren() {}
 
-    PVector windowSizeToScreenSize(PVector size) {
+    PVector viewSizeToScreenSize(PVector size) {
         PVector result = size.copy();
 
         result.mult(scale);
 
         if (parentView != null) {
-            result = parentView.windowSizeToScreenSize(result);
+            result = parentView.viewSizeToScreenSize(result);
         }
 
         return result;
     }
 
-    PVector windowPosToScreenPos(PVector pos) {
+    PVector viewPosToScreenPos(PVector pos) {
         PVector result = pos.copy();
 
         result.mult(scale);
         result.add(position);
 
         if (parentView != null) {
-            result = parentView.windowPosToScreenPos(result);
+            result = parentView.viewPosToScreenPos(result);
         }
 
         return result;
     }
 
-    PVector screenPosToWindowPos(PVector pos) {
+    PVector screenPosToViewPos(PVector pos) {
         PVector result = pos.copy();
 
         if (parentView != null) {
-            result = parentView.screenPosToWindowPos(result);
+            result = parentView.screenPosToViewPos(result);
         }
 
         result.sub(position);
@@ -116,8 +120,8 @@ class ViewBase {
         Rectangle2D parentViewClip = null;
 
         if (clipSize != null) {
-            PVector upperLeft = windowPosToScreenPos(new PVector(0, 0));
-            PVector size = windowSizeToScreenSize(clipSize);
+            PVector upperLeft = viewPosToScreenPos(new PVector(0, 0));
+            PVector size = viewSizeToScreenSize(clipSize);
 
             viewClip = new Rectangle2D.Float(upperLeft.x, upperLeft.y, size.x, size.y);
         }
@@ -139,4 +143,33 @@ class ViewBase {
         return null;
     }
 
+
+    final boolean mousePressed() {
+        if (beforeMousePressedChildren()) {
+            return true;
+        }
+
+        boolean mousePressedHandled = false;
+        for (ViewBase childView: childViews) {
+            if(childView.mousePressed()) {
+                mousePressedHandled = true;
+            }
+        }
+        if (mousePressedHandled) {
+            return true;
+        }
+
+        if (afterMousePressedChildren()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    boolean beforeMousePressedChildren() {
+        return false;
+    }
+    boolean afterMousePressedChildren() {
+        return false;
+    }
 }

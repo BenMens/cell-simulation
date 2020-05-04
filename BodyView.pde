@@ -4,7 +4,7 @@ class BodyView extends ViewBase {
 
     ViewBase cellLayerView;
     ViewBase particleLayerView;
-
+    
 
     BodyView(BodyModel bodyModel) {
         this.bodyModel = bodyModel;
