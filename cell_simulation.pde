@@ -13,16 +13,19 @@ PVector translation;
 
 boolean[] keysPressed = new boolean[128];
 boolean pmousePressed;
+float relativeMousePositionX;
+float relativeMousePositionY;
 float mouseScroll;
 float mouseScrollSensetivity = 1.1;
 float dragSpeed = 1.2;
 
 int lastTickTimestamp;
-int millisBetweenTicks = 40;
+int millisBetweenTicks = 1;
 
 
 void setup() {
-    size(2500, 1545);
+
+    size(2500, 1545, P2D);
 
     bodyModel = new BodyModel(new PVector(10, 10));
     bodyController = new BodyController(bodyModel);
@@ -38,18 +41,37 @@ void setup() {
 void draw() {
     background(255);
 
+    relativeMousePositionX = ((mouseX - width * 0.5) / scaling - translation.x) * 0.01;
+    relativeMousePositionY = ((mouseY - height * 0.5) / scaling - translation.y) * 0.01;
+    println(relativeMousePositionX + "   :   " + relativeMousePositionY);
+
     updateMovement();
 
+    pushMatrix();
     translate(width * 0.5, height * 0.5);
     scale(scaling);
     translate(translation.x, translation.y);
 
     if(millis() - lastTickTimestamp >= millisBetweenTicks) {
         bodyController.tick();
-        lastTickTimestamp = millis();
+        lastTickTimestamp += millisBetweenTicks;
     }
-
+ 
     bodyController.bodyView.draw();
+    popMatrix();
+
+    if(keysPressed['g'] == true) {
+
+        noStroke();
+        fill(0);
+        textSize(25);
+        textAlign(LEFT, BOTTOM);
+        if(relativeMousePositionX > 0 && relativeMousePositionX < bodyModel.gridSize.x && relativeMousePositionY > 0 && relativeMousePositionY < bodyModel.gridSize.y) {
+            text("(" + floor(relativeMousePositionX) + ", " + floor(relativeMousePositionY) + ")", mouseX + 5, mouseY + 10);
+        } else {
+            text("(NONE)", mouseX + 5, mouseY + 10);
+        }
+    }
 }
 
 
@@ -108,4 +130,9 @@ void keyReleased() {
     } else {
         keysPressed = new boolean[128];
     }
+}
+
+
+void mousePressed() {
+    bodyController.bodyView.mousePressed();
 }

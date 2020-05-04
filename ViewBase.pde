@@ -2,6 +2,15 @@ class ViewBase {
     private ViewBase parentView = null;
     private ArrayList<ViewBase> childViews = new ArrayList<ViewBase>();
 
+    PVector position = new PVector();
+    float scale = 1;
+
+    // PVector translationRelativeToParentView = new PVector();
+    // PVector scalingRelativeToParentView = new PVector();
+    // PVector position = new PVector();
+
+    boolean isVisible = true;
+
 
     final ViewBase getParentView() {
         return parentView;
@@ -39,14 +48,53 @@ class ViewBase {
 
 
     final void draw() {
-        beforeDrawChildren();
+        pushMatrix();
 
-        for (ViewBase childView: childViews) {
-            childView.draw();
+        translate(position.x, position.y);
+        scale(scale);
+        if(isVisible) {
+            beforeDrawChildren();
+
+            for (ViewBase childView: childViews) {
+                childView.draw();
+            }
+
+            afterDrawChildren();
         }
 
-        afterDrawChildren();
+        popMatrix();
     }
+
     void beforeDrawChildren() {}
     void afterDrawChildren() {}
+
+
+    final boolean mousePressed() {
+        if (beforeMousePressedChildren()) {
+            return true;
+        }
+
+        boolean mousePressedHandled = false;
+        for (ViewBase childView: childViews) {
+            if(childView.mousePressed()) {
+                mousePressedHandled = true;
+            }
+        }
+        if(mousePressedHandled) {
+            return true;
+        }
+
+        if(afterMousePressedChildren()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    boolean beforeMousePressedChildren() {
+        return false;
+    }
+    boolean afterMousePressedChildren() {
+        return false;
+    }
 }
