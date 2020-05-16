@@ -8,7 +8,7 @@ class BodyController implements BodyModelClient, BodyViewClient {
 
     BodyController(BodyModel bodyModel) {
         this.bodyModel = bodyModel;
-        this.bodyView = viewFactory.createView(bodyModel);
+        this.bodyView = new BodyView(bodyModel);
 
         this.bodyModel.registerClient(this);
         this.bodyView.registerClient(this);

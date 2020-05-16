@@ -1,7 +1,5 @@
 PApplet applet = this;
 
-ViewFactory viewFactory = new DefaultViewFactory();
-
 BodyModel bodyModel;
 GuiController guiController;
 
