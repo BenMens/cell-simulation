@@ -1,10 +1,16 @@
 class CellModel {
     ArrayList<CellModelClient> clients = new ArrayList<CellModelClient>();
+    BodyModel bodyModel;
+
     PVector position;
+
     float wallHealth = 1;
 
 
-    CellModel(PVector position) {
+    CellModel(BodyModel bodyModel, PVector position) {
+        this.bodyModel = bodyModel;
+        bodyModel.addCell(this);
+
         this.position = position;
     }
 
@@ -19,11 +25,29 @@ class CellModel {
         clients.remove(client);
     }
 
+
     void tick() {}
 
 
+    boolean isSelected() {
+        return bodyModel.getSelectedCell() == this;
+    }
+
+    CellModel getSelected() {
+        return bodyModel.getSelectedCell();
+    }
+
+    void selectCell() {
+        bodyModel.selectCell(this);
+    }
+
+    void unSelectCell() {
+        bodyModel.unSelectCell(this);
+    }
+
+
     void handleCollision(ParticleBaseModel particle) {
-        wallHealth = wallHealth - (wallHealth / 10);
+        wallHealth -= particle.cellWallHarmfulness;
     }
 
 }

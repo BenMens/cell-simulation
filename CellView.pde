@@ -2,8 +2,6 @@ class CellView extends ViewBase {
     ArrayList<CellViewClient> clients = new ArrayList<CellViewClient>();
     CellModel cellModel;
 
-    boolean selected = false;
-
 
     CellView(CellModel cellModel) {
         this.cellModel = cellModel;
@@ -27,7 +25,7 @@ class CellView extends ViewBase {
         fill(250, 90, 70);
         rect(0, 0, 100, 100);
 
-        fill((selected) ? color(0, 0, 200) : color(255, 165, 135));
+        fill((cellModel.isSelected()) ? color(0, 0, 200) : color(255, 165, 135));
         rect(10, 10, 80, 80);
         
         fill(0, 0, 0);
@@ -35,16 +33,17 @@ class CellView extends ViewBase {
     }
 
 
-    boolean afterMousePressedChildren() {
-        
-        PVector viewPos = screenPosToViewPos(new PVector(mouseX, mouseY));
-
-        if (viewPos.x > 0 && viewPos.x < 100 && viewPos.y > 0 && viewPos.y < 100) {
-            selected = !selected;
+    boolean afterMousePressedChildren(float viewMouseX, float viewMouseY) {
+        if (viewMouseX > 0 && viewMouseX < 100 && viewMouseY > 0 && viewMouseY < 100) {
+            if (cellModel.isSelected()) {
+                cellModel.unSelectCell();
+            } else {
+                cellModel.selectCell();
+            }
             return true;
         } else {
-            selected = false;
-          return false;
+            cellModel.unSelectCell();
+            return false;
         }    
     }
 }

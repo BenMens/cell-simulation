@@ -13,18 +13,18 @@ class BodyController implements BodyModelClient, BodyViewClient {
         this.bodyModel.registerClient(this);
         this.bodyView.registerClient(this);
 
-        for (int i = 1; i < 50; i++) {
+        for (int i = 0; i < 50; i++) {
             ParticleBaseModel particleModel = new FoodParticleModel(bodyModel);
 
-            particleModel.setPosition(new PVector(random(bodyModel.gridSize.x * 100), random(bodyModel.gridSize.y * 100)));
-            particleModel.setSpeed(new PVector(random(10) - 5, random(10) - 5));
+            particleModel.setPosition(new PVector(random(bodyModel.gridSize.x), random(bodyModel.gridSize.y)));
+            particleModel.setSpeed(new PVector(random(0.1) - 0.05, random(0.1) - 0.05));
         }   
 
-        for (int i = 1; i < 50; i++) {
+        for (int i = 0; i < 50; i++) {
             ParticleBaseModel particleModel = new WasteParticleModel(bodyModel);
 
-            particleModel.setPosition(new PVector(random(bodyModel.gridSize.x * 100), random(bodyModel.gridSize.y * 100)));
-            particleModel.setSpeed(new PVector(random(10) - 5, random(10) - 5));
+            particleModel.setPosition(new PVector(random(bodyModel.gridSize.x), random(bodyModel.gridSize.y)));
+            particleModel.setSpeed(new PVector(random(0.1) - 0.05, random(0.1) - 0.05));
         }
 
     }
