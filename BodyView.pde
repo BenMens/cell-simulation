@@ -7,6 +7,8 @@ class BodyView extends ViewBase {
     
 
     BodyView(BodyModel bodyModel) {
+        this.origin = new PVector(10, 10);
+
         this.bodyModel = bodyModel;
 
         cellLayerView = new ViewBase();
@@ -34,7 +36,7 @@ class BodyView extends ViewBase {
         strokeWeight(10);
         stroke(0);
         noFill();
-        rect(5, 5, gridSize.x * 100 + 10, gridSize.y * 100 + 10);
+        rect(-5, -5, gridSize.x * 100 + 5, gridSize.y * 100 + 5);
 
         if (keysPressed['g'] == true) {
             strokeWeight(5);
@@ -43,7 +45,7 @@ class BodyView extends ViewBase {
 
             for(int x = 0; x < gridSize.x; x++) {
                 for(int y = 0; y < gridSize.y; y++) {
-                    rect(x * 100 + 10, y * 100 + 10, 100, 100);
+                    rect(x * 100, y * 100, 100, 100);
                 }
             }
         }

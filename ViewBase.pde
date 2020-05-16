@@ -7,6 +7,7 @@ class ViewBase {
 
     PVector position = new PVector();
     PVector clipSize;
+    PVector origin = new PVector();
     float scale = 1;
     boolean isVisible = true;
 
@@ -59,6 +60,7 @@ class ViewBase {
 
         translate(position.x, position.y);
         scale(scale);
+        translate(origin.x, origin.y);
 
         beforeDrawChildren();
         
@@ -112,6 +114,7 @@ class ViewBase {
 
         result.sub(position);
         result.div(scale);
+        result.sub(origin);
 
         return result;
     }
@@ -119,6 +122,7 @@ class ViewBase {
     PVector viewPosToScreenPos(PVector pos) {
         PVector result = pos.copy();
 
+        result.add(origin);
         result.mult(scale);
         result.add(position);
 
@@ -160,8 +164,8 @@ class ViewBase {
 
 
     final boolean mousePressed(float parentViewMouseX, float parentViewMouseY) {
-        float viewMouseX = (parentViewMouseX - position.x) / scale;
-        float viewMouseY = (parentViewMouseY - position.y) / scale;
+        float viewMouseX = (parentViewMouseX - position.x) / scale - origin.x;
+        float viewMouseY = (parentViewMouseY - position.y) / scale - origin.y;
 
         if (clipSize == null || (viewMouseX > position.x && viewMouseY > position.y && viewMouseX < position.x + clipSize.x && viewMouseY < position.y + clipSize.y)) {
             if (beforeMousePressedChildren(viewMouseX, viewMouseY)) {
