@@ -16,7 +16,7 @@ int millisBetweenTicks;
 
 void setup() {
 
-    size(2500, 1545, P2D);
+    fullScreen(P2D);
 
     bodyModel = new BodyModel(new PVector(10, 10));
     bodyModel.addCell(new CellModel(new PVector(0, 0)));
@@ -24,7 +24,6 @@ void setup() {
 
     guiController = new GuiController(bodyModel);
     lastTickTimestamp = millis();
-
 }
 
 
