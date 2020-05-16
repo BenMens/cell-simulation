@@ -1,6 +1,8 @@
-class CellModel {
+class CellModel implements ActionParentModel {
     ArrayList<CellModelClient> clients = new ArrayList<CellModelClient>();
     BodyModel bodyModel;
+
+    ArrayList<ActionBaseModel> actionModels = new ArrayList<ActionBaseModel>();
 
     PVector position;
 
@@ -12,17 +14,32 @@ class CellModel {
         bodyModel.addCell(this);
 
         this.position = position;
+
+        new ActionBaseModel(this);
     }
 
 
     void registerClient(CellModelClient client) {
         if(!clients.contains(client)) {
             clients.add(client);
+
+            for (ActionBaseModel actionModel: actionModels) {
+                client.onAddAction(actionModel);
+            }
         }
     }
 
     void unregisterClient(CellModelClient client) {
         clients.remove(client);
+    }
+
+
+    void addAction(ActionBaseModel actionModel) {
+        actionModels.add(actionModel);
+
+        for(CellModelClient client : clients) {
+            client.onAddAction(actionModel);
+        }
     }
 
 

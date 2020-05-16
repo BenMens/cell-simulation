@@ -1,5 +1,5 @@
 interface BodyModelClient {
-    void onAddCell(BodyModel bodyModel, CellModel cellModel);
+    void onAddCell(CellModel cellModel);
 
-    void onAddParticle(BodyModel bodyModel, ParticleBaseModel particleModel);
+    void onAddParticle(ParticleBaseModel particleModel);
 }
