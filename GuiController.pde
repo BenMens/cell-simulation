@@ -40,8 +40,12 @@ class GuiController {
     void updateMovement() {
 
         if (mousePressed) {
-            bodyController.bodyView.position.x += (mouseX - pmouseX);
-            bodyController.bodyView.position.y += (mouseY - pmouseY);
+            Rectangle2D bodyViewBoundary = bodyController.bodyView.getClipBoundary()
+
+            if (bodyViewBoundary.contains(mouseX, mouseY)) {
+                bodyController.bodyView.position.x += (mouseX - pmouseX);
+                bodyController.bodyView.position.y += (mouseY - pmouseY);
+            }
         }
 
         if (mouseScroll != 0) {
