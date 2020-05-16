@@ -2,6 +2,7 @@ class BodyModel {
     ArrayList<BodyModelClient> clients = new ArrayList<BodyModelClient>();
 
     ArrayList<CellModel> cellModels = new ArrayList<CellModel>();
+    private CellModel selectedCell = null;
 
     ArrayList<ParticleBaseModel> particleModels = new ArrayList<ParticleBaseModel>();
 
@@ -40,6 +41,7 @@ class BodyModel {
         }
     }
 
+
     void addParticle(ParticleBaseModel particleModel) {
 
         particleModels.add(particleModel);
@@ -48,6 +50,22 @@ class BodyModel {
             client.onAddParticle(this, particleModel);
         }        
     }
+
+
+    CellModel getSelectedCell() {
+        return selectedCell;
+    }
+
+    void selectCell(CellModel cell) {
+        selectedCell = cell;
+    }
+
+    void unSelectCell(CellModel cell) {
+        if (cell == selectedCell) {
+            selectedCell = null;
+        }
+    }
+
 
     CellModel findCellAtPosition(int x, int y) {
         for (CellModel cellModel: cellModels) {
@@ -59,6 +77,7 @@ class BodyModel {
         return null;
     }
 
+
     void tick() {
         for (ParticleBaseModel particle: particleModels) {
             particle.tick();
@@ -68,5 +87,4 @@ class BodyModel {
             cell.tick();
         }
     }
-
 }
