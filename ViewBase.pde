@@ -1,5 +1,6 @@
 import java.awt.geom.Rectangle2D;
 
+
 class ViewBase {
     private ViewBase parentView = null;
     private ArrayList<ViewBase> childViews = new ArrayList<ViewBase>();
@@ -8,6 +9,7 @@ class ViewBase {
     PVector clipSize;
     float scale = 1;
     boolean isVisible = true;
+
 
     final ViewBase getParentView() {
         return parentView;
@@ -76,6 +78,19 @@ class ViewBase {
     void beforeDrawChildren() {}
     void afterDrawChildren() {}
 
+
+    PVector screenSizeToViewSize(PVector size) {
+        PVector result = size.copy();
+
+        if (parentView != null) {
+            result = parentView.screenSizeToViewSize(result);
+        }
+
+        result.div(scale);
+
+        return result;
+    }
+
     PVector viewSizeToScreenSize(PVector size) {
         PVector result = size.copy();
 
@@ -83,19 +98,6 @@ class ViewBase {
 
         if (parentView != null) {
             result = parentView.viewSizeToScreenSize(result);
-        }
-
-        return result;
-    }
-
-    PVector viewPosToScreenPos(PVector pos) {
-        PVector result = pos.copy();
-
-        result.mult(scale);
-        result.add(position);
-
-        if (parentView != null) {
-            result = parentView.viewPosToScreenPos(result);
         }
 
         return result;
@@ -113,6 +115,19 @@ class ViewBase {
 
         return result;
     }
+    
+    PVector viewPosToScreenPos(PVector pos) {
+        PVector result = pos.copy();
+
+        result.mult(scale);
+        result.add(position);
+
+        if (parentView != null) {
+            result = parentView.viewPosToScreenPos(result);
+        }
+
+        return result;
+    }
 
     
     Rectangle2D getClipBoundary() {
@@ -120,7 +135,7 @@ class ViewBase {
         Rectangle2D parentViewClip = null;
 
         if (clipSize != null) {
-            PVector upperLeft = viewPosToScreenPos(new PVector(0, 0));
+            PVector upperLeft = viewPosToScreenPos(new PVector());
             PVector size = viewSizeToScreenSize(clipSize);
 
             viewClip = new Rectangle2D.Float(upperLeft.x, upperLeft.y, size.x, size.y);
@@ -131,11 +146,11 @@ class ViewBase {
         }
 
         if (viewClip != null && parentViewClip != null) {
-
             return parentViewClip.createIntersection(viewClip);
 
         } else if (viewClip != null) {
             return viewClip;
+
         } else if (parentViewClip != null) {
             return parentViewClip;
         }
@@ -144,32 +159,35 @@ class ViewBase {
     }
 
 
-    final boolean mousePressed() {
-        if (beforeMousePressedChildren()) {
-            return true;
-        }
+    final boolean mousePressed(float parentViewMouseX, float parentViewMouseY) {
+        float viewMouseX = (parentViewMouseX - position.x) / scale;
+        float viewMouseY = (parentViewMouseY - position.y) / scale;
 
-        boolean mousePressedHandled = false;
-        for (ViewBase childView: childViews) {
-            if(childView.mousePressed()) {
-                mousePressedHandled = true;
+        if (clipSize == null || (viewMouseX > position.x && viewMouseY > position.y && viewMouseX < position.x + clipSize.x && viewMouseY < position.y + clipSize.y)) {
+            if (beforeMousePressedChildren(viewMouseX, viewMouseY)) {
+                return true;
+            }
+
+            boolean mousePressedHandled = false;
+            for (ViewBase childView: childViews) {
+                mousePressedHandled = childView.mousePressed(viewMouseX, viewMouseY) | mousePressedHandled;
+            }
+            if (mousePressedHandled) {
+                return true;
+            }
+
+            if (afterMousePressedChildren(viewMouseX, viewMouseY)) {
+                return true;
             }
         }
-        if (mousePressedHandled) {
-            return true;
-        }
-
-        if (afterMousePressedChildren()) {
-            return true;
-        }
 
         return false;
     }
 
-    boolean beforeMousePressedChildren() {
+    boolean beforeMousePressedChildren(float viewMouseX, float viewMouseY) {
         return false;
     }
-    boolean afterMousePressedChildren() {
+    boolean afterMousePressedChildren(float viewMouseX, float viewMouseY) {
         return false;
     }
 }

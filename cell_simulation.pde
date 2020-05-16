@@ -19,8 +19,9 @@ void setup() {
     fullScreen(P2D);
 
     bodyModel = new BodyModel(new PVector(10, 10));
-    bodyModel.addCell(new CellModel(new PVector(0, 0)));
-    bodyModel.addCell(new CellModel(new PVector(2, 1)));
+
+    new CellModel(bodyModel, new PVector(0, 0));
+    new CellModel(bodyModel, new PVector(2, 1));
 
     guiController = new GuiController(bodyModel);
     lastTickTimestamp = millis();
@@ -65,5 +66,5 @@ void keyReleased() {
 
 
 void mousePressed() {
-    guiController.guiView.mousePressed();
+    guiController.guiView.mousePressed(mouseX, mouseY);
 }

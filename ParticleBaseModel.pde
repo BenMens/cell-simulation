@@ -1,13 +1,15 @@
 class ParticleBaseModel {
-    PVector position = new PVector(0, 0);
-    PVector speed = new PVector(0, 0);
     BodyModel bodyModel;
+
+    private PVector position = new PVector(0, 0);
+    private PVector speed = new PVector(0, 0);
+
     CellModel containingCell;
+    float cellWallHarmfulness = 0.03;
 
 
     ParticleBaseModel(BodyModel bodyModel) {
         this.bodyModel = bodyModel;
-
         bodyModel.addParticle(this);
     }
 
@@ -28,7 +30,7 @@ class ParticleBaseModel {
     }
 
     void tick() {
-        PVector bodySize = bodyModel.gridSize.copy().mult(100);
+        PVector bodySize = bodyModel.gridSize.copy();
 
         position.add(speed);
 
@@ -63,6 +65,6 @@ class ParticleBaseModel {
     }
 
     CellModel findContainingCell() {
-        return bodyModel.findCellAtPosition(floor(position.x / 100), floor(position.y / 100));
+        return bodyModel.findCellAtPosition(floor(position.x), floor(position.y));
     }
 }
