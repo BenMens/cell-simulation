@@ -10,7 +10,7 @@ float relativeMousePositionY;
 float mouseScroll;
 
 int lastTickTimestamp = millis();
-int millisBetweenTicks;
+int millisBetweenTicks = 25;
 
 void setup() {
 

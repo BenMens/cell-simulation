@@ -1,6 +1,8 @@
-class CellModel {
+class CellModel implements ActionModelParent {
     ArrayList<CellModelClient> clients = new ArrayList<CellModelClient>();
     BodyModel bodyModel;
+
+    ArrayList<ActionBaseModel> actionModels = new ArrayList<ActionBaseModel>();
 
     PVector position;
 
@@ -18,6 +20,10 @@ class CellModel {
     void registerClient(CellModelClient client) {
         if(!clients.contains(client)) {
             clients.add(client);
+
+            for (ActionBaseModel actionModel: actionModels) {
+                client.onAddAction(actionModel);
+            }
         }
     }
 
@@ -26,7 +32,25 @@ class CellModel {
     }
 
 
-    void tick() {}
+    void addAction(ActionBaseModel actionModel) {
+        actionModels.add(actionModel);
+
+        for(CellModelClient client : clients) {
+            client.onAddAction(actionModel);
+        }
+    }
+
+
+    ArrayList<ActionBaseModel> getActionList() {
+        return actionModels;
+    }
+
+
+    void tick() {
+        if (actionModels.size() < 10) {
+            new ActionBaseModel(this);
+        }
+    }
 
 
     boolean isSelected() {

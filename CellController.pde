@@ -2,6 +2,8 @@ class CellController implements CellModelClient, CellViewClient {
     CellModel cellModel;
     CellView cellView;
 
+    ArrayList<ActionController> actionControllers = new ArrayList<ActionController>();
+
 
     CellController(CellModel cellModel) {
         this.cellModel = cellModel;
@@ -12,8 +14,11 @@ class CellController implements CellModelClient, CellViewClient {
     }
 
 
-    void draw() {
-        cellView.draw();
+    void onAddAction(ActionBaseModel actionModel) {
+        ActionController newActionController = new ActionController(actionModel);
+        cellView.addChildView(newActionController.actionView);
+
+        actionControllers.add(newActionController);
     }
 
 
