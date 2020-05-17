@@ -6,9 +6,11 @@ class ViewBase {
     private ArrayList<ViewBase> childViews = new ArrayList<ViewBase>();
 
     PVector position = new PVector();
-    PVector clipSize;
+    PVector size = new PVector(1,1);
+    PVector origin = new PVector();
     float scale = 1;
     boolean isVisible = true;
+    boolean clip = false;
 
 
     final ViewBase getParentView() {
@@ -59,8 +61,7 @@ class ViewBase {
 
         translate(position.x, position.y);
         scale(scale);
-
-        beforeDrawChildren();
+        translate(origin.x, origin.y);
         
         if (isVisible) {
             beforeDrawChildren();
@@ -78,6 +79,16 @@ class ViewBase {
     void beforeDrawChildren() {}
     void afterDrawChildren() {}
 
+
+    float composedScale() {
+        float result = this.scale;
+
+        if (this.parentView != null) {
+            result *= this.parentView.composedScale();
+        }
+
+        return result;
+    }
 
     PVector screenSizeToViewSize(PVector size) {
         PVector result = size.copy();
@@ -112,6 +123,7 @@ class ViewBase {
 
         result.sub(position);
         result.div(scale);
+        result.sub(origin);
 
         return result;
     }
@@ -119,6 +131,7 @@ class ViewBase {
     PVector viewPosToScreenPos(PVector pos) {
         PVector result = pos.copy();
 
+        result.add(origin);
         result.mult(scale);
         result.add(position);
 
@@ -134,11 +147,11 @@ class ViewBase {
         Rectangle2D viewClip = null;
         Rectangle2D parentViewClip = null;
 
-        if (clipSize != null) {
+        if (clip) {
             PVector upperLeft = viewPosToScreenPos(new PVector());
-            PVector size = viewSizeToScreenSize(clipSize);
+            PVector screenSize = viewSizeToScreenSize(this.size);
 
-            viewClip = new Rectangle2D.Float(upperLeft.x, upperLeft.y, size.x, size.y);
+            viewClip = new Rectangle2D.Float(upperLeft.x, upperLeft.y, screenSize.x, screenSize.y);
         }
 
         if (parentView != null) {
@@ -160,10 +173,10 @@ class ViewBase {
 
 
     final boolean mousePressed(float parentViewMouseX, float parentViewMouseY) {
-        float viewMouseX = (parentViewMouseX - position.x) / scale;
-        float viewMouseY = (parentViewMouseY - position.y) / scale;
+        float viewMouseX = (parentViewMouseX - position.x) / scale - origin.x;
+        float viewMouseY = (parentViewMouseY - position.y) / scale - origin.y;
 
-        if (clipSize == null || (viewMouseX > position.x && viewMouseY > position.y && viewMouseX < position.x + clipSize.x && viewMouseY < position.y + clipSize.y)) {
+        if (clip == false || (viewMouseX > position.x && viewMouseY > position.y && viewMouseX < position.x + size.x && viewMouseY < position.y + size.y)) {
             if (beforeMousePressedChildren(viewMouseX, viewMouseY)) {
                 return true;
             }
@@ -187,7 +200,11 @@ class ViewBase {
     boolean beforeMousePressedChildren(float viewMouseX, float viewMouseY) {
         return false;
     }
+
+
     boolean afterMousePressedChildren(float viewMouseX, float viewMouseY) {
         return false;
     }
+
+
 }

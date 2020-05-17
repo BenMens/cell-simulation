@@ -8,6 +8,8 @@ class CellView extends ViewBase {
 
     CellView(CellModel cellModel) {
         this.cellModel = cellModel;
+
+        this.position = cellModel.position.copy().mult(100);
     }
 
 

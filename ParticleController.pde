@@ -4,7 +4,7 @@ class ParticleController {
 
     ParticleController(ParticleBaseModel particleModel) {
         this.particleModel = particleModel;
-        this.particleView = viewFactory.createView(particleModel);
+        this.particleView = new ParticleView(particleModel);
     }
 
 }

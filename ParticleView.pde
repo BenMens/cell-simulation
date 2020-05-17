@@ -12,12 +12,12 @@ class ParticleView extends ViewBase {
             ParticleFoodModel foodParticle = (ParticleFoodModel)particleModel;
             
             PImage img = ImageCache.getImage(applet, "images/food.png");
-            image(img, particleModel.getPosition().x * 100 - img.width * 0.5 + 10, particleModel.getPosition().y * 100 - img.height * 0.5 + 10);
+            image(img, particleModel.getPosition().x * 100 - img.width * 0.5, particleModel.getPosition().y * 100 - img.height * 0.5);
         } else if (particleModel instanceof ParticleWasteModel) {
             ParticleWasteModel wasteParticle = (ParticleWasteModel)particleModel;
             
             PImage img = ImageCache.getImage(applet, "images/waste.png");
-            image(img, wasteParticle.getPosition().x * 100 - img.width * 0.5 + 10, wasteParticle.getPosition().y * 100 - img.height * 0.5 + 10);
+            image(img, wasteParticle.getPosition().x * 100 - img.width * 0.5, wasteParticle.getPosition().y * 100 - img.height * 0.5);
         }
     }
 }

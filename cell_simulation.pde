@@ -1,7 +1,5 @@
 PApplet applet = this;
 
-ViewFactory viewFactory = new DefaultViewFactory();
-
 BodyModel bodyModel;
 GuiController guiController;
 
@@ -16,7 +14,7 @@ int millisBetweenTicks = 25;
 
 void setup() {
 
-    size(2500, 1545, P2D);
+    fullScreen(P2D);
 
     bodyModel = new BodyModel(new PVector(10, 10));
 
@@ -28,7 +26,6 @@ void setup() {
 
     guiController = new GuiController(bodyModel);
     lastTickTimestamp = millis();
-
 }
 
 

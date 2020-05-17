@@ -21,7 +21,7 @@ class ParticleBaseModel {
         this.bodyModel.addParticle(this);
 
         this.position = new PVector(positionX, positionY);
-        this.speed = new PVector(speedX * 5, speedY * 5);
+        this.speed = new PVector(speedX, speedY);
     }
 
 
