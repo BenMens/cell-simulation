@@ -7,6 +7,9 @@ class BodyView extends ViewBase {
     
 
     BodyView(BodyModel bodyModel) {
+        this.size.x = bodyModel.gridSize.x * 100 + 20;
+        this.size.y = bodyModel.gridSize.y * 100 + 20;
+
         this.origin = new PVector(10, 10);
 
         this.bodyModel = bodyModel;
