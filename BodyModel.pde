@@ -58,6 +58,14 @@ class BodyModel {
         }
     }
 
+    void removeParticle(ParticleBaseModel particleModel) {
+        particleModels.remove(particleModel);
+
+        for(BodyModelClient client: clients) {
+            client.onRemoveParticle(particleModel);
+        }
+    }
+
 
     CellModel getSelectedCell() {
         return selectedCell;
