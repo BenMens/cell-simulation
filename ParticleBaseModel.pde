@@ -1,6 +1,8 @@
 class ParticleBaseModel {
     BodyModel bodyModel;
 
+    boolean isDead = false;
+
     private PVector position = new PVector(0, 0);
     private PVector speed = new PVector(0, 0);
 
@@ -9,9 +11,19 @@ class ParticleBaseModel {
 
 
     ParticleBaseModel(BodyModel bodyModel) {
-        this.bodyModel = bodyModel;
-        bodyModel.addParticle(this);
+        this(bodyModel, random(bodyModel.gridSize.x), random(bodyModel.gridSize.y));
     }
+    ParticleBaseModel(BodyModel bodyModel, float positionX, float positionY) {
+        this(bodyModel, positionX, positionY, random(0.1) - 0.05, random(0.1) - 0.05);
+    }
+    ParticleBaseModel(BodyModel bodyModel, float positionX, float positionY, float speedX, float speedY) {
+        this.bodyModel = bodyModel;
+        this.bodyModel.addParticle(this);
+
+        this.position = new PVector(positionX, positionY);
+        this.speed = new PVector(speedX * 5, speedY * 5);
+    }
+
 
     PVector getPosition() {
         return position;
@@ -28,6 +40,7 @@ class ParticleBaseModel {
     void setSpeed(PVector newSpeed) {
         speed = newSpeed;
     }
+
 
     void tick() {
         PVector bodySize = bodyModel.gridSize.copy();
@@ -63,6 +76,10 @@ class ParticleBaseModel {
             containingCell = newContainingCell;
         }
     }
+
+
+    void cleanUpTick() {}
+
 
     CellModel findContainingCell() {
         return bodyModel.findCellAtPosition(floor(position.x), floor(position.y));

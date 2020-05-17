@@ -21,7 +21,10 @@ void setup() {
     bodyModel = new BodyModel(new PVector(10, 10));
 
     new CellModel(bodyModel, new PVector(0, 0));
-    new CellModel(bodyModel, new PVector(2, 1));
+
+    for (int i = 0; i < 25; i++) {
+        new CellModel(bodyModel, new PVector(floor(random(bodyModel.gridSize.x)), floor(random(bodyModel.gridSize.y))));
+    }
 
     guiController = new GuiController(bodyModel);
     lastTickTimestamp = millis();
