@@ -1,4 +1,4 @@
-class CellModel implements ActionParentModel {
+class CellModel implements ActionModelParent {
     ArrayList<CellModelClient> clients = new ArrayList<CellModelClient>();
     BodyModel bodyModel;
 

@@ -1,9 +1,9 @@
 class ActionBaseModel {
     ArrayList<ActionModelClient> clients = new ArrayList<ActionModelClient>();
-    ActionParentModel parentModel;
+    ActionModelParent parentModel;
 
 
-    ActionBaseModel(ActionParentModel parentModel) {
+    ActionBaseModel(ActionModelParent parentModel) {
         this.parentModel = parentModel;
         parentModel.addAction(this);
     }
