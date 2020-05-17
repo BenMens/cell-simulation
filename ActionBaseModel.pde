@@ -2,6 +2,8 @@ class ActionBaseModel {
     ArrayList<ActionModelClient> clients = new ArrayList<ActionModelClient>();
     ActionModelParent parentModel;
 
+    float degradation = 0;
+
 
     ActionBaseModel(ActionModelParent parentModel) {
         this.parentModel = parentModel;
@@ -17,6 +19,11 @@ class ActionBaseModel {
 
     void unregisterClient(ActionModelClient client) {
         clients.remove(client);
+    }
+
+
+    ArrayList<ActionBaseModel> getParentActionList() {
+        return parentModel.getActionList();
     }
 
 

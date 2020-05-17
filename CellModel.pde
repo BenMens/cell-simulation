@@ -14,8 +14,6 @@ class CellModel implements ActionModelParent {
         bodyModel.addCell(this);
 
         this.position = position;
-
-        new ActionBaseModel(this);
     }
 
 
@@ -43,7 +41,16 @@ class CellModel implements ActionModelParent {
     }
 
 
-    void tick() {}
+    ArrayList<ActionBaseModel> getActionList() {
+        return actionModels;
+    }
+
+
+    void tick() {
+        if (actionModels.size() < 10) {
+            new ActionBaseModel(this);
+        }
+    }
 
 
     boolean isSelected() {
