@@ -32,7 +32,6 @@ class BodyController implements BodyModelClient, BodyViewClient {
         cellControllers.add(newCellController);
     }
 
-
     void onAddParticle(ParticleBaseModel particleModel) { 
         ParticleController newParticleController = new ParticleController(particleModel);
         bodyView.particleLayerView.addChildView(newParticleController.particleView);
@@ -40,4 +39,19 @@ class BodyController implements BodyModelClient, BodyViewClient {
         particleControllers.add(newParticleController);
     }
 
+    void onRemoveCell(CellModel cellModel) {
+        CellController cellController = null;
+
+        for(CellController controller : cellControllers) {
+            if (controller.cellModel == cellModel) {
+                cellController = controller;
+                break;
+            }
+        }
+
+        if (cellController != null) {
+            cellController.destroy();
+            cellControllers.remove(cellController);
+        }
+    }
 }

@@ -1,6 +1,8 @@
 class ParticleBaseModel {
     BodyModel bodyModel;
 
+    boolean isDead = false;
+
     private PVector position = new PVector(0, 0);
     private PVector speed = new PVector(0, 0);
 
@@ -19,7 +21,7 @@ class ParticleBaseModel {
         this.bodyModel.addParticle(this);
 
         this.position = new PVector(positionX, positionY);
-        this.speed = new PVector(speedX, speedY);
+        this.speed = new PVector(speedX * 5, speedY * 5);
     }
 
 
@@ -74,6 +76,9 @@ class ParticleBaseModel {
             containingCell = newContainingCell;
         }
     }
+
+
+    void cleanUpTick() {}
 
 
     CellModel findContainingCell() {

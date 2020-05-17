@@ -16,6 +16,13 @@ class CellController implements CellModelClient, CellViewClient {
     }
 
 
+    void destroy() {
+        cellView.setParentView(null);
+        cellView.unregisterClient(this);
+        cellModel.unregisterClient(this);
+    }
+
+
     void onAddAction(ActionBaseModel actionModel) {
         ActionController newActionController = new ActionController(actionModel);
         cellView.addChildView(newActionController.actionView);

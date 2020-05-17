@@ -4,13 +4,14 @@ class CellModel implements ActionModelParent {
 
     ArrayList<ActionBaseModel> actionModels = new ArrayList<ActionBaseModel>();
 
+    boolean isDead = false;
+
     PVector position;
-
-    boolean edited = false;
-
     float wallHealth = 1;
     float energyLevel = 1;
     float energyCostPerTick = 0.001;
+
+    boolean edited = false;
 
 
     CellModel(BodyModel bodyModel, PVector position) {
@@ -56,6 +57,21 @@ class CellModel implements ActionModelParent {
 
     void tick() {
         energyLevel = max(energyLevel - energyCostPerTick, 0);
+
+        if (wallHealth <= 0) {
+            isDead = true;
+        }
+    }
+
+
+    void cleanUpTick() {
+        if (isDead) {
+            for (int i = 0; i < actionModels.size(); i++) {
+                new ParticleWasteModel(bodyModel, position.x + 0.5, position.y + 0.5);
+            }
+
+            bodyModel.removeCell(this);
+        }
     }
 
 
