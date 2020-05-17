@@ -7,8 +7,6 @@ class CellController implements CellModelClient, CellViewClient {
         this.cellModel = cellModel;
         this.cellView = new CellView(cellModel);
 
-        this.cellView.position = cellModel.position.copy().mult(100);
-
         this.cellModel.registerClient(this);
         this.cellView.registerClient(this);
     }

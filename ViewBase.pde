@@ -61,8 +61,6 @@ class ViewBase {
         translate(position.x, position.y);
         scale(scale);
         translate(origin.x, origin.y);
-
-        beforeDrawChildren();
         
         if (isVisible) {
             beforeDrawChildren();

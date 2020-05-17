@@ -39,7 +39,7 @@ class BodyView extends ViewBase {
         rect(-5, -5, gridSize.x * 100 + 5, gridSize.y * 100 + 5);
 
         if (keysPressed['g'] == true) {
-            strokeWeight(5);
+            strokeWeight(4);
             stroke(100);
             noFill();
 
