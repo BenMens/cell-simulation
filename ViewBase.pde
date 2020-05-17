@@ -21,11 +21,11 @@ class ViewBase {
     final void setParentView(ViewBase newParentView) {
         ViewBase oldParentView = parentView;
 
+        parentView = newParentView;
+
         if(oldParentView != null) {
             oldParentView.removeChildView(this);
         }
-
-        parentView = newParentView;
     }
 
 

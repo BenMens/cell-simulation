@@ -2,6 +2,9 @@ class CellView extends ViewBase {
     ArrayList<CellViewClient> clients = new ArrayList<CellViewClient>();
     CellModel cellModel;
 
+    final float wallSizeOnMaxHealth = 10;
+    final float energySymbolSizeOnMaxEnergy = 8;
+
 
     CellView(CellModel cellModel) {
         this.cellModel = cellModel;
@@ -27,11 +30,32 @@ class CellView extends ViewBase {
         fill(250, 90, 70);
         rect(0, 0, 100, 100);
 
-        fill((cellModel.isSelected()) ? color(0, 0, 200) : color(255, 165, 135));
-        rect(10, 10, 80, 80);
+        if (cellModel.edited == true) {
+            fill(115, 230, 155);
+
+        } else if (cellModel.isSelected()) {
+            fill(35, 225, 230);
+
+        } else {
+            fill(255, 165, 135);
+        }
+        float wallSize = cellModel.wallHealth * wallSizeOnMaxHealth;
+        rect(wallSize, wallSize, 100 - 2 * wallSize, 100 - 2 * wallSize);
         
-        fill(0, 0, 0);
-        text(String.valueOf(cellModel.wallHealth) , 10, 50);
+        fill(0);
+        noStroke();
+        ellipse(50, 50, 2 * energySymbolSizeOnMaxEnergy, 2 * energySymbolSizeOnMaxEnergy);
+
+        float energySymbolSize = cellModel.energyLevel * energySymbolSizeOnMaxEnergy;
+        fill(245, 245, 115);
+        beginShape();
+        vertex(50 - 0.00 * energySymbolSize, 50 - 1.00 * energySymbolSize);
+        vertex(50 - 0.48 * energySymbolSize, 50 + 0.12 * energySymbolSize);
+        vertex(50 + 0.15 * energySymbolSize, 50 + 0.15 * energySymbolSize);
+        vertex(50 - 0.00 * energySymbolSize, 50 + 1.00 * energySymbolSize);
+        vertex(50 + 0.48 * energySymbolSize, 50 - 0.12 * energySymbolSize);
+        vertex(50 - 0.15 * energySymbolSize, 50 - 0.15 * energySymbolSize);
+        endShape(CLOSE);
     }
 
 

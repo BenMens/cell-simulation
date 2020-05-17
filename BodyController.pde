@@ -15,17 +15,11 @@ class BodyController implements BodyModelClient, BodyViewClient {
         this.bodyView.registerClient(this);
 
         for (int i = 0; i < 50; i++) {
-            ParticleBaseModel particleModel = new FoodParticleModel(bodyModel);
-
-            particleModel.setPosition(new PVector(random(bodyModel.gridSize.x), random(bodyModel.gridSize.y)));
-            particleModel.setSpeed(new PVector(random(0.1) - 0.05, random(0.1) - 0.05));
+            ParticleBaseModel particleModel = new ParticleFoodModel(bodyModel);
         }   
 
         for (int i = 0; i < 50; i++) {
-            ParticleBaseModel particleModel = new WasteParticleModel(bodyModel);
-
-            particleModel.setPosition(new PVector(random(bodyModel.gridSize.x), random(bodyModel.gridSize.y)));
-            particleModel.setSpeed(new PVector(random(0.1) - 0.05, random(0.1) - 0.05));
+            ParticleBaseModel particleModel = new ParticleWasteModel(bodyModel);
         }
 
     }
@@ -38,7 +32,6 @@ class BodyController implements BodyModelClient, BodyViewClient {
         cellControllers.add(newCellController);
     }
 
-
     void onAddParticle(ParticleBaseModel particleModel) { 
         ParticleController newParticleController = new ParticleController(particleModel);
         bodyView.particleLayerView.addChildView(newParticleController.particleView);
@@ -46,4 +39,19 @@ class BodyController implements BodyModelClient, BodyViewClient {
         particleControllers.add(newParticleController);
     }
 
+    void onRemoveCell(CellModel cellModel) {
+        CellController cellController = null;
+
+        for(CellController controller : cellControllers) {
+            if (controller.cellModel == cellModel) {
+                cellController = controller;
+                break;
+            }
+        }
+
+        if (cellController != null) {
+            cellController.destroy();
+            cellControllers.remove(cellController);
+        }
+    }
 }

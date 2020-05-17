@@ -41,7 +41,6 @@ class BodyModel {
         }
     }
 
-
     void addParticle(ParticleBaseModel particleModel) {
 
         particleModels.add(particleModel);
@@ -49,6 +48,14 @@ class BodyModel {
         for(BodyModelClient client: clients) {
             client.onAddParticle(particleModel);
         }        
+    }
+
+    void removeCell(CellModel cellModel) {
+        cellModels.remove(cellModel);
+
+        for(BodyModelClient client: clients) {
+            client.onRemoveCell(cellModel);
+        }
     }
 
 
@@ -85,6 +92,14 @@ class BodyModel {
 
         for (CellModel cell: cellModels) {
             cell.tick();
+        }
+
+        for (int i = particleModels.size() - 1; i >= 0; i--) {
+            particleModels.get(i).cleanUpTick();
+        }
+
+        for (int i = cellModels.size() - 1; i >= 0; i--) {
+            cellModels.get(i).cleanUpTick();
         }
     }
 }
