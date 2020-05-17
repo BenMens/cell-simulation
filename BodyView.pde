@@ -14,7 +14,7 @@ class BodyView extends ViewBase {
 
         particleLayerView = new ViewBase();
         this.addChildView(particleLayerView);
-    }
+     }
 
 
     void registerClient(BodyViewClient client) {

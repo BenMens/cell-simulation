@@ -19,11 +19,11 @@ class BodyModel {
             clients.add(client);
 
             for(CellModel cellModel: cellModels) {
-                client.onAddCell(this, cellModel);
+                client.onAddCell(cellModel);
             }
 
             for(ParticleBaseModel particleModel: particleModels) {
-                client.onAddParticle(this, particleModel);
+                client.onAddParticle(particleModel);
             }
         }
     }
@@ -37,7 +37,7 @@ class BodyModel {
         cellModels.add(cellModel);
 
         for(BodyModelClient client: clients) {
-            client.onAddCell(this, cellModel);
+            client.onAddCell(cellModel);
         }
     }
 
@@ -47,7 +47,7 @@ class BodyModel {
         particleModels.add(particleModel);
 
         for(BodyModelClient client: clients) {
-            client.onAddParticle(this, particleModel);
+            client.onAddParticle(particleModel);
         }        
     }
 

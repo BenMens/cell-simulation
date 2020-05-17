@@ -3,6 +3,7 @@ class BodyController implements BodyModelClient, BodyViewClient {
     BodyView bodyView;
 
     ArrayList<CellController> cellControllers = new ArrayList<CellController>();
+
     ArrayList<ParticleController> particleControllers = new ArrayList<ParticleController>();
 
 
@@ -30,7 +31,7 @@ class BodyController implements BodyModelClient, BodyViewClient {
     }
 
 
-    void onAddCell(BodyModel bodyModel, CellModel cellModel) {
+    void onAddCell(CellModel cellModel) {
         CellController newCellController = new CellController(cellModel);
         bodyView.cellLayerView.addChildView(newCellController.cellView);
 
@@ -38,11 +39,11 @@ class BodyController implements BodyModelClient, BodyViewClient {
     }
 
 
-    void onAddParticle(BodyModel bodyModel, ParticleBaseModel particleModel) { 
-        ParticleController particleController = new ParticleController(particleModel);
+    void onAddParticle(ParticleBaseModel particleModel) { 
+        ParticleController newParticleController = new ParticleController(particleModel);
+        bodyView.particleLayerView.addChildView(newParticleController.particleView);
  
-        particleControllers.add(particleController);
-        bodyView.particleLayerView.addChildView(particleController.particleView);
+        particleControllers.add(newParticleController);
     }
 
 }
