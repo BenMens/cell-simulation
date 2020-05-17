@@ -22,9 +22,4 @@ class CellController implements CellModelClient, CellViewClient {
 
         actionControllers.add(newActionController);
     }
-
-
-    void tick() {
-    }
-
 }

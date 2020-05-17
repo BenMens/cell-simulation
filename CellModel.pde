@@ -6,7 +6,11 @@ class CellModel implements ActionModelParent {
 
     PVector position;
 
+    boolean edited = false;
+
     float wallHealth = 1;
+    float energyLevel = 1;
+    float energyCostPerTick = 0.001;
 
 
     CellModel(BodyModel bodyModel, PVector position) {
@@ -14,6 +18,10 @@ class CellModel implements ActionModelParent {
         bodyModel.addCell(this);
 
         this.position = position;
+
+        for(int i = 0; i < 10; i++) {
+            new ActionBaseModel(this);
+        }
     }
 
 
@@ -47,9 +55,7 @@ class CellModel implements ActionModelParent {
 
 
     void tick() {
-        if (actionModels.size() < 10) {
-            new ActionBaseModel(this);
-        }
+        energyLevel = max(energyLevel - energyCostPerTick, 0);
     }
 
 
