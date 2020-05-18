@@ -10,13 +10,16 @@ class CellView extends ViewBase {
         this.cellModel = cellModel;
 
         this.position = cellModel.position.copy().mult(100);
+
+        this.hasClip = true;
+        this.size = new PVector(100, 100);
     }
 
 
     void registerClient(CellViewClient client) {
         if(!clients.contains(client)) {
             clients.add(client);
-        }
+        }  
     }
 
     void unregisterClient(CellViewClient client) {
@@ -25,8 +28,10 @@ class CellView extends ViewBase {
 
 
     void beforeDrawChildren() {
+        PVector screenSize = viewSizeToScreenSize(size);
+        makeChildsInvisible();
+        
         noStroke();
-
         fill(250, 90, 70);
         rect(0, 0, 100, 100);
 
@@ -41,21 +46,27 @@ class CellView extends ViewBase {
         }
         float wallSize = cellModel.wallHealth * wallSizeOnMaxHealth;
         rect(wallSize, wallSize, 100 - 2 * wallSize, 100 - 2 * wallSize);
-        
-        fill(0);
-        noStroke();
-        ellipse(50, 50, 2 * energySymbolSizeOnMaxEnergy, 2 * energySymbolSizeOnMaxEnergy);
 
-        float energySymbolSize = cellModel.energyLevel * energySymbolSizeOnMaxEnergy;
-        fill(245, 245, 115);
-        beginShape();
-        vertex(50 - 0.00 * energySymbolSize, 50 - 1.00 * energySymbolSize);
-        vertex(50 - 0.48 * energySymbolSize, 50 + 0.12 * energySymbolSize);
-        vertex(50 + 0.15 * energySymbolSize, 50 + 0.15 * energySymbolSize);
-        vertex(50 - 0.00 * energySymbolSize, 50 + 1.00 * energySymbolSize);
-        vertex(50 + 0.48 * energySymbolSize, 50 - 0.12 * energySymbolSize);
-        vertex(50 - 0.15 * energySymbolSize, 50 - 0.15 * energySymbolSize);
-        endShape(CLOSE);
+        if(screenSize.x > 10 && screenSize.y > 10) {
+            fill(0);
+            noStroke();
+            ellipse(50, 50, 2 * energySymbolSizeOnMaxEnergy, 2 * energySymbolSizeOnMaxEnergy);
+
+            if(screenSize.x > 50 && screenSize.y > 50) {
+                makeChildsVisible();
+
+                float energySymbolSize = cellModel.energyLevel * energySymbolSizeOnMaxEnergy;
+                fill(245, 245, 115);
+                beginShape();
+                vertex(50 - 0.00 * energySymbolSize, 50 - 1.00 * energySymbolSize);
+                vertex(50 - 0.48 * energySymbolSize, 50 + 0.12 * energySymbolSize);
+                vertex(50 + 0.15 * energySymbolSize, 50 + 0.15 * energySymbolSize);
+                vertex(50 - 0.00 * energySymbolSize, 50 + 1.00 * energySymbolSize);
+                vertex(50 + 0.48 * energySymbolSize, 50 - 0.12 * energySymbolSize);
+                vertex(50 - 0.15 * energySymbolSize, 50 - 0.15 * energySymbolSize);
+                endShape(CLOSE);
+            }
+        }
     }
 
 

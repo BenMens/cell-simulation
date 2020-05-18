@@ -1,33 +1,33 @@
 class GuiController {
-    float mouseScrollSensetivity = 0.1;
-
     BodyModel bodyModel;
-
     ViewBase guiView;
-
     BodyController bodyController;
     ViewBase bodyContainer;
 
     boolean pmousePressed;
 
+    final float MAX_SCALE_FACTOR = 1. / 200;
     float scaleMin;
     float scaleMax;
+
+    float mouseScrollSensetivity = 1.1;
+
 
     GuiController(BodyModel bodyModel) {
         guiView = new ViewBase();
 
         bodyContainer = new ViewBase();
-        bodyContainer.size = new PVector(700, 700);
         bodyContainer.position = new PVector(20, 20);
-        bodyContainer.clip = true;
+        bodyContainer.size = new PVector(700, 700);
+        bodyContainer.hasClip = true;
 
         guiView.addChildView(bodyContainer);
 
         bodyController = new BodyController(bodyModel);
         bodyContainer.addChildView(bodyController.bodyView);
 
-        scaleMin = bodyContainer.size.x / (bodyController.bodyView.size.x);
-        scaleMax = bodyContainer.size.x * 25 / (bodyController.bodyView.size.x);
+        scaleMin = bodyContainer.size.x / bodyController.bodyView.size.x;
+        scaleMax = bodyContainer.size.x * MAX_SCALE_FACTOR;
 
         bodyController.bodyView.scale = scaleMin;
         
@@ -35,8 +35,8 @@ class GuiController {
         bodyController.bodyView.position.y = 0;
     }
 
-    void updateMovement() {
 
+    void updateMovement() {
         if (mousePressed) {
             Rectangle2D bodyViewBoundary = bodyController.bodyView.getClipBoundary();
 
@@ -49,7 +49,7 @@ class GuiController {
         if (mouseScroll != 0) {
             PVector mouseBodyPosPre = bodyController.bodyView.screenPosToViewPos(new PVector(mouseX, mouseY));
 
-            bodyController.bodyView.scale += mouseScroll * mouseScrollSensetivity;
+            bodyController.bodyView.scale *= pow(mouseScrollSensetivity, mouseScroll);
             bodyController.bodyView.scale = constrain(bodyController.bodyView.scale, scaleMin, scaleMax);
 
             PVector mouseBodyPosPost = bodyController.bodyView.viewPosToScreenPos(mouseBodyPosPre);

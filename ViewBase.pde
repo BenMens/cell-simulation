@@ -6,11 +6,11 @@ class ViewBase {
     private ArrayList<ViewBase> childViews = new ArrayList<ViewBase>();
 
     PVector position = new PVector();
+    float scale = 1;
     PVector size = new PVector(1,1);
     PVector origin = new PVector();
-    float scale = 1;
+    boolean hasClip = false;
     boolean isVisible = true;
-    boolean clip = false;
 
 
     final ViewBase getParentView() {
@@ -48,32 +48,47 @@ class ViewBase {
     }
 
 
+    void makeChildsVisible() {
+        for (ViewBase child : childViews) {
+            child.isVisible = true;
+        }
+    }
+
+    void makeChildsInvisible() {
+        for (ViewBase child : childViews) {
+            child.isVisible = false;
+        }
+    }
+
+
     final void draw() {
         Rectangle2D clipBoundary = getClipBoundary();
 
-        pushMatrix();
+        if(clipBoundary == null || (clipBoundary.getWidth() > 0 && clipBoundary.getHeight() > 0)) {
+            pushMatrix();
 
-        if (clipBoundary != null) {
-            clip((float)clipBoundary.getX(), (float)clipBoundary.getY(), (float)clipBoundary.getWidth(), (float)clipBoundary.getHeight());
-        } else {
-            noClip();
-        }
-
-        translate(position.x, position.y);
-        scale(scale);
-        translate(origin.x, origin.y);
-        
-        if (isVisible) {
-            beforeDrawChildren();
-
-            for (ViewBase childView: childViews) {
-                childView.draw();
+            if (clipBoundary != null) {
+                clip((float)clipBoundary.getX(), (float)clipBoundary.getY(), (float)clipBoundary.getWidth(), (float)clipBoundary.getHeight());
+            } else {
+                noClip();
             }
 
-            afterDrawChildren();
-        }
+            translate(position.x, position.y);
+            scale(scale);
+            translate(origin.x, origin.y);
+            
+            if (isVisible) {
+                beforeDrawChildren();
 
-        popMatrix();
+                for (ViewBase childView: childViews) {
+                    childView.draw();
+                }
+
+                afterDrawChildren();
+            }
+
+            popMatrix();
+        }
     }
 
     void beforeDrawChildren() {}
@@ -147,7 +162,7 @@ class ViewBase {
         Rectangle2D viewClip = null;
         Rectangle2D parentViewClip = null;
 
-        if (clip) {
+        if (hasClip) {
             PVector upperLeft = viewPosToScreenPos(new PVector());
             PVector screenSize = viewSizeToScreenSize(this.size);
 
@@ -176,7 +191,7 @@ class ViewBase {
         float viewMouseX = (parentViewMouseX - position.x) / scale - origin.x;
         float viewMouseY = (parentViewMouseY - position.y) / scale - origin.y;
 
-        if (clip == false || (viewMouseX > position.x && viewMouseY > position.y && viewMouseX < position.x + size.x && viewMouseY < position.y + size.y)) {
+        if (hasClip == false || (viewMouseX > position.x && viewMouseY > position.y && viewMouseX < position.x + size.x && viewMouseY < position.y + size.y)) {
             if (beforeMousePressedChildren(viewMouseX, viewMouseY)) {
                 return true;
             }
