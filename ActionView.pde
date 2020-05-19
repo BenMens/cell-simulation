@@ -57,7 +57,7 @@ class ActionView extends ViewBase {
                 float segmentCircleRadius = segmentCircleOuterRadius - segmentCircleInnerRadius;
 
                 pushMatrix();
-                rotate(rotation);
+                rotate(rotation + PI);
 
                 stroke(lerpColor(firstColor, color(0), actionModel.degradation));
                 strokeWeight(segmentCircleRadius * 0.5);
