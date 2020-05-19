@@ -3,6 +3,7 @@ class ActionBaseModel {
     ActionModelParent parentModel;
 
     float degradation = 0;
+    boolean isDegradated = false;
 
 
     ActionBaseModel(ActionModelParent parentModel) {
@@ -28,5 +29,10 @@ class ActionBaseModel {
 
 
     void tick() {
+        degradation += random(0.001);
+        if (degradation >= 1) {
+            degradation = 1;
+            isDegradated = true;
+        }
     }
 }

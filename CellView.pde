@@ -28,7 +28,7 @@ class CellView extends ViewBase {
 
 
     void beforeDrawChildren() {
-        PVector screenSize = viewSizeToScreenSize(size);
+        PVector screenSize = viewSizeToScreenSize(new PVector(100, 100));
         makeChildsInvisible();
         
         if(screenSize.x < 10 && screenSize.y < 10) {
@@ -54,13 +54,13 @@ class CellView extends ViewBase {
             rect(wallSize, wallSize, 100 - 2 * wallSize, 100 - 2 * wallSize);
 
             if(screenSize.x > 15 && screenSize.y > 15) {
+                makeChildsVisible();
+
                 fill(0);
                 noStroke();
                 ellipse(50, 50, 2 * energySymbolSizeOnMaxEnergy, 2 * energySymbolSizeOnMaxEnergy);
 
                 if(screenSize.x > 45 && screenSize.y > 45) {
-                    makeChildsVisible();
-
                     float energySymbolSize = cellModel.energyLevel * energySymbolSizeOnMaxEnergy;
                     fill(245, 245, 115);
                     beginShape();
