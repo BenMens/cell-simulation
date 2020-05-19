@@ -31,40 +31,47 @@ class CellView extends ViewBase {
         PVector screenSize = viewSizeToScreenSize(size);
         makeChildsInvisible();
         
-        noStroke();
-        fill(250, 90, 70);
-        rect(0, 0, 100, 100);
-
-        if (cellModel.edited == true) {
-            fill(115, 230, 155);
-
-        } else if (cellModel.isSelected()) {
-            fill(35, 225, 230);
+        if(screenSize.x < 10 && screenSize.y < 10) {
+            noStroke();
+            fill(255, 165, 135);
+            rect(0, 0, 100, 100);
 
         } else {
-            fill(255, 165, 135);
-        }
-        float wallSize = cellModel.wallHealth * wallSizeOnMaxHealth;
-        rect(wallSize, wallSize, 100 - 2 * wallSize, 100 - 2 * wallSize);
-
-        if(screenSize.x > 10 && screenSize.y > 10) {
-            fill(0);
             noStroke();
-            ellipse(50, 50, 2 * energySymbolSizeOnMaxEnergy, 2 * energySymbolSizeOnMaxEnergy);
+            fill(250, 90, 70);
+            rect(0, 0, 100, 100);
 
-            if(screenSize.x > 50 && screenSize.y > 50) {
-                makeChildsVisible();
+            if (cellModel.edited == true) {
+                fill(115, 230, 155);
 
-                float energySymbolSize = cellModel.energyLevel * energySymbolSizeOnMaxEnergy;
-                fill(245, 245, 115);
-                beginShape();
-                vertex(50 - 0.00 * energySymbolSize, 50 - 1.00 * energySymbolSize);
-                vertex(50 - 0.48 * energySymbolSize, 50 + 0.12 * energySymbolSize);
-                vertex(50 + 0.15 * energySymbolSize, 50 + 0.15 * energySymbolSize);
-                vertex(50 - 0.00 * energySymbolSize, 50 + 1.00 * energySymbolSize);
-                vertex(50 + 0.48 * energySymbolSize, 50 - 0.12 * energySymbolSize);
-                vertex(50 - 0.15 * energySymbolSize, 50 - 0.15 * energySymbolSize);
-                endShape(CLOSE);
+            } else if (cellModel.isSelected()) {
+                fill(35, 225, 230);
+
+            } else {
+                fill(255, 165, 135);
+            }
+            float wallSize = cellModel.wallHealth * wallSizeOnMaxHealth;
+            rect(wallSize, wallSize, 100 - 2 * wallSize, 100 - 2 * wallSize);
+
+            if(screenSize.x > 15 && screenSize.y > 15) {
+                fill(0);
+                noStroke();
+                ellipse(50, 50, 2 * energySymbolSizeOnMaxEnergy, 2 * energySymbolSizeOnMaxEnergy);
+
+                if(screenSize.x > 45 && screenSize.y > 45) {
+                    makeChildsVisible();
+
+                    float energySymbolSize = cellModel.energyLevel * energySymbolSizeOnMaxEnergy;
+                    fill(245, 245, 115);
+                    beginShape();
+                    vertex(50 - 0.00 * energySymbolSize, 50 - 1.00 * energySymbolSize);
+                    vertex(50 - 0.48 * energySymbolSize, 50 + 0.12 * energySymbolSize);
+                    vertex(50 + 0.15 * energySymbolSize, 50 + 0.15 * energySymbolSize);
+                    vertex(50 - 0.00 * energySymbolSize, 50 + 1.00 * energySymbolSize);
+                    vertex(50 + 0.48 * energySymbolSize, 50 - 0.12 * energySymbolSize);
+                    vertex(50 - 0.15 * energySymbolSize, 50 - 0.15 * energySymbolSize);
+                    endShape(CLOSE);
+                }
             }
         }
     }

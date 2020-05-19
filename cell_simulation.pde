@@ -16,11 +16,11 @@ void setup() {
 
     fullScreen(P2D);
 
-    bodyModel = new BodyModel(new PVector(10, 10));
+    bodyModel = new BodyModel(new PVector(100, 100));
 
     new CellModel(bodyModel, new PVector(0, 0));
 
-    for (int i = 0; i < 25; i++) {
+    for (int i = 0; i < 10000; i++) {
         new CellModel(bodyModel, new PVector(floor(random(bodyModel.gridSize.x)), floor(random(bodyModel.gridSize.y))));
     }
 
