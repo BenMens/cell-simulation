@@ -216,7 +216,6 @@ class ViewBase {
         return false;
     }
 
-
     boolean afterMousePressedChildren(float viewMouseX, float viewMouseY) {
         return false;
     }
