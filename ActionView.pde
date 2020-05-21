@@ -7,8 +7,6 @@ class ActionView extends ViewBase {
     final float segmentCircleInnerRadius = 10;
     final float segmentCircleOuterRadius = 20;
 
-    // color firstColor = color(200, 0, 100);
-    // color secondColor = color(0, 200, 200);
     color firstColor = color(random(255), random(255), random(255));
     color secondColor = color(random(255), random(255), random(255));
 
@@ -16,7 +14,15 @@ class ActionView extends ViewBase {
     ActionView(ActionBaseModel actionModel) {
         this.actionModel = actionModel;
 
-        position = new PVector(50, 50);
+        // todo #21
+        // code below doesn't work jet because the clip is not fully implemented jet
+        // this.size = new PVector(segmentCircleOuterRadius * 2, segmentCircleOuterRadius * 2);
+        // this.position = new PVector(50 - segmentCircleOuterRadius, 50 - segmentCircleOuterRadius);
+        // this.origin = new PVector(segmentCircleOuterRadius, segmentCircleOuterRadius);
+        // this.hasClip = true;
+
+        // this is a temporary fix
+        this.position = new PVector(50, 50);
     }
 
 
@@ -32,30 +38,79 @@ class ActionView extends ViewBase {
 
 
     void beforeDrawChildren() {
-        ArrayList<ActionBaseModel> actionArray = actionModel.getParentActionList();
+        if (actionModel.isDegradated) {
+            firstColor = color(0);
+            secondColor = color(0);
+        }
 
-        float segmentAngle = min(TWO_PI / actionArray.size(), maximumSegmentAngle);
-        int indexInActionArray = actionArray.indexOf(actionModel);
+        PVector screenSize = viewSizeToScreenSize(new PVector(100, 100));
+        makeChildsInvisible();
 
-        float segmentCircleBetweenRadius = lerp(segmentCircleInnerRadius, segmentCircleOuterRadius, 0.5);
-        float firstVertexAngle = (indexInActionArray + 0.5 * segmentSpacingPercentage) * segmentAngle;
-        float secondVertexAngle = (indexInActionArray + 1 - 0.5 * segmentSpacingPercentage) * segmentAngle;
+        if(screenSize.x > 35 && screenSize.y > 35) {
+            ArrayList<ActionBaseModel> actionArray = actionModel.getParentActionList();
 
-        noStroke();
-        fill(lerpColor(firstColor, color(0), actionModel.degradation));
-        beginShape();
-        vertex(sin(firstVertexAngle) * segmentCircleInnerRadius, -cos(firstVertexAngle) * segmentCircleInnerRadius);
-        vertex(sin(firstVertexAngle) * segmentCircleBetweenRadius, -cos(firstVertexAngle) * segmentCircleBetweenRadius);
-        vertex(sin(secondVertexAngle) * segmentCircleBetweenRadius, -cos(secondVertexAngle) * segmentCircleBetweenRadius);
-        vertex(sin(secondVertexAngle) * segmentCircleInnerRadius, -cos(secondVertexAngle) * segmentCircleInnerRadius);
-        endShape(CLOSE);
+            float segmentAngle = min(TWO_PI / actionArray.size(), maximumSegmentAngle);
+            int indexInActionArray = actionArray.indexOf(actionModel);
 
-        fill(lerpColor(secondColor, color(0), actionModel.degradation));
-        beginShape();
-        vertex(sin(firstVertexAngle) * segmentCircleBetweenRadius, -cos(firstVertexAngle) * segmentCircleBetweenRadius);
-        vertex(sin(firstVertexAngle) * segmentCircleOuterRadius, -cos(firstVertexAngle) * segmentCircleOuterRadius);
-        vertex(sin(secondVertexAngle) * segmentCircleOuterRadius, -cos(secondVertexAngle) * segmentCircleOuterRadius);
-        vertex(sin(secondVertexAngle) * segmentCircleBetweenRadius, -cos(secondVertexAngle) * segmentCircleBetweenRadius);
-        endShape(CLOSE);
+            if(screenSize.x < 65 && screenSize.y < 65) {
+                float rotation = indexInActionArray * segmentAngle;
+                float segmentCircleRadius = segmentCircleOuterRadius - segmentCircleInnerRadius;
+
+                pushMatrix();
+                rotate(rotation + PI);
+
+                stroke(lerpColor(firstColor, color(0), actionModel.degradation));
+                strokeWeight(segmentCircleRadius * 0.5);
+                point(0, segmentCircleInnerRadius + segmentCircleRadius * 0.25);
+
+                stroke(lerpColor(secondColor, color(0), actionModel.degradation));
+                strokeWeight(segmentCircleRadius * 0.5);
+                point(0, segmentCircleInnerRadius + segmentCircleRadius * 0.75);
+                popMatrix();
+
+            } else {
+                float firstVertexAngle = (indexInActionArray - 0.5 + 0.5 * segmentSpacingPercentage) * segmentAngle;
+                float thirdVertexAngle = (indexInActionArray + 0.5 - 0.5 * segmentSpacingPercentage) * segmentAngle;
+                float secondVertexAngle = lerp(firstVertexAngle, thirdVertexAngle, 0.5);
+
+                float segmentCircleBetweenRadius = lerp(segmentCircleInnerRadius, segmentCircleOuterRadius, 0.5);
+                float segmentCircleInnerDegradationRadius = lerp(segmentCircleInnerRadius, segmentCircleBetweenRadius, actionModel.degradation);
+                float segmentCircleOuterDegradationRadius = lerp(segmentCircleOuterRadius, segmentCircleBetweenRadius, actionModel.degradation);
+                
+                float sinFirstVertexAngle = sin(firstVertexAngle);
+                float sinSecondVertexAngle = sin(secondVertexAngle);
+                float sinThirdVertexAngle = sin(thirdVertexAngle);
+                float cosFirstVertexAngle = cos(firstVertexAngle);
+                float cosSecondVertexAngle = cos(secondVertexAngle);
+                float cosThirdVertexAngle = cos(thirdVertexAngle);
+
+                noStroke();
+                fill(color(0));
+                beginShape();
+                vertex(sinSecondVertexAngle * segmentCircleInnerRadius, -cosSecondVertexAngle * segmentCircleInnerRadius);
+                vertex(sinFirstVertexAngle * segmentCircleBetweenRadius, -cosFirstVertexAngle * segmentCircleBetweenRadius);
+                vertex(sinSecondVertexAngle * segmentCircleOuterRadius, -cosSecondVertexAngle * segmentCircleOuterRadius);
+                vertex(sinThirdVertexAngle * segmentCircleBetweenRadius, -cosThirdVertexAngle * segmentCircleBetweenRadius);
+                endShape(CLOSE);
+
+                if (firstColor != color(0)) {
+                    fill(firstColor);
+                    beginShape();
+                    vertex(sinSecondVertexAngle * segmentCircleInnerDegradationRadius, -cosSecondVertexAngle * segmentCircleInnerDegradationRadius);
+                    vertex(sinFirstVertexAngle * segmentCircleBetweenRadius, -cosFirstVertexAngle * segmentCircleBetweenRadius);
+                    vertex(sinThirdVertexAngle * segmentCircleBetweenRadius, -cosThirdVertexAngle * segmentCircleBetweenRadius);
+                    endShape(CLOSE);
+                }
+
+                if (secondColor != color(0)) {
+                    fill(secondColor);
+                    beginShape();
+                    vertex(sinFirstVertexAngle * segmentCircleBetweenRadius, -cosFirstVertexAngle * segmentCircleBetweenRadius);
+                    vertex(sinSecondVertexAngle * segmentCircleOuterDegradationRadius, -cosSecondVertexAngle * segmentCircleOuterDegradationRadius);
+                    vertex(sinThirdVertexAngle * segmentCircleBetweenRadius, -cosThirdVertexAngle * segmentCircleBetweenRadius);
+                    endShape(CLOSE);
+                }
+            }
+        }
     }
 }

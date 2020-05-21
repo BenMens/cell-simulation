@@ -61,6 +61,10 @@ class CellModel implements ActionModelParent {
         if (wallHealth <= 0) {
             isDead = true;
         }
+
+        for(ActionBaseModel actionModel : actionModels) {
+            actionModel.tick();
+        }
     }
 
 

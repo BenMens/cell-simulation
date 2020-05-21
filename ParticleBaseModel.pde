@@ -1,4 +1,5 @@
 class ParticleBaseModel {
+    ArrayList<ParticleModelClient> clients = new ArrayList<ParticleModelClient>();
     BodyModel bodyModel;
 
     boolean isDead = false;
@@ -22,6 +23,17 @@ class ParticleBaseModel {
 
         this.position = new PVector(positionX, positionY);
         this.speed = new PVector(speedX, speedY);
+    }
+
+
+    void registerClient(ParticleModelClient client) {
+        if(!clients.contains(client)) {
+            clients.add(client);
+        }
+    }
+
+    void unregisterClient(ParticleModelClient client) {
+        clients.remove(client);
     }
 
 
@@ -71,14 +83,18 @@ class ParticleBaseModel {
 
         if (containingCell != newContainingCell) {
             if (newContainingCell != null) {
-              newContainingCell.handleCollision(this);
+                newContainingCell.handleCollision(this);
             }
             containingCell = newContainingCell;
         }
     }
 
 
-    void cleanUpTick() {}
+    void cleanUpTick() {
+        if (isDead) {
+            bodyModel.removeParticle(this);
+        }
+    }
 
 
     CellModel findContainingCell() {

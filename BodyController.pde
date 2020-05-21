@@ -54,4 +54,20 @@ class BodyController implements BodyModelClient, BodyViewClient {
             cellControllers.remove(cellController);
         }
     }
+
+    void onRemoveParticle(ParticleBaseModel particleModel) {
+        ParticleController particleController = null;
+
+        for(ParticleController controller : particleControllers) {
+            if (controller.particleModel == particleModel) {
+                particleController = controller;
+                break;
+            }
+        }
+
+        if (particleController != null) {
+            particleController.destroy();
+            particleControllers.remove(particleController);
+        }
+    }
 }

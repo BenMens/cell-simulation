@@ -53,8 +53,20 @@ class BodyModel {
     void removeCell(CellModel cellModel) {
         cellModels.remove(cellModel);
 
+        if (selectedCell == cellModel) {
+            selectedCell = null;
+        }
+
         for(BodyModelClient client: clients) {
             client.onRemoveCell(cellModel);
+        }
+    }
+
+    void removeParticle(ParticleBaseModel particleModel) {
+        particleModels.remove(particleModel);
+
+        for(BodyModelClient client: clients) {
+            client.onRemoveParticle(particleModel);
         }
     }
 

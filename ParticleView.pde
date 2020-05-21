@@ -1,6 +1,7 @@
 class ParticleView extends ViewBase {
     final float PARTICLE_SIZE = 15;
 
+    ArrayList<ParticleViewClient> clients = new ArrayList<ParticleViewClient>();
     ParticleBaseModel particleModel;
 
     PImage images[] = new PImage[7]; 
@@ -10,7 +11,7 @@ class ParticleView extends ViewBase {
         this.particleModel = particleModel;
 
         String imageName = "";
-
+ 
         if (particleModel instanceof ParticleFoodModel) {
             imageName = "food";
         } else if (particleModel instanceof ParticleWasteModel) {
@@ -20,6 +21,16 @@ class ParticleView extends ViewBase {
         for (int i = 0; i < 7; i++) {
             images[i] = ImageCache.getImage(applet, "images/" + imageName + "_" + String.format("%d", (long)Math.pow(2, i+3)) + ".png");        
         }
+    }
+
+    void registerClient(ParticleViewClient client) {
+        if(!clients.contains(client)) {
+            clients.add(client);
+        }
+    }
+
+    void unregisterClient(ParticleViewClient client) {
+        clients.remove(client);
     }
 
 

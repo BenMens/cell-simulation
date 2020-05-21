@@ -7,11 +7,6 @@ class BodyView extends ViewBase {
     
 
     BodyView(BodyModel bodyModel) {
-        this.size.x = bodyModel.gridSize.x * 100 + 20;
-        this.size.y = bodyModel.gridSize.y * 100 + 20;
-
-        this.origin = new PVector(10, 10);
-
         this.bodyModel = bodyModel;
 
         cellLayerView = new ViewBase();
@@ -19,6 +14,10 @@ class BodyView extends ViewBase {
 
         particleLayerView = new ViewBase();
         this.addChildView(particleLayerView);
+
+        this.size.x = bodyModel.gridSize.x * 100 + 20;
+        this.size.y = bodyModel.gridSize.y * 100 + 20;
+        this.origin = new PVector(10, 10);
      }
 
 
@@ -39,7 +38,7 @@ class BodyView extends ViewBase {
         strokeWeight(10);
         stroke(0);
         noFill();
-        rect(-5, -5, gridSize.x * 100 + 5, gridSize.y * 100 + 5);
+        rect(-5, -5, gridSize.x * 100 + 10, gridSize.y * 100 + 10);
 
         if (keysPressed['g'] == true) {
             strokeWeight(4);
