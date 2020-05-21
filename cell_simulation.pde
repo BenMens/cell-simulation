@@ -16,12 +16,20 @@ void setup() {
 
     fullScreen(P2D);
 
-    bodyModel = new BodyModel(new PVector(100, 100));
+    bodyModel = new BodyModel(new PVector(10, 10));
 
-    new CellModel(bodyModel, new PVector(0, 0));
+    boolean[][] occupiedSpaces = new boolean[int(bodyModel.gridSize.x)][int(bodyModel.gridSize.y)];
+    for (int i = 0; i < 25; i++) {
+        for (int j = 0; j < 10; j++) {
+            int x = floor(random(bodyModel.gridSize.x));
+            int y = floor(random(bodyModel.gridSize.y));
 
-    for (int i = 0; i < 10000; i++) {
-        new CellModel(bodyModel, new PVector(floor(random(bodyModel.gridSize.x)), floor(random(bodyModel.gridSize.y))));
+            if (!occupiedSpaces[x][y]) {
+                new CellModel(bodyModel, new PVector(x, y));
+                occupiedSpaces[x][y] = true;
+                break;
+            }
+        }
     }
 
     guiController = new GuiController(bodyModel);
