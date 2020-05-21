@@ -1,8 +1,10 @@
 class ParticleView extends ViewBase {
-    
+    final float PARTICLE_SIZE = 15;
+
     ParticleBaseModel particleModel;
 
     PImage images[] = new PImage[7]; 
+
 
     ParticleView(ParticleBaseModel particleModel) {
         this.particleModel = particleModel;
@@ -15,22 +17,23 @@ class ParticleView extends ViewBase {
             imageName = "waste";
         }
 
-        for (int i=0; i<7; i++) {
+        for (int i = 0; i < 7; i++) {
             images[i] = ImageCache.getImage(applet, "images/" + imageName + "_" + String.format("%d", (long)Math.pow(2, i+3)) + ".png");        
         }
     }
 
-    void beforeDrawChildren() {
-        float imageDimension = composedScale() * 15;
-        PImage img = images[0];
 
-        for (int i=0; i<images.length; i++) {
-            img = images[i];
-            if (imageDimension <= Math.pow(2, i+3)) {
+    void beforeDrawChildren() {
+        float imageDimension = composedScale() * PARTICLE_SIZE;
+        PImage img = images[images.length - 1];
+
+        for (int i = 0; i < images.length; i++) {
+            if (imageDimension <= pow(2, i+3)) {
+                img = images[i];
                 break;
             } 
         }
 
-        image(img, particleModel.getPosition().x * 100 - 7.5, particleModel.getPosition().y * 100 - 7.5, 15, 15);
+        image(img, particleModel.getPosition().x * 100 - PARTICLE_SIZE * 0.5, particleModel.getPosition().y * 100 - PARTICLE_SIZE * 0.5, PARTICLE_SIZE, PARTICLE_SIZE);
     }
 }
