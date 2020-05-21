@@ -7,8 +7,6 @@ class ActionView extends ViewBase {
     final float segmentCircleInnerRadius = 10;
     final float segmentCircleOuterRadius = 20;
 
-    // color firstColor = color(200, 0, 100);
-    // color secondColor = color(0, 200, 200);
     color firstColor = color(random(255), random(255), random(255));
     color secondColor = color(random(255), random(255), random(255));
 
@@ -16,12 +14,14 @@ class ActionView extends ViewBase {
     ActionView(ActionBaseModel actionModel) {
         this.actionModel = actionModel;
 
-        //this.origin = new PVector(segmentCircleOuterRadius * 0.5, segmentCircleOuterRadius * 0.5);
-        //this.position = new PVector(100 - segmentCircleOuterRadius, 100 - segmentCircleOuterRadius);
-        
-        //this.hasClip = true;
-        this.size = new PVector(segmentCircleOuterRadius, segmentCircleOuterRadius);
+        // todo #21
+        // code below doesn't work jet because the clip is not fully implemented jet
+        // this.size = new PVector(segmentCircleOuterRadius * 2, segmentCircleOuterRadius * 2);
+        // this.position = new PVector(50 - segmentCircleOuterRadius, 50 - segmentCircleOuterRadius);
+        // this.origin = new PVector(segmentCircleOuterRadius, segmentCircleOuterRadius);
+        // this.hasClip = true;
 
+        // this is a temporary fix
         this.position = new PVector(50, 50);
     }
 
