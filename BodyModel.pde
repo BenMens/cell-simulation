@@ -53,6 +53,10 @@ class BodyModel {
     void removeCell(CellModel cellModel) {
         cellModels.remove(cellModel);
 
+        if (selectedCell == cellModel) {
+            selectedCell = null;
+        }
+
         for(BodyModelClient client: clients) {
             client.onRemoveCell(cellModel);
         }
