@@ -1,4 +1,8 @@
 class CellView extends ViewBase {
+    float HAND_CIRCLE_RADIUS = 25;
+    float HAND_CIRCLE_WIDTH = 1.2;
+    float HAND_SIZE = 4;
+
     ArrayList<CellViewClient> clients = new ArrayList<CellViewClient>();
     CellModel cellModel;
 
@@ -28,10 +32,10 @@ class CellView extends ViewBase {
 
 
     void beforeDrawChildren() {
-        PVector screenSize = viewSizeToScreenSize(new PVector(100, 100));
+        float screenSize = composedScale() * 100;
         makeChildsInvisible();
         
-        if(screenSize.x < 10 && screenSize.y < 10) {
+        if(screenSize < 10) {
             noStroke();
             fill(255, 165, 135);
             rect(0, 0, 100, 100);
@@ -53,15 +57,17 @@ class CellView extends ViewBase {
             float wallSize = cellModel.wallHealth * wallSizeOnMaxHealth;
             rect(wallSize, wallSize, 100 - 2 * wallSize, 100 - 2 * wallSize);
 
-            if(screenSize.x > 15 && screenSize.y > 15) {
+            if(screenSize > 15) {
                 makeChildsVisible();
 
                 fill(0);
                 noStroke();
                 ellipse(50, 50, 2 * energySymbolSizeOnMaxEnergy, 2 * energySymbolSizeOnMaxEnergy);
 
-                if(screenSize.x > 45 && screenSize.y > 45) {
+                if(screenSize > 45) {
                     float energySymbolSize = cellModel.energyLevel * energySymbolSizeOnMaxEnergy;
+
+                    noStroke();
                     fill(245, 245, 115);
                     beginShape();
                     vertex(50 - 0.00 * energySymbolSize, 50 - 1.00 * energySymbolSize);
@@ -71,7 +77,34 @@ class CellView extends ViewBase {
                     vertex(50 + 0.48 * energySymbolSize, 50 - 0.12 * energySymbolSize);
                     vertex(50 - 0.15 * energySymbolSize, 50 - 0.15 * energySymbolSize);
                     endShape(CLOSE);
+
+                    float progressToNextActionTick = norm(cellModel.ticksSinceLastActionTick, 0, cellModel.ticksPerActionTick);
+                    float actionHandPositionBetweenAction = 1;
+                    if (progressToNextActionTick < 0.1) {
+                        actionHandPositionBetweenAction = 0;
+                    } else if (progressToNextActionTick < 0.8) {
+                        actionHandPositionBetweenAction = 1 / (1 + exp(-map(progressToNextActionTick, 0, 1, -6, 6)));
+                    }
+
+                    float currentActionAngle = cellModel.actionModels.get(cellModel.currentAction).segmentAngleInActionCircle;
+                    float nextActionAngle;
+                    if (cellModel.currentAction + 1 == cellModel.actionModels.size()) {
+                        nextActionAngle = cellModel.actionModels.get(0).segmentAngleInActionCircle + TWO_PI;
+                    } else {
+                        nextActionAngle = cellModel.actionModels.get(cellModel.currentAction + 1).segmentAngleInActionCircle;
+                    }
+
+                    float actionHandAngle = lerp(currentActionAngle, nextActionAngle, actionHandPositionBetweenAction);
+
+                    noStroke();
+                    fill(200, 0, 0);
+                    ellipse(50 + sin(actionHandAngle) * HAND_CIRCLE_RADIUS, 50 + -cos(actionHandAngle) * HAND_CIRCLE_RADIUS, HAND_SIZE, HAND_SIZE);
                 }
+
+                strokeWeight(HAND_CIRCLE_WIDTH);
+                stroke(0, 150, 0);
+                noFill();
+                ellipse(50, 50, HAND_CIRCLE_RADIUS * 2, HAND_CIRCLE_RADIUS * 2);
             }
         }
     }

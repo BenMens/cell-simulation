@@ -14,6 +14,8 @@ class CellModel implements ActionModelParent {
     float energyLevel = 1;
     float energyCostPerTick = 0.03;
 
+    int currentAction;
+
     boolean edited = false;
 
 
@@ -44,17 +46,26 @@ class CellModel implements ActionModelParent {
     }
 
 
-    void addAction(ActionBaseModel actionModel) {
-        actionModels.add(actionModel);
+    void addAction(ActionBaseModel neActionModel) {
+        actionModels.add(neActionModel);
 
         for(CellModelClient client : clients) {
-            client.onAddAction(actionModel);
+            client.onAddAction(neActionModel);
+        }
+
+        for (ActionBaseModel actionModel : actionModels) {
+            actionModel.updatePosition();
         }
     }
 
 
     ArrayList<ActionBaseModel> getActionList() {
         return actionModels;
+    }
+
+
+    PVector getPosition() {
+        return position;
     }
 
 
@@ -76,13 +87,15 @@ class CellModel implements ActionModelParent {
 
     void actionTick() {
         energyLevel = max(energyLevel - energyCostPerTick, 0);
+
+        currentAction = (currentAction + 1) % actionModels.size();
     }
 
 
     void cleanUpTick() {
         if (isDead) {
-            for (int i = 0; i < actionModels.size(); i++) {
-                new ParticleWasteModel(bodyModel, position.x + 0.5, position.y + 0.5);
+            for (ActionBaseModel actionModel : actionModels) {
+                new ParticleWasteModel(bodyModel, actionModel.position.x, actionModel.position.y);
             }
 
             bodyModel.removeCell(this);
