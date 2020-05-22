@@ -4,12 +4,15 @@ class CellModel implements ActionModelParent {
 
     ArrayList<ActionBaseModel> actionModels = new ArrayList<ActionBaseModel>();
 
+    float ticksPerActionTick = 50;
+    float ticksSinceLastActionTick;
+
     boolean isDead = false;
 
     PVector position;
     float wallHealth = 1;
     float energyLevel = 1;
-    float energyCostPerTick = 0.001;
+    float energyCostPerTick = 0.03;
 
     boolean edited = false;
 
@@ -56,15 +59,23 @@ class CellModel implements ActionModelParent {
 
 
     void tick() {
-        energyLevel = max(energyLevel - energyCostPerTick, 0);
-
-        if (wallHealth <= 0) {
-            isDead = true;
+        while (ticksSinceLastActionTick >= ticksPerActionTick) {
+            actionTick();
+            ticksSinceLastActionTick -= ticksPerActionTick;
         }
+        ticksSinceLastActionTick++;
 
         for(ActionBaseModel actionModel : actionModels) {
             actionModel.tick();
         }
+
+        if (wallHealth <= 0) {
+            isDead = true;
+        }
+    }
+
+    void actionTick() {
+        energyLevel = max(energyLevel - energyCostPerTick, 0);
     }
 
 

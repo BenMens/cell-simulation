@@ -10,7 +10,7 @@ float relativeMousePositionY;
 float mouseScroll;
 
 int lastTickTimestamp = millis();
-int millisBetweenTicks = 25;
+int millisPerTick = 20;
 
 void setup() {
 
@@ -42,9 +42,9 @@ void draw() {
 
     guiController.updateMovement();
 
-    if (millis() - lastTickTimestamp >= millisBetweenTicks) {
+    while (millis() - lastTickTimestamp >= millisPerTick) {
         bodyModel.tick();
-        lastTickTimestamp += millisBetweenTicks;
+        lastTickTimestamp += millisPerTick;
     }
 
     guiController.guiView.draw();
