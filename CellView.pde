@@ -14,11 +14,14 @@ class CellView extends ViewBase {
     float handPointerRadiusOutward;
 
 
-    CellView(CellModel cellModel) {
+    CellView(ViewBase parentView, CellModel cellModel) {
+        super(parentView);
+        
         this.cellModel = cellModel;
 
-        this.position = cellModel.position.copy().mult(100);
-        this.size = new PVector(100, 100);
+        this.frameRect = new Rectangle2D.Float(cellModel.position.x * 100, cellModel.position.y * 100, 100, 100);
+        this.boundsRect = new Rectangle2D.Float(0, 0, 100, 100);
+        
         this.hasClip = true;
 
         this.handAnchorAngle = asin(HAND_SIZE / 2 / HAND_CIRCLE_RADIUS);
@@ -37,13 +40,14 @@ class CellView extends ViewBase {
         }  
     }
 
+
     void unregisterClient(CellViewClient client) {
         clients.remove(client);
     }
 
 
     void beforeDrawChildren() {
-        float screenSize = composedScale() * 100;
+        float screenSize = composedScale().x * 100;
         makeChildsInvisible();
         
         if(screenSize < 10) {

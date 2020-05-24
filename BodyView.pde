@@ -6,18 +6,26 @@ class BodyView extends ViewBase {
     ViewBase particleLayerView;
     
 
-    BodyView(BodyModel bodyModel) {
+    BodyView(ViewBase parentView, BodyModel bodyModel) {
+        super(parentView);
+
         this.bodyModel = bodyModel;
 
-        cellLayerView = new ViewBase();
-        this.addChildView(cellLayerView);
+        cellLayerView = new ViewBase(this);
 
-        particleLayerView = new ViewBase();
-        this.addChildView(particleLayerView);
+        particleLayerView = new ViewBase(this);
+        
+        frameRect = new Rectangle2D.Float(
+          0, 0,
+          bodyModel.gridSize.x * 100 + 20,
+          bodyModel.gridSize.y * 100 + 20
+        );
 
-        this.size.x = bodyModel.gridSize.x * 100 + 20;
-        this.size.y = bodyModel.gridSize.y * 100 + 20;
-        this.origin = new PVector(10, 10);
+        boundsRect = new Rectangle2D.Float(
+          -10, -10,
+          frameRect.width,
+          frameRect.height
+        );
      }
 
 

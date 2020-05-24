@@ -1,6 +1,8 @@
+import java.awt.geom.Rectangle2D;
+
+
 class GuiController {
     BodyModel bodyModel;
-    ViewBase guiView;
     BodyController bodyController;
     ViewBase bodyContainer;
 
@@ -13,26 +15,18 @@ class GuiController {
     float mouseScrollSensetivity = 1.1;
 
 
-    GuiController(BodyModel bodyModel) {
-        guiView = new ViewBase();
-
-        bodyContainer = new ViewBase();
-        bodyContainer.position = new PVector(20, 20);
-        bodyContainer.size = new PVector(700, 700);
+    GuiController(ViewBase parentView, BodyModel bodyModel) {
+        bodyContainer = new ViewBase(parentView);
+        bodyContainer.frameRect = new Rectangle2D.Float(20, 20, 700, 700);
+        bodyContainer.boundsRect = new Rectangle2D.Float(0, 0, 700, 700);
         bodyContainer.hasClip = true;
 
-        guiView.addChildView(bodyContainer);
+        bodyController = new BodyController(bodyContainer, bodyModel);
 
-        bodyController = new BodyController(bodyModel);
-        bodyContainer.addChildView(bodyController.bodyView);
+        scaleMin = bodyContainer.frameRect.width / bodyController.bodyView.frameRect.width;
+        scaleMax = bodyContainer.frameRect.width * MAX_SCALE_FACTOR;
 
-        scaleMin = bodyContainer.size.x / bodyController.bodyView.size.x;
-        scaleMax = bodyContainer.size.x * MAX_SCALE_FACTOR;
-
-        bodyController.bodyView.scale = scaleMin;
-        
-        bodyController.bodyView.position.x = 0;
-        bodyController.bodyView.position.y = 0;
+        bodyController.bodyView.setScale(scaleMin);
     }
 
 
@@ -41,37 +35,45 @@ class GuiController {
             Rectangle2D bodyViewBoundary = bodyController.bodyView.getClipBoundary();
 
             if (bodyViewBoundary.contains(mouseX, mouseY)) {
-                bodyController.bodyView.position.x += (mouseX - pmouseX);
-                bodyController.bodyView.position.y += (mouseY - pmouseY);
+                bodyController.bodyView.frameRect.x += (mouseX - pmouseX);
+                bodyController.bodyView.frameRect.y += (mouseY - pmouseY);
             }
         }
 
         if (mouseScroll != 0) {
             PVector mouseBodyPosPre = bodyController.bodyView.screenPosToViewPos(new PVector(mouseX, mouseY));
 
-            bodyController.bodyView.scale *= pow(mouseScrollSensetivity, mouseScroll);
-            bodyController.bodyView.scale = constrain(bodyController.bodyView.scale, scaleMin, scaleMax);
+            PVector scale = bodyController.bodyView.getScale();
+            
+            scale.x *= pow(mouseScrollSensetivity, mouseScroll);
+            bodyController.bodyView.setScale(constrain(scale.x, (float)scaleMin, (float)scaleMax));
 
             PVector mouseBodyPosPost = bodyController.bodyView.viewPosToScreenPos(mouseBodyPosPre);
 
-            PVector deltaScreenMove = mouseBodyPosPost.sub(mouseX, mouseY).mult(bodyContainer.composedScale());
+            PVector deltaScreenMove = mouseBodyPosPost.sub(mouseX, mouseY);
+            
+            deltaScreenMove.x *= bodyContainer.composedScale().x;
+            deltaScreenMove.y *= bodyContainer.composedScale().y;
 
-            bodyController.bodyView.position.x -= deltaScreenMove.x;
-            bodyController.bodyView.position.y -= deltaScreenMove.y;
+            bodyController.bodyView.frameRect.x -= deltaScreenMove.x;
+            bodyController.bodyView.frameRect.y -= deltaScreenMove.y;
 
             mouseScroll = 0;
         }
 
         if (keysPressed['c'] == true) {
-            bodyController.bodyView.scale = scaleMin;
-            bodyController.bodyView.position = new PVector(0, 0);
+            bodyController.bodyView.setScale(scaleMin);
+            bodyController.bodyView.frameRect.x = 0;
+            bodyController.bodyView.frameRect.y = 0;
         }
 
-        bodyController.bodyView.position.x = max(bodyController.bodyView.position.x, -bodyController.bodyView.size.x * bodyController.bodyView.scale + 700);
-        bodyController.bodyView.position.y = max(bodyController.bodyView.position.y, -bodyController.bodyView.size.x * bodyController.bodyView.scale + 700);
+        PVector scale = bodyController.bodyView.getScale();
 
-        bodyController.bodyView.position.x = min(bodyController.bodyView.position.x, 0);
-        bodyController.bodyView.position.y = min(bodyController.bodyView.position.y, 0);
+        bodyController.bodyView.frameRect.x = max(bodyController.bodyView.frameRect.x, -bodyController.bodyView.frameRect.width * scale.x + 700);
+        bodyController.bodyView.frameRect.y = max(bodyController.bodyView.frameRect.y, -bodyController.bodyView.frameRect.height * scale.y + 700);
+
+        bodyController.bodyView.frameRect.x = min(bodyController.bodyView.frameRect.x, 0);
+        bodyController.bodyView.frameRect.y = min(bodyController.bodyView.frameRect.y, 0);
 
         pmousePressed = mousePressed;
     }

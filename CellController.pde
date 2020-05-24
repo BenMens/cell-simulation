@@ -5,9 +5,9 @@ class CellController implements CellModelClient, CellViewClient {
     ArrayList<ActionController> actionControllers = new ArrayList<ActionController>();
 
 
-    CellController(CellModel cellModel) {
+    CellController(ViewBase parentView, CellModel cellModel) {
         this.cellModel = cellModel;
-        this.cellView = new CellView(cellModel);
+        this.cellView = new CellView(parentView, cellModel);
 
         this.cellModel.registerClient(this);
         this.cellView.registerClient(this);
@@ -22,8 +22,7 @@ class CellController implements CellModelClient, CellViewClient {
 
 
     void onAddAction(ActionBaseModel actionModel) {
-        ActionController newActionController = new ActionController(actionModel);
-        cellView.addChildView(newActionController.actionView);
+        ActionController newActionController = new ActionController(cellView ,actionModel);
 
         actionControllers.add(newActionController);
     }

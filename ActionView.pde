@@ -1,3 +1,6 @@
+import java.awt.geom.Rectangle2D;
+
+
 class ActionView extends ViewBase {
     final float SEGMENT_SPACING_PERCENTAGE = 0.2;
     final float SEGMENT_CIRCLE_INNER_RADIUS = 10;
@@ -10,19 +13,13 @@ class ActionView extends ViewBase {
     color secondColor = color(random(255), random(255), random(255));
 
 
-    ActionView(ActionBaseModel actionModel) {
+    ActionView(ViewBase parentView, ActionBaseModel actionModel) {
+        super(parentView);
+        
         this.actionModel = actionModel;
 
-        // todo #21
-        // code below doesn't work jet because the clip is not fully implemented jet
-        // this.size = new PVector(SEGMENT_CIRCLE_OUTER_RADIUS * 2, SEGMENT_CIRCLE_OUTER_RADIUS * 2);
-        // this.position = new PVector(50 - SEGMENT_CIRCLE_OUTER_RADIUS, 50 - SEGMENT_CIRCLE_OUTER_RADIUS);
-        // this.origin = new PVector(SEGMENT_CIRCLE_OUTER_RADIUS, SEGMENT_CIRCLE_OUTER_RADIUS);
-        // this.hasClip = true;
-
-        // this is a temporary fix
-        this.position.x = 50 + actionModel.getPosition().x % 1;
-        this.position.y = 50 + actionModel.getPosition().y % 1;
+        this.boundsRect.x = -50;
+        this.boundsRect.y = -50;
     }
 
 
@@ -43,7 +40,7 @@ class ActionView extends ViewBase {
             secondColor = color(0);
         }
 
-        float screenSize = composedScale() * 100;
+        float screenSize = composedScale().x * 100;
         makeChildsInvisible();
 
         if (screenSize > 75) {
