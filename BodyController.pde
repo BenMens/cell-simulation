@@ -26,7 +26,7 @@ class BodyController implements BodyModelClient, BodyViewClient {
 
 
     void onAddCell(CellModel cellModel) {
-        CellController newCellController = new CellController(bodyView, cellModel);
+        CellController newCellController = new CellController(bodyView.cellLayerView, cellModel);
 
         cellControllers.add(newCellController);
     }
