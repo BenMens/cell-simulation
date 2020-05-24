@@ -11,7 +11,7 @@ class ActionBaseModel {
     int indexInActionArray;
     float segmentSizeInActionCircle;
     float segmentAngleInActionCircle;
-    PVector position = new PVector();
+    private PVector position = new PVector();
 
 
     ActionBaseModel(ActionModelParent parentModel) {
@@ -48,6 +48,10 @@ class ActionBaseModel {
 
         position.x = parentModel.getPosition().x + 0.5 + sin(segmentAngleInActionCircle) * SEGMENT_CIRCLE_RADIUS;
         position.y = parentModel.getPosition().y + 0.5 + -cos(segmentAngleInActionCircle) * SEGMENT_CIRCLE_RADIUS;
+    }
+
+    PVector getPosition() {
+        return position;
     }
 
 

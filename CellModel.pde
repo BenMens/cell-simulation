@@ -9,7 +9,7 @@ class CellModel implements ActionModelParent {
 
     boolean isDead = false;
 
-    PVector position;
+    private PVector position;
     float wallHealth = 1;
     float energyLevel = 1;
     float energyCostPerTick = 0.03;
@@ -46,11 +46,11 @@ class CellModel implements ActionModelParent {
     }
 
 
-    void addAction(ActionBaseModel neActionModel) {
-        actionModels.add(neActionModel);
+    void addAction(ActionBaseModel newActionModel) {
+        actionModels.add(newActionModel);
 
         for(CellModelClient client : clients) {
-            client.onAddAction(neActionModel);
+            client.onAddAction(newActionModel);
         }
 
         for (ActionBaseModel actionModel : actionModels) {
@@ -95,7 +95,7 @@ class CellModel implements ActionModelParent {
     void cleanUpTick() {
         if (isDead) {
             for (ActionBaseModel actionModel : actionModels) {
-                new ParticleWasteModel(bodyModel, actionModel.position.x, actionModel.position.y);
+                new ParticleWasteModel(bodyModel, actionModel.getPosition().x, actionModel.getPosition().y);
             }
 
             bodyModel.removeCell(this);

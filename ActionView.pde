@@ -21,8 +21,8 @@ class ActionView extends ViewBase {
         // this.hasClip = true;
 
         // this is a temporary fix
-        this.position.x = 50 + actionModel.position.x % 1;
-        this.position.y = 50 + actionModel.position.y % 1;
+        this.position.x = 50 + actionModel.getPosition().x % 1;
+        this.position.y = 50 + actionModel.getPosition().y % 1;
     }
 
 
