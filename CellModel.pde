@@ -4,12 +4,17 @@ class CellModel implements ActionModelParent {
 
     ArrayList<ActionBaseModel> actionModels = new ArrayList<ActionBaseModel>();
 
+    float ticksPerActionTick = 50;
+    float ticksSinceLastActionTick;
+
     boolean isDead = false;
 
-    PVector position;
+    private PVector position;
     float wallHealth = 1;
     float energyLevel = 1;
-    float energyCostPerTick = 0.001;
+    float energyCostPerTick = 0.03;
+
+    int currentAction;
 
     boolean edited = false;
 
@@ -41,11 +46,15 @@ class CellModel implements ActionModelParent {
     }
 
 
-    void addAction(ActionBaseModel actionModel) {
-        actionModels.add(actionModel);
+    void addAction(ActionBaseModel newActionModel) {
+        actionModels.add(newActionModel);
 
         for(CellModelClient client : clients) {
-            client.onAddAction(actionModel);
+            client.onAddAction(newActionModel);
+        }
+
+        for (ActionBaseModel actionModel : actionModels) {
+            actionModel.updatePosition();
         }
     }
 
@@ -55,23 +64,38 @@ class CellModel implements ActionModelParent {
     }
 
 
-    void tick() {
-        energyLevel = max(energyLevel - energyCostPerTick, 0);
+    PVector getPosition() {
+        return position;
+    }
 
-        if (wallHealth <= 0) {
-            isDead = true;
+
+    void tick() {
+        while (ticksSinceLastActionTick >= ticksPerActionTick) {
+            actionTick();
+            ticksSinceLastActionTick -= ticksPerActionTick;
         }
+        ticksSinceLastActionTick++;
 
         for(ActionBaseModel actionModel : actionModels) {
             actionModel.tick();
         }
+
+        if (wallHealth <= 0) {
+            isDead = true;
+        }
+    }
+
+    void actionTick() {
+        energyLevel = max(energyLevel - energyCostPerTick, 0);
+
+        currentAction = (currentAction + 1) % actionModels.size();
     }
 
 
     void cleanUpTick() {
         if (isDead) {
-            for (int i = 0; i < actionModels.size(); i++) {
-                new ParticleWasteModel(bodyModel, position.x + 0.5, position.y + 0.5);
+            for (ActionBaseModel actionModel : actionModels) {
+                new ParticleWasteModel(bodyModel, actionModel.getPosition().x, actionModel.getPosition().y);
             }
 
             bodyModel.removeCell(this);
