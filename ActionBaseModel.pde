@@ -1,53 +1,53 @@
-class ActionBaseModel {
+class CodonBaseModel {
     final float MAXIMUM_SEGMENT_ANGLE = 1.2;
     final float SEGMENT_CIRCLE_RADIUS = 0.15;
 
-    ArrayList<ActionModelClient> clients = new ArrayList<ActionModelClient>();
-    ActionModelParent parentModel;
+    ArrayList<CodonModelClient> clients = new ArrayList<CodonModelClient>();
+    CodonModelParent parentModel;
 
     float degradation = 0;
     boolean isDegradated = false;
 
-    int indexInActionArray;
-    float segmentSizeInActionCircle;
-    float segmentAngleInActionCircle;
+    int indexInCodonArray;
+    float segmentSizeInCodonCircle;
+    float segmentAngleInCodonCircle;
     private PVector position = new PVector();
 
 
-    ActionBaseModel(ActionModelParent parentModel) {
+    CodonBaseModel(CodonModelParent parentModel) {
         this.parentModel = parentModel;
-        parentModel.addAction(this);
+        parentModel.addCodon(this);
 
         updatePosition();
     }
     
 
-    void registerClient(ActionModelClient client) {
+    void registerClient(CodonModelClient client) {
         if(!clients.contains(client)) {
             clients.add(client);
         }
     }
 
-    void unregisterClient(ActionModelClient client) {
+    void unregisterClient(CodonModelClient client) {
         clients.remove(client);
     }
 
 
-    ArrayList<ActionBaseModel> getParentActionList() {
-        return parentModel.getActionList();
+    ArrayList<CodonBaseModel> getParentCodonList() {
+        return parentModel.getCodonList();
     }
 
 
     void updatePosition() {
-        ArrayList<ActionBaseModel> actionArray = getParentActionList();
+        ArrayList<CodonBaseModel> codonArray = getParentCodonList();
 
-        segmentSizeInActionCircle = min(TWO_PI / actionArray.size(), MAXIMUM_SEGMENT_ANGLE);
-        indexInActionArray = actionArray.indexOf(this);
+        segmentSizeInCodonCircle = min(TWO_PI / codonArray.size(), MAXIMUM_SEGMENT_ANGLE);
+        indexInCodonArray = codonArray.indexOf(this);
 
-        segmentAngleInActionCircle = indexInActionArray * segmentSizeInActionCircle;
+        segmentAngleInCodonCircle = indexInCodonArray * segmentSizeInCodonCircle;
 
-        position.x = parentModel.getPosition().x + 0.5 + sin(segmentAngleInActionCircle) * SEGMENT_CIRCLE_RADIUS;
-        position.y = parentModel.getPosition().y + 0.5 + -cos(segmentAngleInActionCircle) * SEGMENT_CIRCLE_RADIUS;
+        position.x = parentModel.getPosition().x + 0.5 + sin(segmentAngleInCodonCircle) * SEGMENT_CIRCLE_RADIUS;
+        position.y = parentModel.getPosition().y + 0.5 + -cos(segmentAngleInCodonCircle) * SEGMENT_CIRCLE_RADIUS;
     }
 
     PVector getPosition() {

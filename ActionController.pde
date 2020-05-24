@@ -1,13 +1,13 @@
-class ActionController implements ActionModelClient, ActionViewClient {
-    ActionBaseModel actionModel;
-    ActionView actionView;
+class CodonController implements CodonModelClient, CodonViewClient {
+    CodonBaseModel codonModel;
+    CodonView codonView;
 
 
-    ActionController(ViewBase parentView, ActionBaseModel actionModel) {
-        this.actionModel = actionModel;
-        this.actionView = new ActionView(parentView, actionModel);
+    CodonController(ViewBase parentView, CodonBaseModel codonModel) {
+        this.codonModel = codonModel;
+        this.codonView = new CodonView(parentView, codonModel);
 
-        this.actionModel.registerClient(this);
-        this.actionView.registerClient(this);
+        this.codonModel.registerClient(this);
+        this.codonView.registerClient(this);
     }
 }

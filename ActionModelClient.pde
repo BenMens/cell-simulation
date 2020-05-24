@@ -1,3 +1,3 @@
-interface ActionModelClient {
+interface CodonModelClient {
     
 }

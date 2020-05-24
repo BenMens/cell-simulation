@@ -2,7 +2,7 @@ class CellController implements CellModelClient, CellViewClient {
     CellModel cellModel;
     CellView cellView;
 
-    ArrayList<ActionController> actionControllers = new ArrayList<ActionController>();
+    ArrayList<CodonController> codonControllers = new ArrayList<CodonController>();
 
 
     CellController(ViewBase parentView, CellModel cellModel) {
@@ -21,9 +21,9 @@ class CellController implements CellModelClient, CellViewClient {
     }
 
 
-    void onAddAction(ActionBaseModel actionModel) {
-        ActionController newActionController = new ActionController(cellView ,actionModel);
+    void onAddCodon(CodonBaseModel codonModel) {
+        CodonController newCodonController = new CodonController(cellView ,codonModel);
 
-        actionControllers.add(newActionController);
+        codonControllers.add(newCodonController);
     }
 }

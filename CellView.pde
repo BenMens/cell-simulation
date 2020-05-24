@@ -94,32 +94,32 @@ class CellView extends ViewBase {
                     endShape(CLOSE);
 
                     if(screenSize > 75) {
-                        float progressToNextActionTick = norm(cellModel.ticksSinceLastActionTick, 0, cellModel.ticksPerActionTick);
-                        float actionHandPositionBetweenAction = 1;
-                        if (progressToNextActionTick < 0.1) {
-                            actionHandPositionBetweenAction = 0;
-                        } else if (progressToNextActionTick < 0.8) {
-                            actionHandPositionBetweenAction = 1 / (1 + exp(-map(progressToNextActionTick, 0, 1, -6, 6)));
+                        float progressToNextCodonTick = norm(cellModel.ticksSinceLastCodonTick, 0, cellModel.ticksPerCodonTick);
+                        float codonHandPositionBetweenCodon = 1;
+                        if (progressToNextCodonTick < 0.1) {
+                            codonHandPositionBetweenCodon = 0;
+                        } else if (progressToNextCodonTick < 0.8) {
+                            codonHandPositionBetweenCodon = 1 / (1 + exp(-map(progressToNextCodonTick, 0, 1, -6, 6)));
                         }
 
-                        float currentActionAngle = cellModel.actionModels.get(cellModel.currentAction).segmentAngleInActionCircle;
-                        float nextActionAngle;
-                        if (cellModel.currentAction + 1 == cellModel.actionModels.size()) {
-                            nextActionAngle = cellModel.actionModels.get(0).segmentAngleInActionCircle + TWO_PI;
+                        float currentCodonAngle = cellModel.codonModels.get(cellModel.currentCodon).segmentAngleInCodonCircle;
+                        float nextCodonAngle;
+                        if (cellModel.currentCodon + 1 == cellModel.codonModels.size()) {
+                            nextCodonAngle = cellModel.codonModels.get(0).segmentAngleInCodonCircle + TWO_PI;
                         } else {
-                            nextActionAngle = cellModel.actionModels.get(cellModel.currentAction + 1).segmentAngleInActionCircle;
+                            nextCodonAngle = cellModel.codonModels.get(cellModel.currentCodon + 1).segmentAngleInCodonCircle;
                         }
 
-                        float actionHandAngle = lerp(currentActionAngle, nextActionAngle, actionHandPositionBetweenAction);
+                        float codonHandAngle = lerp(currentCodonAngle, nextCodonAngle, codonHandPositionBetweenCodon);
 
-                        float x1 = 50 + sin(actionHandAngle - handAnchorAngle) * HAND_CIRCLE_RADIUS;
-                        float y1 = 50 - cos(actionHandAngle - handAnchorAngle) * HAND_CIRCLE_RADIUS;
+                        float x1 = 50 + sin(codonHandAngle - handAnchorAngle) * HAND_CIRCLE_RADIUS;
+                        float y1 = 50 - cos(codonHandAngle - handAnchorAngle) * HAND_CIRCLE_RADIUS;
 
-                        float x2 = 50 + sin(actionHandAngle + handAnchorAngle) * HAND_CIRCLE_RADIUS;
-                        float y2 = 50 - cos(actionHandAngle + handAnchorAngle) * HAND_CIRCLE_RADIUS;
+                        float x2 = 50 + sin(codonHandAngle + handAnchorAngle) * HAND_CIRCLE_RADIUS;
+                        float y2 = 50 - cos(codonHandAngle + handAnchorAngle) * HAND_CIRCLE_RADIUS;
 
-                        float x3 = 50 + sin(actionHandAngle) * handPointerRadiusInward;
-                        float y3 = 50 - cos(actionHandAngle) * handPointerRadiusInward;
+                        float x3 = 50 + sin(codonHandAngle) * handPointerRadiusInward;
+                        float y3 = 50 - cos(codonHandAngle) * handPointerRadiusInward;
 
                         noStroke();
                         fill(200, 0, 0);

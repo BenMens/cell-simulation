@@ -1,7 +1,7 @@
-interface ActionModelParent {
-    void addAction(ActionBaseModel actionModel);
+interface CodonModelParent {
+    void addCodon(CodonBaseModel codonModel);
 
-    ArrayList<ActionBaseModel> getActionList();
+    ArrayList<CodonBaseModel> getCodonList();
 
     PVector getPosition();
 }
