@@ -22,8 +22,6 @@ class CellView extends ViewBase {
         this.frameRect = new Rectangle2D.Float(cellModel.position.x * 100, cellModel.position.y * 100, 100, 100);
         this.boundsRect = new Rectangle2D.Float(0, 0, 100, 100);
         
-        // this.position = cellModel.position.copy().mult(100);
-        // this.size = new PVector(100, 100);
         this.hasClip = true;
 
         this.handAnchorAngle = asin(HAND_SIZE / 2 / HAND_CIRCLE_RADIUS);
@@ -41,6 +39,7 @@ class CellView extends ViewBase {
             clients.add(client);
         }  
     }
+
 
     void unregisterClient(CellViewClient client) {
         clients.remove(client);
