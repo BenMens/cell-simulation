@@ -1,3 +1,5 @@
+import java.awt.geom.Rectangle2D;
+
 class ActionView extends ViewBase {
     ArrayList<ActionViewClient> clients = new ArrayList<ActionViewClient>();
     ActionBaseModel actionModel;
@@ -11,18 +13,13 @@ class ActionView extends ViewBase {
     color secondColor = color(random(255), random(255), random(255));
 
 
-    ActionView(ActionBaseModel actionModel) {
+    ActionView(ViewBase parentView, ActionBaseModel actionModel) {
+        super(parentView);
+        
         this.actionModel = actionModel;
 
-        // todo #21
-        // code below doesn't work jet because the clip is not fully implemented jet
-        // this.size = new PVector(segmentCircleOuterRadius * 2, segmentCircleOuterRadius * 2);
-        // this.position = new PVector(50 - segmentCircleOuterRadius, 50 - segmentCircleOuterRadius);
-        // this.origin = new PVector(segmentCircleOuterRadius, segmentCircleOuterRadius);
-        // this.hasClip = true;
-
-        // this is a temporary fix
-        this.position = new PVector(50, 50);
+        this.boundsRect.x = -50;
+        this.boundsRect.y = -50;
     }
 
 

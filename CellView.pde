@@ -6,13 +6,16 @@ class CellView extends ViewBase {
     final float energySymbolSizeOnMaxEnergy = 8;
 
 
-    CellView(CellModel cellModel) {
+    CellView(ViewBase parentView, CellModel cellModel) {
+        super(parentView);
+        
         this.cellModel = cellModel;
 
-        this.position = cellModel.position.copy().mult(100);
-
+        
+        this.frameRect = new Rectangle2D.Float(cellModel.position.x * 100, cellModel.position.y * 100, 100, 100);
+        this.boundsRect = new Rectangle2D.Float(0, 0, 100, 100);
+        
         this.hasClip = true;
-        this.size = new PVector(100, 100);
     }
 
 

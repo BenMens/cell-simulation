@@ -7,7 +7,9 @@ class ParticleView extends ViewBase {
     PImage images[] = new PImage[7]; 
 
 
-    ParticleView(ParticleBaseModel particleModel) {
+    ParticleView(ViewBase parentView, ParticleBaseModel particleModel) {
+        super(parentView);
+        
         this.particleModel = particleModel;
 
         String imageName = "";
@@ -35,7 +37,9 @@ class ParticleView extends ViewBase {
 
 
     void beforeDrawChildren() {
-        float imageDimension = composedScale() * PARTICLE_SIZE;
+        PVector composedScale = this.composedScale();
+
+        float imageDimension = max(composedScale.x * PARTICLE_SIZE, composedScale.y * PARTICLE_SIZE);
         PImage img = images[images.length - 1];
 
         for (int i = 0; i < images.length; i++) {

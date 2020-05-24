@@ -1,5 +1,6 @@
 PApplet applet = this;
 
+ViewBase rootView;
 BodyModel bodyModel;
 GuiController guiController;
 
@@ -16,6 +17,7 @@ void setup() {
 
     fullScreen(P2D);
 
+    rootView = new ViewBase(null);
     bodyModel = new BodyModel(new PVector(10, 10));
 
     boolean[][] occupiedSpaces = new boolean[int(bodyModel.gridSize.x)][int(bodyModel.gridSize.y)];
@@ -32,12 +34,13 @@ void setup() {
         }
     }
 
-    guiController = new GuiController(bodyModel);
+    guiController = new GuiController(rootView, bodyModel);
     lastTickTimestamp = millis();
 }
 
 
 void draw() {
+    noClip();
     background(255);
 
     guiController.updateMovement();
@@ -47,7 +50,7 @@ void draw() {
         lastTickTimestamp += millisBetweenTicks;
     }
 
-    guiController.guiView.draw();
+    rootView.draw();
 }
 
 
@@ -75,5 +78,5 @@ void keyReleased() {
 
 
 void mousePressed() {
-    guiController.guiView.mousePressed(mouseX, mouseY);
+    rootView.mousePressed(mouseX, mouseY);
 }
