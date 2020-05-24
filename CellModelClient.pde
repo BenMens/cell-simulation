@@ -1,3 +1,3 @@
 interface CellModelClient {
-    void onAddAction(ActionBaseModel actionModel);
+    void onAddCodon(CodonBaseModel codonModel);
 }

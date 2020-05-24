@@ -1,11 +1,11 @@
-class CellModel implements ActionModelParent {
+class CellModel implements CodonModelParent {
     ArrayList<CellModelClient> clients = new ArrayList<CellModelClient>();
     BodyModel bodyModel;
 
-    ArrayList<ActionBaseModel> actionModels = new ArrayList<ActionBaseModel>();
+    ArrayList<CodonBaseModel> codonModels = new ArrayList<CodonBaseModel>();
 
-    float ticksPerActionTick = 50;
-    float ticksSinceLastActionTick;
+    float ticksPerCodonTick = 50;
+    float ticksSinceLastCodonTick;
 
     boolean isDead = false;
 
@@ -14,7 +14,7 @@ class CellModel implements ActionModelParent {
     float energyLevel = 1;
     float energyCostPerTick = 0.03;
 
-    int currentAction;
+    int currentCodon;
 
     boolean edited = false;
 
@@ -26,7 +26,7 @@ class CellModel implements ActionModelParent {
         this.position = position;
 
         for(int i = 0; i < 10; i++) {
-            new ActionBaseModel(this);
+            new CodonBaseModel(this);
         }
     }
 
@@ -35,8 +35,8 @@ class CellModel implements ActionModelParent {
         if(!clients.contains(client)) {
             clients.add(client);
 
-            for (ActionBaseModel actionModel: actionModels) {
-                client.onAddAction(actionModel);
+            for (CodonBaseModel codonModel: codonModels) {
+                client.onAddCodon(codonModel);
             }
         }
     }
@@ -46,21 +46,21 @@ class CellModel implements ActionModelParent {
     }
 
 
-    void addAction(ActionBaseModel newActionModel) {
-        actionModels.add(newActionModel);
+    void addCodon(CodonBaseModel newCodonModel) {
+        codonModels.add(newCodonModel);
 
         for(CellModelClient client : clients) {
-            client.onAddAction(newActionModel);
+            client.onAddCodon(newCodonModel);
         }
 
-        for (ActionBaseModel actionModel : actionModels) {
-            actionModel.updatePosition();
+        for (CodonBaseModel codonModel : codonModels) {
+            codonModel.updatePosition();
         }
     }
 
 
-    ArrayList<ActionBaseModel> getActionList() {
-        return actionModels;
+    ArrayList<CodonBaseModel> getCodonList() {
+        return codonModels;
     }
 
 
@@ -70,14 +70,14 @@ class CellModel implements ActionModelParent {
 
 
     void tick() {
-        while (ticksSinceLastActionTick >= ticksPerActionTick) {
-            actionTick();
-            ticksSinceLastActionTick -= ticksPerActionTick;
+        while (ticksSinceLastCodonTick >= ticksPerCodonTick) {
+            codonTick();
+            ticksSinceLastCodonTick -= ticksPerCodonTick;
         }
-        ticksSinceLastActionTick++;
+        ticksSinceLastCodonTick++;
 
-        for(ActionBaseModel actionModel : actionModels) {
-            actionModel.tick();
+        for(CodonBaseModel codonModel : codonModels) {
+            codonModel.tick();
         }
 
         if (wallHealth <= 0) {
@@ -85,17 +85,17 @@ class CellModel implements ActionModelParent {
         }
     }
 
-    void actionTick() {
+    void codonTick() {
         energyLevel = max(energyLevel - energyCostPerTick, 0);
 
-        currentAction = (currentAction + 1) % actionModels.size();
+        currentCodon = (currentCodon + 1) % codonModels.size();
     }
 
 
     void cleanUpTick() {
         if (isDead) {
-            for (ActionBaseModel actionModel : actionModels) {
-                new ParticleWasteModel(bodyModel, actionModel.getPosition().x, actionModel.getPosition().y);
+            for (CodonBaseModel codonModel : codonModels) {
+                new ParticleWasteModel(bodyModel, codonModel.getPosition().x, codonModel.getPosition().y);
             }
 
             bodyModel.removeCell(this);
