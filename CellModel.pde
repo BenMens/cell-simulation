@@ -10,9 +10,9 @@ class CellModel implements CodonModelParent {
     boolean isDead = false;
 
     private PVector position;
-    float wallHealth = 1;
-    float energyLevel = 1;
-    float energyCostPerTick = 0.03;
+    private float wallHealth = 1;
+    private float energyLevel = 1;
+    float energyCostPerTick = 0.01;
 
     int currentCodon;
 
@@ -26,8 +26,11 @@ class CellModel implements CodonModelParent {
         this.position = position;
 
         for(int i = 0; i < 10; i++) {
-            new CodonBaseModel(this);
+            new CodonNoneModel(this);
         }
+
+        CodonBaseModel removeCodon = new CodonRemoveModel(this);
+        removeCodon.setCodonParameter(removeCodon.possibleCodonParameters.get(floor(random(removeCodon.possibleCodonParameters.size()))));
     }
 
 
@@ -58,6 +61,22 @@ class CellModel implements CodonModelParent {
         }
     }
 
+    void removeCodon(CodonBaseModel oldCodonModel) {
+        codonModels.remove(oldCodonModel);
+
+        if (currentCodon >= codonModels.indexOf(oldCodonModel)) {
+            currentCodon--;
+        }
+
+        for(CellModelClient client: clients) {
+            client.onRemoveCodon(oldCodonModel);
+        }
+
+        for (CodonBaseModel codonModel : codonModels) {
+            codonModel.updatePosition();
+        }
+    }
+
 
     ArrayList<CodonBaseModel> getCodonList() {
         return codonModels;
@@ -70,11 +89,13 @@ class CellModel implements CodonModelParent {
 
 
     void tick() {
-        while (ticksSinceLastCodonTick >= ticksPerCodonTick) {
-            codonTick();
-            ticksSinceLastCodonTick -= ticksPerCodonTick;
+        if (energyLevel > energyCostPerTick) {
+            while (ticksSinceLastCodonTick >= ticksPerCodonTick) {
+                codonTick();
+                ticksSinceLastCodonTick -= ticksPerCodonTick;
+            }
+            ticksSinceLastCodonTick++;
         }
-        ticksSinceLastCodonTick++;
 
         for(CodonBaseModel codonModel : codonModels) {
             codonModel.tick();
@@ -88,18 +109,64 @@ class CellModel implements CodonModelParent {
     void codonTick() {
         energyLevel = max(energyLevel - energyCostPerTick, 0);
 
-        currentCodon = (currentCodon + 1) % codonModels.size();
+        if (energyLevel > codonModels.get(currentCodon).getEnergyCost()) {
+            currentCodon = (currentCodon + 1) % codonModels.size();
+            codonModels.get(currentCodon).executeCodon();
+        }
     }
 
 
     void cleanUpTick() {
+        for (int i = codonModels.size() - 1; i >= 0; i--) {
+            codonModels.get(i).cleanUpTick();
+        }
+
         if (isDead) {
-            for (CodonBaseModel codonModel : codonModels) {
+            for (int i = codonModels.size() - 1; i >= 0; i--) {
+                CodonBaseModel codonModel = codonModels.get(i);
+
                 new ParticleWasteModel(bodyModel, codonModel.getPosition().x, codonModel.getPosition().y);
+
+                codonModel.isDead = true;
+                codonModel.cleanUpTick();
             }
 
             bodyModel.removeCell(this);
         }
+    }
+
+
+    float getWallHealth() {
+        return wallHealth;
+    }
+
+    void setWallHealth(float health) {
+        wallHealth = health;
+    }
+
+    void addWallHealth(float health) {
+        wallHealth += health;
+    }
+
+    void subtractWallHealth(float health) {
+        wallHealth -= health;
+    }
+
+
+    float getEnergyLevel() {
+        return energyLevel;
+    }
+
+    void setEnergyLevel(float energy) {
+        energyLevel = energy;
+    }
+
+    void addEnergyLevel(float energy) {
+        energyLevel += energy;
+    }
+
+    void subtractEnergyLevel(float energy) {
+        energyLevel -= energy;
     }
 
 
@@ -121,7 +188,7 @@ class CellModel implements CodonModelParent {
 
 
     void handleCollision(ParticleBaseModel particle) {
-        wallHealth -= particle.cellWallHarmfulness;
+        //wallHealth -= particle.cellWallHarmfulness;
     }
 
 }

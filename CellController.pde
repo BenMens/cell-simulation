@@ -26,4 +26,20 @@ class CellController implements CellModelClient, CellViewClient {
 
         codonControllers.add(newCodonController);
     }
+
+    void onRemoveCodon(CodonBaseModel codonModel) {
+        CodonController codonController = null;
+
+        for(CodonController controller : codonControllers) {
+            if (controller.codonModel == codonModel) {
+                codonController = controller;
+                break;
+            }
+        }
+
+        if (codonController != null) {
+            codonController.destroy();
+            codonControllers.remove(codonController);
+        }
+    }
 }

@@ -1,24 +1,38 @@
-class CodonBaseModel {
+abstract class CodonBaseModel {
     final float MAXIMUM_SEGMENT_ANGLE = 1.2;
     final float SEGMENT_CIRCLE_RADIUS = 0.15;
 
     ArrayList<CodonModelClient> clients = new ArrayList<CodonModelClient>();
     CodonModelParent parentModel;
 
-    float degradation = 0;
-    boolean isDegradated = false;
+    boolean isDead = false;
 
     int indexInCodonArray;
     float segmentSizeInCodonCircle;
     float segmentAngleInCodonCircle;
-    private PVector position = new PVector();
+    protected PVector position = new PVector();
 
+    ArrayList<String> possibleCodonParameters = new ArrayList<String>();
+    protected String codonParameter = "none";
 
+    float baseEnergyCost = 0.01;
+    float degradation = 0;
+    float degradationRate = 0.0003;
+
+    protected color mainColor = color(0);
+    protected HashMap<String, Integer> secondaryColors = new HashMap<String, Integer>();
+
+    
     CodonBaseModel(CodonModelParent parentModel) {
         this.parentModel = parentModel;
         parentModel.addCodon(this);
 
         updatePosition();
+
+        secondaryColors.put("none", color(0));
+        secondaryColors.put("wall", color(250, 90, 70));
+        secondaryColors.put("energy", color(245, 239, 50));
+        secondaryColors.put("codons", color(45, 240, 190));
     }
     
 
@@ -55,11 +69,38 @@ class CodonBaseModel {
     }
 
 
-    void tick() {
-        degradation += random(0.001);
-        if (degradation >= 1) {
-            degradation = 1;
-            isDegradated = true;
+    void setCodonParameter(String parameter) {
+        if (possibleCodonParameters.contains(parameter)) {
+            codonParameter = parameter;
         }
     }
+
+
+    color getMainColor() {
+        return mainColor;
+    }
+
+    color getSecondaryColor() {
+        return secondaryColors.get(codonParameter);
+    }
+
+
+    void tick() {
+        degradation += random(degradationRate * 2);
+        if (degradation >= 1) {
+        }
+    }
+
+
+    void cleanUpTick() {
+        if (isDead) {
+            parentModel.removeCodon(this);
+        }
+    }
+
+
+    abstract float getEnergyCost();
+
+
+    abstract void executeCodon();
 }

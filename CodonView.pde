@@ -9,9 +9,6 @@ class CodonView extends ViewBase {
     ArrayList<CodonViewClient> clients = new ArrayList<CodonViewClient>();
     CodonBaseModel codonModel;
 
-    color firstColor = color(random(255), random(255), random(255));
-    color secondColor = color(random(255), random(255), random(255));
-
 
     CodonView(ViewBase parentView, CodonBaseModel codonModel) {
         super(parentView);
@@ -35,11 +32,6 @@ class CodonView extends ViewBase {
 
 
     void beforeDrawChildren() {
-        if (codonModel.isDegradated) {
-            firstColor = color(0);
-            secondColor = color(0);
-        }
-
         float screenSize = composedScale().x * 100;
         makeChildsInvisible();
 
@@ -68,20 +60,20 @@ class CodonView extends ViewBase {
             vertex(sinThirdVertexAngle * segmentCircleBetweenRadius, -cosThirdVertexAngle * segmentCircleBetweenRadius);
             endShape(CLOSE);
 
-            if (firstColor != color(0)) {
-                fill(firstColor);
+            if (codonModel.getMainColor() != color(0)) {
+                fill(codonModel.getMainColor());
                 beginShape();
-                vertex(sinSecondVertexAngle * segmentCircleInnerDegradationRadius, -cosSecondVertexAngle * segmentCircleInnerDegradationRadius);
                 vertex(sinFirstVertexAngle * segmentCircleBetweenRadius, -cosFirstVertexAngle * segmentCircleBetweenRadius);
+                vertex(sinSecondVertexAngle * segmentCircleOuterDegradationRadius, -cosSecondVertexAngle * segmentCircleOuterDegradationRadius);
                 vertex(sinThirdVertexAngle * segmentCircleBetweenRadius, -cosThirdVertexAngle * segmentCircleBetweenRadius);
                 endShape(CLOSE);
             }
 
-            if (secondColor != color(0)) {
-                fill(secondColor);
+            if (codonModel.getSecondaryColor() != color(0)) {
+                fill(codonModel.getSecondaryColor());
                 beginShape();
+                vertex(sinSecondVertexAngle * segmentCircleInnerDegradationRadius, -cosSecondVertexAngle * segmentCircleInnerDegradationRadius);
                 vertex(sinFirstVertexAngle * segmentCircleBetweenRadius, -cosFirstVertexAngle * segmentCircleBetweenRadius);
-                vertex(sinSecondVertexAngle * segmentCircleOuterDegradationRadius, -cosSecondVertexAngle * segmentCircleOuterDegradationRadius);
                 vertex(sinThirdVertexAngle * segmentCircleBetweenRadius, -cosThirdVertexAngle * segmentCircleBetweenRadius);
                 endShape(CLOSE);
             }
@@ -92,13 +84,13 @@ class CodonView extends ViewBase {
             pushMatrix();
             rotate(codonModel.segmentAngleInCodonCircle + PI);
 
-            stroke(lerpColor(firstColor, color(0), codonModel.degradation));
-            strokeWeight(segmentCircleRadius * 0.5);
-            point(0, SEGMENT_CIRCLE_INNER_RADIUS + segmentCircleRadius * 0.25);
-
-            stroke(lerpColor(secondColor, color(0), codonModel.degradation));
+            stroke(lerpColor(codonModel.getMainColor(), color(0), codonModel.degradation));
             strokeWeight(segmentCircleRadius * 0.5);
             point(0, SEGMENT_CIRCLE_INNER_RADIUS + segmentCircleRadius * 0.75);
+
+            stroke(lerpColor(codonModel.getSecondaryColor(), color(0), codonModel.degradation));
+            strokeWeight(segmentCircleRadius * 0.5);
+            point(0, SEGMENT_CIRCLE_INNER_RADIUS + segmentCircleRadius * 0.25);
             popMatrix();
         }
     }
