@@ -1,9 +1,17 @@
 class CellView extends ViewBase {
+    float HAND_CIRCLE_RADIUS = 28;
+    float HAND_CIRCLE_WIDTH = 1.3;
+    float HAND_SIZE = 6.5;
+
+    final float WALL_SIZE_ON_MAX_HEALTH = 10;
+    final float ENERGY_SYMBOL_SIZE_ON_MAX_ENERGY = 8;
+
     ArrayList<CellViewClient> clients = new ArrayList<CellViewClient>();
     CellModel cellModel;
 
-    final float wallSizeOnMaxHealth = 10;
-    final float energySymbolSizeOnMaxEnergy = 8;
+    float handAnchorAngle;
+    float handPointerRadiusInward;
+    float handPointerRadiusOutward;
 
 
     CellView(ViewBase parentView, CellModel cellModel) {
@@ -11,11 +19,20 @@ class CellView extends ViewBase {
         
         this.cellModel = cellModel;
 
-        
         this.frameRect = new Rectangle2D.Float(cellModel.position.x * 100, cellModel.position.y * 100, 100, 100);
         this.boundsRect = new Rectangle2D.Float(0, 0, 100, 100);
         
+        // this.position = cellModel.position.copy().mult(100);
+        // this.size = new PVector(100, 100);
         this.hasClip = true;
+
+        this.handAnchorAngle = asin(HAND_SIZE / 2 / HAND_CIRCLE_RADIUS);
+
+        float handPointerDistainceFromCircle = (1 - cos(handAnchorAngle)) * HAND_CIRCLE_RADIUS;
+        float handPointerHeight = sqrt(sq(HAND_SIZE) - sq(HAND_SIZE) / 4);
+
+        this.handPointerRadiusInward = HAND_CIRCLE_RADIUS - handPointerDistainceFromCircle - handPointerHeight;
+        this.handPointerRadiusOutward = HAND_CIRCLE_RADIUS - handPointerDistainceFromCircle + handPointerHeight;
     }
 
 
@@ -31,10 +48,10 @@ class CellView extends ViewBase {
 
 
     void beforeDrawChildren() {
-        PVector screenSize = viewSizeToScreenSize(new PVector(100, 100));
+        float screenSize = composedScale().x * 100;
         makeChildsInvisible();
         
-        if(screenSize.x < 10 && screenSize.y < 10) {
+        if(screenSize < 10) {
             noStroke();
             fill(255, 165, 135);
             rect(0, 0, 100, 100);
@@ -53,18 +70,20 @@ class CellView extends ViewBase {
             } else {
                 fill(255, 165, 135);
             }
-            float wallSize = cellModel.wallHealth * wallSizeOnMaxHealth;
+            float wallSize = cellModel.wallHealth * WALL_SIZE_ON_MAX_HEALTH;
             rect(wallSize, wallSize, 100 - 2 * wallSize, 100 - 2 * wallSize);
 
-            if(screenSize.x > 15 && screenSize.y > 15) {
+            if(screenSize > 15) {
                 makeChildsVisible();
 
                 fill(0);
                 noStroke();
-                ellipse(50, 50, 2 * energySymbolSizeOnMaxEnergy, 2 * energySymbolSizeOnMaxEnergy);
+                ellipse(50, 50, 2 * ENERGY_SYMBOL_SIZE_ON_MAX_ENERGY, 2 * ENERGY_SYMBOL_SIZE_ON_MAX_ENERGY);
 
-                if(screenSize.x > 45 && screenSize.y > 45) {
-                    float energySymbolSize = cellModel.energyLevel * energySymbolSizeOnMaxEnergy;
+                if(screenSize > 45) {
+                    float energySymbolSize = cellModel.energyLevel * ENERGY_SYMBOL_SIZE_ON_MAX_ENERGY;
+
+                    noStroke();
                     fill(245, 245, 115);
                     beginShape();
                     vertex(50 - 0.00 * energySymbolSize, 50 - 1.00 * energySymbolSize);
@@ -74,6 +93,44 @@ class CellView extends ViewBase {
                     vertex(50 + 0.48 * energySymbolSize, 50 - 0.12 * energySymbolSize);
                     vertex(50 - 0.15 * energySymbolSize, 50 - 0.15 * energySymbolSize);
                     endShape(CLOSE);
+
+                    if(screenSize > 75) {
+                        float progressToNextActionTick = norm(cellModel.ticksSinceLastActionTick, 0, cellModel.ticksPerActionTick);
+                        float actionHandPositionBetweenAction = 1;
+                        if (progressToNextActionTick < 0.1) {
+                            actionHandPositionBetweenAction = 0;
+                        } else if (progressToNextActionTick < 0.8) {
+                            actionHandPositionBetweenAction = 1 / (1 + exp(-map(progressToNextActionTick, 0, 1, -6, 6)));
+                        }
+
+                        float currentActionAngle = cellModel.actionModels.get(cellModel.currentAction).segmentAngleInActionCircle;
+                        float nextActionAngle;
+                        if (cellModel.currentAction + 1 == cellModel.actionModels.size()) {
+                            nextActionAngle = cellModel.actionModels.get(0).segmentAngleInActionCircle + TWO_PI;
+                        } else {
+                            nextActionAngle = cellModel.actionModels.get(cellModel.currentAction + 1).segmentAngleInActionCircle;
+                        }
+
+                        float actionHandAngle = lerp(currentActionAngle, nextActionAngle, actionHandPositionBetweenAction);
+
+                        float x1 = 50 + sin(actionHandAngle - handAnchorAngle) * HAND_CIRCLE_RADIUS;
+                        float y1 = 50 - cos(actionHandAngle - handAnchorAngle) * HAND_CIRCLE_RADIUS;
+
+                        float x2 = 50 + sin(actionHandAngle + handAnchorAngle) * HAND_CIRCLE_RADIUS;
+                        float y2 = 50 - cos(actionHandAngle + handAnchorAngle) * HAND_CIRCLE_RADIUS;
+
+                        float x3 = 50 + sin(actionHandAngle) * handPointerRadiusInward;
+                        float y3 = 50 - cos(actionHandAngle) * handPointerRadiusInward;
+
+                        noStroke();
+                        fill(200, 0, 0);
+                        triangle(x1, y1, x2, y2, x3, y3);
+                    }
+
+                    strokeWeight(HAND_CIRCLE_WIDTH);
+                    stroke(0, 150, 0);
+                    noFill();
+                    ellipse(50, 50, HAND_CIRCLE_RADIUS * 2, HAND_CIRCLE_RADIUS * 2);
                 }
             }
         }

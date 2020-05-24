@@ -2,6 +2,9 @@ class ParticleBaseModel {
     ArrayList<ParticleModelClient> clients = new ArrayList<ParticleModelClient>();
     BodyModel bodyModel;
 
+    float ticksPerMovementTick = 1;
+    float ticksSinceLastMovementTick;
+
     boolean isDead = false;
 
     private PVector position = new PVector(0, 0);
@@ -55,6 +58,14 @@ class ParticleBaseModel {
 
 
     void tick() {
+        while (ticksSinceLastMovementTick >= ticksPerMovementTick) {
+            movementTick();
+            ticksSinceLastMovementTick -= ticksPerMovementTick;
+        }
+        ticksSinceLastMovementTick++;
+    }
+
+    void movementTick() {
         PVector bodySize = bodyModel.gridSize.copy();
 
         position.add(speed);
