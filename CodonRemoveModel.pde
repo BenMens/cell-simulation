@@ -17,7 +17,8 @@ class CodonRemoveModel extends CodonBaseModel {
     float getEnergyCost() {
         switch (codonParameter) {
             case "codons" :
-                return baseEnergyCost + baseEnergyCost * abs(removeCodonsFirstPoint - removeCodonsSecondPoint);
+                ArrayList<CodonBaseModel> codonList = parentModel.getCodonList();
+                return baseEnergyCost + baseEnergyCost * min(abs(removeCodonsFirstPoint - removeCodonsSecondPoint), codonList.size());
             default :
                 return baseEnergyCost;
         }
@@ -35,7 +36,7 @@ class CodonRemoveModel extends CodonBaseModel {
             case "codons":
                 ArrayList<CodonBaseModel> codonList = parentModel.getCodonList();
                 int index = codonList.indexOf(this);
-                for (int i = index + min(removeCodonsFirstPoint, removeCodonsSecondPoint); i < index + max(removeCodonsFirstPoint, removeCodonsSecondPoint); i++) {
+                for (int i = index + min(removeCodonsFirstPoint, removeCodonsSecondPoint); i <= index + max(removeCodonsFirstPoint, removeCodonsSecondPoint); i++) {
                     codonList.get(abs(i % codonList.size())).isDead = true;
                 }
                 break;

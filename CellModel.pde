@@ -107,11 +107,13 @@ class CellModel implements CodonModelParent {
     }
 
     void codonTick() {
-        energyLevel = max(energyLevel - energyCostPerTick, 0);
+        if (codonModels.size() != 0 ) {
+            energyLevel = max(energyLevel - energyCostPerTick, 0);
 
-        if (energyLevel > codonModels.get(currentCodon).getEnergyCost()) {
-            currentCodon = (currentCodon + 1) % codonModels.size();
-            codonModels.get(currentCodon).executeCodon();
+            if (energyLevel > codonModels.get(currentCodon).getEnergyCost()) {
+                currentCodon = (currentCodon + 1) % codonModels.size();
+                codonModels.get(currentCodon).executeCodon();
+            }
         }
     }
 
@@ -188,7 +190,7 @@ class CellModel implements CodonModelParent {
 
 
     void handleCollision(ParticleBaseModel particle) {
-        //wallHealth -= particle.cellWallHarmfulness;
+        wallHealth -= particle.cellWallHarmfulness;
     }
 
 }
