@@ -3,7 +3,5 @@ interface BodyModelClient {
 
     void onAddParticle(ParticleBaseModel particleModel);
 
-    void onRemoveCell(CellModel cellModel);
-
-    void onRemoveParticle(ParticleBaseModel particleModel);
+    void onSelectCell(CellModel selectedCell);
 }

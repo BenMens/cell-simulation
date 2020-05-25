@@ -15,4 +15,8 @@ class ParticleController implements ParticleModelClient, ParticleViewClient {
         particleView.unregisterClient(this);
         particleModel.unregisterClient(this);
     }
+
+
+    void onDestroy(ParticleBaseModel particleModel) {}
+
 }

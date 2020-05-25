@@ -36,36 +36,8 @@ class BodyController implements BodyModelClient, BodyViewClient {
  
         particleControllers.add(newParticleController);
     }
+    
 
-    void onRemoveCell(CellModel cellModel) {
-        CellController cellController = null;
+    void onSelectCell(CellModel selectedCell) {}
 
-        for(CellController controller : cellControllers) {
-            if (controller.cellModel == cellModel) {
-                cellController = controller;
-                break;
-            }
-        }
-
-        if (cellController != null) {
-            cellController.destroy();
-            cellControllers.remove(cellController);
-        }
-    }
-
-    void onRemoveParticle(ParticleBaseModel particleModel) {
-        ParticleController particleController = null;
-
-        for(ParticleController controller : particleControllers) {
-            if (controller.particleModel == particleModel) {
-                particleController = controller;
-                break;
-            }
-        }
-
-        if (particleController != null) {
-            particleController.destroy();
-            particleControllers.remove(particleController);
-        }
-    }
 }
