@@ -136,17 +136,22 @@ class CellView extends ViewBase {
     }
 
 
-    boolean afterMousePressedChildren(float viewMouseX, float viewMouseY) {
-        if (viewMouseX > 0 && viewMouseX < 100 && viewMouseY > 0 && viewMouseY < 100) {
-            if (cellModel.isSelected()) {
-                cellModel.unSelectCell();
+    boolean onMouseButtonEvent(float mouseX, float mouseY, boolean mousePressed, int mouseButton) {
+        if (mousePressed) {
+            if (boundsRect.contains(mouseX, mouseY)) {
+                if (cellModel.isSelected()) {
+                    cellModel.unSelectCell();
+                } else {
+                    cellModel.selectCell();
+                }
+                return true;
             } else {
-                cellModel.selectCell();
-            }
-            return true;
-        } else {
-            cellModel.unSelectCell();
-            return false;
-        }    
+                cellModel.unSelectCell();
+                return false;
+            }    
+        }
+
+        return false;
     }
+
 }

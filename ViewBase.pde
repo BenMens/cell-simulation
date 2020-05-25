@@ -3,7 +3,7 @@ import java.awt.geom.Rectangle2D;
 
 class ViewBase {
     private ViewBase parentView = null;
-    private ArrayList<ViewBase> childViews = new ArrayList<ViewBase>();
+    protected ArrayList<ViewBase> childViews = new ArrayList<ViewBase>();
 
     Rectangle2D.Float frameRect;  // View dimension in Parent coordinates
     Rectangle2D.Float boundsRect; // View dimension 
@@ -17,9 +17,9 @@ class ViewBase {
             this.frameRect = new Rectangle2D.Float(0, 0, width, height);
             this.boundsRect = new Rectangle2D.Float(0, 0, width, height);
         } else {
-            setParentView(parent);
             this.frameRect = new Rectangle2D.Float(0, 0, parent.boundsRect.width, parent.boundsRect.height);
             this.boundsRect = new Rectangle2D.Float(0, 0, parent.boundsRect.width, parent.boundsRect.height);
+            setParentView(parent);
         }
     }
 
@@ -42,6 +42,8 @@ class ViewBase {
 
                 if (!parentView.childViews.contains(this)) {
                     parentView.childViews.add(this);
+
+                    parentView.onChildViewAdded(this);
                 }
             }
         } 
@@ -233,42 +235,139 @@ class ViewBase {
     }
 
 
-    final boolean mousePressed(float parentViewMouseX, float parentViewMouseY) {
-        float viewMouseX = (parentViewMouseX - frameRect.x) / getScale().x + boundsRect.x;
-        float viewMouseY = (parentViewMouseY - frameRect.y) / getScale().y + boundsRect.y;
+    // Mouse move handling
+    final boolean processMouseMoveEvent(float mouseX, float mouseY, float pmouseX, float pmouseY) {
+        Rectangle2D.Float boundary = getClipBoundary();
+        boolean handled = false;
 
-        if (hasClip == false || boundsRect.contains(viewMouseX, viewMouseY)) {
-            if (beforeMousePressedChildren(viewMouseX, viewMouseY)) {
-                return true;
-            }
-
-            boolean mousePressedHandled = false;
-            for (ViewBase childView: childViews) {
-                mousePressedHandled = childView.mousePressed(viewMouseX, viewMouseY) | mousePressedHandled;
-            }
-            if (mousePressedHandled) {
-                return true;
-            }
-
-            if (afterMousePressedChildren(viewMouseX, viewMouseY)) {
-                return true;
+        for (ViewBase childView: childViews) {
+            handled = childView.processMouseMoveEvent(mouseX, mouseY, pmouseX, pmouseY);
+            if (handled) {
+                break;
             }
         }
 
+        if (!handled && (boundary == null || boundary.contains(mouseX, mouseY))) {
+            PVector mousePos = screenPosToViewPos(new PVector(mouseX, mouseY));
+            PVector pmousePos = screenPosToViewPos(new PVector(pmouseX, pmouseY));
+            handled = onMouseMove(mousePos.x, mousePos.y, pmousePos.x, pmousePos.y);
+        }
+        
+        return handled;
+    }
+
+
+    boolean onMouseMove(float mouseX, float mouseY, float pmouseX, float pmouseY) {
         return false;
     }
 
 
-    boolean beforeMousePressedChildren(float viewMouseX, float viewMouseY) {
+     // Mouse drag handling
+    final boolean processMouseDraggedEvent(float mouseX, float mouseY, float pmouseX, float pmouseY) {
+        Rectangle2D.Float boundary = getClipBoundary();
+        boolean handled = false;
+
+        for (ViewBase childView: childViews) {
+            handled = childView.processMouseDraggedEvent(mouseX, mouseY, pmouseX, pmouseY);
+            if (handled) {
+                break;
+            }
+        }
+
+        if (!handled && (boundary == null || boundary.contains(mouseX, mouseY))) {
+            PVector mousePos = screenPosToViewPos(new PVector(mouseX, mouseY));
+            PVector pmousePos = screenPosToViewPos(new PVector(pmouseX, pmouseY));
+            handled = onMouseDragged(mousePos.x, mousePos.y, pmousePos.x, pmousePos.y);
+        }
+        
+        return handled;
+    }
+
+
+    boolean onMouseDragged(float mouseX, float mouseY, float pmouseX, float pmouseY) {
         return false;
     }
 
 
-    boolean afterMousePressedChildren(float viewMouseX, float viewMouseY) {
+    // Mouse scroll handling
+    final boolean processScrollEvent(float mouseX, float mouseY, float mouseScroll) {
+        Rectangle2D.Float boundary = getClipBoundary();
+        boolean handled = false;
+
+        for (ViewBase childView: childViews) {
+            handled = childView.processScrollEvent(mouseX, mouseY, mouseScroll);
+            if (handled) {
+                break;
+            }
+        }
+
+        if (!handled && (boundary == null || boundary.contains(mouseX, mouseY))) {
+            PVector mousePos = screenPosToViewPos(new PVector(mouseX, mouseY));
+            handled = onScroll(mousePos.x, mousePos.y, mouseScroll);
+        }
+        
+        return handled;
+    }
+
+
+    boolean onScroll(float mouseX, float mouseY, float mouseScroll) {
         return false;
     }
 
-    void destroy() {
-      setParentView(null);
+
+    // Mouse press handling
+    final boolean processMouseButtonEvent(float mouseX, float mouseY, boolean mousePressed, int mouseButton) {
+        Rectangle2D.Float boundary = getClipBoundary();
+        boolean handled = false;
+
+        for (ViewBase childView: childViews) {
+            handled = childView.processMouseButtonEvent(mouseX, mouseY, mousePressed, mouseButton);
+            if (handled) {
+                break;
+            }
+        }
+
+        if (!handled && (boundary == null || boundary.contains(mouseX, mouseY))) {
+            PVector mousePos = screenPosToViewPos(new PVector(mouseX, mouseY));
+            handled = onMouseButtonEvent(mousePos.x, mousePos.y, mousePressed, mouseButton);
+        }
+        
+        return handled;
     }
+
+
+    boolean onMouseButtonEvent(float mouseX, float mouseY, boolean mousePressed, int mouseButton) {
+        return false;
+    }
+
+
+    // Mouse press handling
+    final boolean processKeyEvent(boolean pressed, int key) {
+        Rectangle2D.Float boundary = getClipBoundary();
+        boolean handled = false;
+
+        for (ViewBase childView: childViews) {
+            handled = childView.processKeyEvent(pressed, key);
+            if (handled) {
+                break;
+            }
+        }
+
+        if (!handled && (boundary == null || boundary.contains(mouseX, mouseY))) {
+            handled = onKeyEvent(pressed, key);
+        }
+        
+        return handled;
+    }
+
+
+    boolean onKeyEvent(boolean pressed, int key) {
+        return false;
+    }
+
+
+    // View child events
+    void onChildViewAdded(ViewBase clientView) {
+    }
+
 }

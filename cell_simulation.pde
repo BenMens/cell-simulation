@@ -5,10 +5,6 @@ BodyModel bodyModel;
 GuiController guiController;
 
 boolean[] keysPressed = new boolean[128];
-boolean pmousePressed;
-float relativeMousePositionX;
-float relativeMousePositionY;
-float mouseScroll;
 
 int lastTickTimestamp = millis();
 int millisPerTick = 20;
@@ -43,8 +39,6 @@ void draw() {
     noClip();
     background(255);
 
-    guiController.updateMovement();
-
     while (millis() - lastTickTimestamp >= millisPerTick) {
         bodyModel.tick();
         lastTickTimestamp += millisPerTick;
@@ -55,7 +49,7 @@ void draw() {
 
 
 void mouseWheel(MouseEvent event) {
-    mouseScroll -= event.getCount();
+    rootView.processScrollEvent(mouseX, mouseY, -event.getCount());
 }
 
 
@@ -63,20 +57,35 @@ void keyPressed() {
     if(key < keysPressed.length) {
         keysPressed[key] = true;
     }
+
+    rootView.processKeyEvent(true, key);
 }
 
 
 void keyReleased() {
-    if(keyPressed) {
-        if(key < keysPressed.length) {
-            keysPressed[key] = false;
-        }
-    } else {
-        keysPressed = new boolean[128];
+    if(key < keysPressed.length) {
+        keysPressed[key] = false;
     }
+
+    rootView.processKeyEvent(false, key);
 }
 
 
 void mousePressed() {
-    rootView.mousePressed(mouseX, mouseY);
+    rootView.processMouseButtonEvent(mouseX, mouseY, true, mouseButton);
+}
+
+
+void mouseReleased() {
+    rootView.processMouseButtonEvent(mouseX, mouseY, false, mouseButton);
+}
+
+
+void mouseMoved() {
+    rootView.processMouseMoveEvent(mouseX, mouseY, pmouseX, pmouseY);
+}
+
+
+void mouseDragged() {
+    rootView.processMouseDraggedEvent(mouseX, mouseY, pmouseX, pmouseY);
 }
