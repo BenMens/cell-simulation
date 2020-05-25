@@ -235,7 +235,10 @@ class ViewBase {
     }
 
 
+    // ########################################################################
     // Mouse move handling
+    // ########################################################################
+
     final boolean processMouseMoveEvent(float mouseX, float mouseY, float pmouseX, float pmouseY) {
         Rectangle2D.Float boundary = getClipBoundary();
         boolean handled = false;
@@ -262,7 +265,10 @@ class ViewBase {
     }
 
 
-     // Mouse drag handling
+    // ########################################################################
+    // Mouse drag handling
+    // ########################################################################
+
     final boolean processMouseDraggedEvent(float mouseX, float mouseY, float pmouseX, float pmouseY) {
         Rectangle2D.Float boundary = getClipBoundary();
         boolean handled = false;
@@ -289,7 +295,10 @@ class ViewBase {
     }
 
 
+    // ########################################################################
     // Mouse scroll handling
+    // ########################################################################
+
     final boolean processScrollEvent(float mouseX, float mouseY, float mouseScroll) {
         Rectangle2D.Float boundary = getClipBoundary();
         boolean handled = false;
@@ -315,7 +324,10 @@ class ViewBase {
     }
 
 
+    // ########################################################################
     // Mouse press handling
+    // ########################################################################
+
     final boolean processMouseButtonEvent(float mouseX, float mouseY, boolean mousePressed, int mouseButton) {
         Rectangle2D.Float boundary = getClipBoundary();
         boolean handled = false;
@@ -341,7 +353,10 @@ class ViewBase {
     }
 
 
+    // ########################################################################
     // Mouse press handling
+    // ########################################################################
+
     final boolean processKeyEvent(boolean pressed, int key) {
         Rectangle2D.Float boundary = getClipBoundary();
         boolean handled = false;
@@ -366,7 +381,10 @@ class ViewBase {
     }
 
 
+    // ########################################################################
     // View child events
+    // ########################################################################
+
     void onChildViewAdded(ViewBase clientView) {
     }
 

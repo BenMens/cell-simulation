@@ -10,4 +10,11 @@ class CodonController implements CodonModelClient, CodonViewClient {
         this.codonModel.registerClient(this);
         this.codonView.registerClient(this);
     }
+
+
+    void destroy() {
+        codonView.setParentView(null);
+        codonView.unregisterClient(this);
+        codonModel.unregisterClient(this);
+    }
 }
