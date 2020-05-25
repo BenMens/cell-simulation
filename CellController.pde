@@ -47,5 +47,6 @@ class CellController implements CellModelClient, CellViewClient {
         if (codonController != null) {
             codonController.destroy();
             codonControllers.remove(codonController);
-    }
+      }
+   }
 }
