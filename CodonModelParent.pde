@@ -10,6 +10,9 @@ interface CodonModelParent {
     PVector getPosition();
 
 
+    void replaceCodon(CodonBaseModel oldCodon, CodonBaseModel newCodon);
+
+
     float getWallHealth();
 
     void setWallHealth(float health);
