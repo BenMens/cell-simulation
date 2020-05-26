@@ -14,7 +14,11 @@ class CellModel implements CodonModelParent {
     private float energyLevel = 1;
     float energyCostPerTick = 0.01;
 
-    int currentCodon;
+    int currentCodon = 0;
+    float executionHandPosition = 0;
+    boolean isExecutionHandPointingOutward = false;
+    float nextExecutionHandPosition = 0;
+    boolean nextIsExecutionHandPointingOutward = false;
 
     boolean edited = false;
 
