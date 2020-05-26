@@ -97,7 +97,8 @@ class CellModel implements CodonModelParent {
             ticksSinceLastCodonTick++;
         }
 
-        for(CodonBaseModel codonModel : codonModels) {
+        ArrayList<CodonBaseModel> codonModelsCopy = (ArrayList<CodonBaseModel>)codonModels.clone();
+        for(CodonBaseModel codonModel : codonModelsCopy) {
             codonModel.tick();
         }
 
@@ -142,6 +143,21 @@ class CellModel implements CodonModelParent {
     }
 
 
+    void handleCollision(ParticleBaseModel particle) {
+        wallHealth -= particle.cellWallHarmfulness;
+    }
+
+
+    void replaceCodon(CodonBaseModel oldCodon, CodonBaseModel newCodon) {
+        oldCodon.isDead = true;
+        codonModels.remove(newCodon);
+        codonModels.add(codonModels.indexOf(oldCodon), newCodon);
+    }
+
+
+    // ################################################################################################################################################
+    // wall health getters and setters
+    // ################################################################################################################################################
     float getWallHealth() {
         return wallHealth;
     }
@@ -159,6 +175,9 @@ class CellModel implements CodonModelParent {
     }
 
 
+    // ################################################################################################################################################
+    // energy level getters and setters
+    // ################################################################################################################################################
     float getEnergyLevel() {
         return energyLevel;
     }
@@ -176,6 +195,9 @@ class CellModel implements CodonModelParent {
     }
 
 
+    // ################################################################################################################################################
+    // functions for the cell selection
+    // ################################################################################################################################################
     boolean isSelected() {
         return bodyModel.getSelectedCell() == this;
     }
@@ -191,10 +213,4 @@ class CellModel implements CodonModelParent {
     void unSelectCell() {
         bodyModel.unSelectCell(this);
     }
-
-
-    void handleCollision(ParticleBaseModel particle) {
-        wallHealth -= particle.cellWallHarmfulness;
-    }
-
 }
