@@ -17,4 +17,8 @@ class CodonController implements CodonModelClient, CodonViewClient {
         codonView.unregisterClient(this);
         codonModel.unregisterClient(this);
     }
+
+    void onDestroy(CodonBaseModel codonModel) {
+        this.destroy();
+    }
 }

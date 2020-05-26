@@ -2,10 +2,6 @@ class BodyController implements BodyModelClient, BodyViewClient {
     BodyModel bodyModel;
     BodyView bodyView;
 
-    ArrayList<CellController> cellControllers = new ArrayList<CellController>();
-
-    ArrayList<ParticleController> particleControllers = new ArrayList<ParticleController>();
-
 
     BodyController(ViewBase parentView, BodyModel bodyModel) {
         this.bodyModel = bodyModel;
@@ -21,23 +17,16 @@ class BodyController implements BodyModelClient, BodyViewClient {
         for (int i = 0; i < 50; i++) {
             ParticleBaseModel particleModel = new ParticleWasteModel(bodyModel);
         }
-
     }
 
 
     void onAddCell(CellModel cellModel) {
-        CellController newCellController = new CellController(bodyView.cellLayerView, cellModel);
-
-        cellControllers.add(newCellController);
+        new CellController(bodyView.cellLayerView, cellModel);
     }
 
     void onAddParticle(ParticleBaseModel particleModel) { 
-        ParticleController newParticleController = new ParticleController(bodyView.particleLayerView, particleModel);
- 
-        particleControllers.add(newParticleController);
+        new ParticleController(bodyView.particleLayerView, particleModel);
     }
     
-
     void onSelectCell(CellModel selectedCell) {}
-
 }
