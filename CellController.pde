@@ -2,12 +2,11 @@ class CellController implements CellModelClient, CellViewClient {
     CellModel cellModel;
     CellView cellView;
 
-    ArrayList<CodonController> codonControllers = new ArrayList<CodonController>();
-
-
     CellController(ViewBase parentView, CellModel cellModel) {
         this.cellModel = cellModel;
         this.cellView = new CellView(parentView, cellModel);
+
+        this.cellView.frameRect = new Rectangle2D.Float(cellModel.position.x * 100, cellModel.position.y * 100, 100, 100);
 
         this.cellModel.registerClient(this);
         this.cellView.registerClient(this);
@@ -22,24 +21,14 @@ class CellController implements CellModelClient, CellViewClient {
 
 
     void onAddCodon(CodonBaseModel codonModel) {
-        CodonController newCodonController = new CodonController(cellView ,codonModel);
+        new CodonController(cellView ,codonModel);
+    }
 
-        codonControllers.add(newCodonController);
+
+    void onDestroy(CellModel cellModel) {
+        destroy();
     }
 
     void onRemoveCodon(CodonBaseModel codonModel) {
-        CodonController codonController = null;
-
-        for(CodonController controller : codonControllers) {
-            if (controller.codonModel == codonModel) {
-                codonController = controller;
-                break;
-            }
-        }
-
-        if (codonController != null) {
-            codonController.destroy();
-            codonControllers.remove(codonController);
-        }
     }
 }

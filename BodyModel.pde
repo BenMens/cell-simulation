@@ -36,38 +36,31 @@ class BodyModel {
     void addCell(CellModel cellModel) {
         cellModels.add(cellModel);
 
-        for(BodyModelClient client: clients) {
+        for(BodyModelClient client: new ArrayList<BodyModelClient>(clients)) {
             client.onAddCell(cellModel);
         }
-    }
-
-    void addParticle(ParticleBaseModel particleModel) {
-
-        particleModels.add(particleModel);
-
-        for(BodyModelClient client: clients) {
-            client.onAddParticle(particleModel);
-        }        
     }
 
     void removeCell(CellModel cellModel) {
         cellModels.remove(cellModel);
 
         if (selectedCell == cellModel) {
-            selectedCell = null;
+            unSelectCell(selectedCell);
         }
+    }
 
-        for(BodyModelClient client: clients) {
-            client.onRemoveCell(cellModel);
+
+    void addParticle(ParticleBaseModel particleModel) {
+
+        particleModels.add(particleModel);
+
+        for(BodyModelClient client: new ArrayList<BodyModelClient>(clients)) {
+            client.onAddParticle(particleModel);
         }
     }
 
     void removeParticle(ParticleBaseModel particleModel) {
         particleModels.remove(particleModel);
-
-        for(BodyModelClient client: clients) {
-            client.onRemoveParticle(particleModel);
-        }
     }
 
 
@@ -75,13 +68,23 @@ class BodyModel {
         return selectedCell;
     }
 
+
     void selectCell(CellModel cell) {
         selectedCell = cell;
+
+        for(BodyModelClient client: new ArrayList<BodyModelClient>(clients)) {
+            client.onSelectCell(selectedCell);
+        }
     }
+
 
     void unSelectCell(CellModel cell) {
         if (cell == selectedCell) {
             selectedCell = null;
+
+        for(BodyModelClient client: new ArrayList<BodyModelClient>(clients)) {
+                client.onSelectCell(selectedCell);
+            }        
         }
     }
 

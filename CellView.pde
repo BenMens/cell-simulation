@@ -19,7 +19,6 @@ class CellView extends ViewBase {
         
         this.cellModel = cellModel;
 
-        this.frameRect = new Rectangle2D.Float(cellModel.position.x * 100, cellModel.position.y * 100, 100, 100);
         this.boundsRect = new Rectangle2D.Float(0, 0, 100, 100);
         
         this.hasClip = true;

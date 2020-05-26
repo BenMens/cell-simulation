@@ -95,6 +95,10 @@ abstract class CodonBaseModel {
     void cleanUpTick() {
         if (isDead) {
             parentModel.removeCodon(this);
+
+            for (CodonModelClient client: new ArrayList<CodonModelClient>(clients)) {
+                client.onDestroy(this);
+            }
         }
     }
 

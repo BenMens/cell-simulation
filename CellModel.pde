@@ -52,7 +52,7 @@ class CellModel implements CodonModelParent {
     void addCodon(CodonBaseModel newCodonModel) {
         codonModels.add(newCodonModel);
 
-        for(CellModelClient client : clients) {
+        for(CellModelClient client : new ArrayList<CellModelClient>(clients)) {
             client.onAddCodon(newCodonModel);
         }
 
@@ -131,6 +131,10 @@ class CellModel implements CodonModelParent {
 
                 codonModel.isDead = true;
                 codonModel.cleanUpTick();
+            }
+
+            for(CellModelClient client : new ArrayList<CellModelClient>(clients)) {
+                client.onDestroy(this);
             }
 
             bodyModel.removeCell(this);
