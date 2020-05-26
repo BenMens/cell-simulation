@@ -28,7 +28,8 @@ class CellEditorView extends ViewBase {
     void beforeDrawChildren() {
         background(10, 10, 10);
 
-        text("Hello Strings!",10,10);
+        text(String.format("Energy: %.1f",this.cellModel.energyLevel * 100), 10, 10);
+        text(String.format("WallHealth: %.1f",this.cellModel.wallHealth * 100), 10, 30);
     }
 
 }
