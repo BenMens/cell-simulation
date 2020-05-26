@@ -71,7 +71,7 @@ class ZoomView extends ViewBase {
 
 
     void updateMinMaxScale() {
-        if (zoomView != null && !zoomView.frameRect.equals(zoomViewFrameRect)) {
+        if (zoomView != null && (zoomViewFrameRect == null || zoomView.frameRect.width != zoomViewFrameRect.width || zoomView.frameRect.height != zoomViewFrameRect.height)) {
             zoomViewFrameRect = (Rectangle2D.Float)zoomView.frameRect.clone();
 
             scaleMin = frameRect.width / zoomView.frameRect.width;
@@ -85,8 +85,8 @@ class ZoomView extends ViewBase {
     void clipMovement() {
         PVector scale = zoomView.getScale();
 
-        zoomView.frameRect.x = max(zoomView.frameRect.x, -zoomView.frameRect.width * scale.x + 700);
-        zoomView.frameRect.y = max(zoomView.frameRect.y, -zoomView.frameRect.height * scale.y + 700);
+        zoomView.frameRect.x = max(zoomView.frameRect.x, -zoomView.frameRect.width * scale.x + frameRect.width);
+        zoomView.frameRect.y = max(zoomView.frameRect.y, -zoomView.frameRect.height * scale.y + frameRect.height);
 
         zoomView.frameRect.x = min(zoomView.frameRect.x, 0);
         zoomView.frameRect.y = min(zoomView.frameRect.y, 0);        

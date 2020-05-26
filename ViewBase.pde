@@ -8,7 +8,7 @@ class ViewBase {
     Rectangle2D.Float frameRect;  // View dimension in Parent coordinates
     Rectangle2D.Float boundsRect; // View dimension 
 
-    boolean hasClip = false;
+    boolean shouldClip = false;
     boolean isVisible = true;
 
 
@@ -210,7 +210,7 @@ class ViewBase {
         Rectangle2D.Float viewClip = null;
         Rectangle2D.Float parentViewClip = null;
 
-        if (hasClip) {
+        if (shouldClip) {
             PVector upperLeft = viewPosToScreenPos(new PVector(boundsRect.x, boundsRect.y));
             PVector lowerRight = viewPosToScreenPos(new PVector(boundsRect.width, boundsRect.height));
 
