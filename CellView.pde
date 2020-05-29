@@ -45,6 +45,19 @@ class CellView extends ViewBase {
     }
 
 
+    float smoothLerp(float start, float end, float startLerping, float stopLerping, float fraction) {
+        float lerpFraction = 1;
+
+        if (fraction < startLerping) {
+            lerpFraction = 0;
+        } else if (fraction < stopLerping) {
+            lerpFraction = 1 / (1 + exp(-map(fraction, startLerping, stopLerping, -6, 6)));
+        }
+
+        return lerp(start, end, lerpFraction);
+    }
+
+
     void beforeDrawChildren() {
         float screenSize = composedScale().x * 100;
         makeChildsInvisible();
@@ -93,16 +106,11 @@ class CellView extends ViewBase {
                     endShape(CLOSE);
 
                     if(screenSize > 75) {
+                        float progressToNextCodonTick = norm(cellModel.ticksSinceLastCodonTick, 0, cellModel.ticksPerCodonTick);
+
+                        // calculating codon hand angle
                         float codonHandAngle = 0;
                         if (cellModel.codonModels.size() != 0) {
-                            float progressToNextCodonTick = norm(cellModel.ticksSinceLastCodonTick, 0, cellModel.ticksPerCodonTick);
-                            float codonHandPositionBetweenCodon = 1;
-                            if (progressToNextCodonTick < 0.1) {
-                                codonHandPositionBetweenCodon = 0;
-                            } else if (progressToNextCodonTick < 0.8) {
-                                codonHandPositionBetweenCodon = 1 / (1 + exp(-map(progressToNextCodonTick, 0, 1, -6, 6)));
-                            }
-    
                             float currentCodonAngle = cellModel.codonModels.get(cellModel.currentCodon).segmentAngleInCodonCircle;
                             float nextCodonAngle;
                             if (cellModel.currentCodon + 1 == cellModel.codonModels.size()) {
@@ -111,9 +119,10 @@ class CellView extends ViewBase {
                                 nextCodonAngle = cellModel.codonModels.get(cellModel.currentCodon + 1).segmentAngleInCodonCircle;
                             }
     
-                            codonHandAngle = lerp(currentCodonAngle, nextCodonAngle, codonHandPositionBetweenCodon);
+                            codonHandAngle = smoothLerp(currentCodonAngle, nextCodonAngle, 0.1, 0.8, progressToNextCodonTick);
                         }
 
+                        // drawing codon hand
                         float x1 = 50 + sin(codonHandAngle - handAnchorAngle) * HAND_CIRCLE_RADIUS;
                         float y1 = 50 - cos(codonHandAngle - handAnchorAngle) * HAND_CIRCLE_RADIUS;
 
@@ -125,6 +134,34 @@ class CellView extends ViewBase {
 
                         noStroke();
                         fill(200, 0, 0);
+                        triangle(x1, y1, x2, y2, x3, y3);
+
+                        // calculating execution hand angle
+                        float executeHandAngle = 0;
+                        if (cellModel.codonModels.size() != 0) {
+                            float previousCodonAngle = cellModel.codonModels.get(cellModel.previousExecuteHandPosition).segmentAngleInCodonCircle;
+                            float currentCodonAngle = cellModel.codonModels.get(cellModel.executeHandPosition).segmentAngleInCodonCircle;
+    
+                            executeHandAngle = smoothLerp(previousCodonAngle, currentCodonAngle, 0.05, 0.95, progressToNextCodonTick);
+                        }
+
+                        // calculating execution hand pointer radius
+                        float previousExecuteHandPointerRadius = (cellModel.previousIsExecuteHandPointingOutward) ? handPointerRadiusOutward : handPointerRadiusInward;
+                        float currentExecuteHandPointerRadius = (cellModel.isExecuteHandPointingOutward) ? handPointerRadiusOutward : handPointerRadiusInward;
+                        float executeHandPointerRadius = smoothLerp(previousExecuteHandPointerRadius, currentExecuteHandPointerRadius, 0.05, 0.95, progressToNextCodonTick);
+
+                        // drawing execution hand
+                        x1 = 50 + sin(executeHandAngle - handAnchorAngle) * HAND_CIRCLE_RADIUS;
+                        y1 = 50 - cos(executeHandAngle - handAnchorAngle) * HAND_CIRCLE_RADIUS;
+
+                        x2 = 50 + sin(executeHandAngle + handAnchorAngle) * HAND_CIRCLE_RADIUS;
+                        y2 = 50 - cos(executeHandAngle + handAnchorAngle) * HAND_CIRCLE_RADIUS;
+
+                        x3 = 50 + sin(executeHandAngle) * executeHandPointerRadius;
+                        y3 = 50 - cos(executeHandAngle) * executeHandPointerRadius;
+
+                        noStroke();
+                        fill(0, 200, 0);
                         triangle(x1, y1, x2, y2, x3, y3);
                     }
 

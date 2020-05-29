@@ -10,6 +10,12 @@ interface CodonModelParent {
     PVector getPosition();
 
 
+    int getCurrentCodon();
+
+    int getExecuteHandPosition();
+
+    boolean getIsExecuteHandPointingOutward();
+
     void replaceCodon(CodonBaseModel oldCodon, CodonBaseModel newCodon);
 
 
