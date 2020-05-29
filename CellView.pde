@@ -21,7 +21,7 @@ class CellView extends ViewBase {
 
         this.boundsRect = new Rectangle2D.Float(0, 0, 100, 100);
         
-        this.hasClip = true;
+        this.shouldClip = true;
 
         this.handAnchorAngle = asin(HAND_SIZE / 2 / HAND_CIRCLE_RADIUS);
 

@@ -16,6 +16,8 @@ interface CodonModelParent {
 
     boolean getIsExecuteHandPointingOutward();
 
+    void replaceCodon(CodonBaseModel oldCodon, CodonBaseModel newCodon);
+
 
     float getWallHealth();
 

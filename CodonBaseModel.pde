@@ -17,7 +17,7 @@ abstract class CodonBaseModel {
 
     float baseEnergyCost = 0.01;
     float degradation = 0;
-    float degradationRate = 0.0003;
+    float degradationRate = 0.0002;
 
     protected color mainColor = color(0);
     protected HashMap<String, Integer> secondaryColors = new HashMap<String, Integer>();
@@ -86,8 +86,10 @@ abstract class CodonBaseModel {
 
 
     void tick() {
-        degradation += random(degradationRate * 2);
-        if (degradation >= 1) {
+        degradation = min(degradation + random(degradationRate * 2), 1);
+
+        if (degradation >= 1 && !(this instanceof CodonNoneModel)) {
+            parentModel.replaceCodon(this, new CodonNoneModel(parentModel));
         }
     }
 
