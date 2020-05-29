@@ -15,10 +15,10 @@ class CellModel implements CodonModelParent {
     float energyCostPerTick = 0.01;
 
     int currentCodon = 0;
-    float executionHandPosition = 0;
-    boolean isExecutionHandPointingOutward = false;
-    float nextExecutionHandPosition = 0;
-    boolean nextIsExecutionHandPointingOutward = false;
+    int executeHandPosition = 0;
+    boolean isExecuteHandPointingOutward = false;
+    int previousExecuteHandPosition = 0;
+    boolean previousIsExecuteHandPointingOutward = false;
 
     boolean edited = false;
 
@@ -63,6 +63,8 @@ class CellModel implements CodonModelParent {
         for (CodonBaseModel codonModel : codonModels) {
             codonModel.updatePosition();
         }
+
+        executeHandPosition = floor(random(codonModels.size()));
     }
 
     void removeCodon(CodonBaseModel oldCodonModel) {
@@ -79,16 +81,11 @@ class CellModel implements CodonModelParent {
         for (CodonBaseModel codonModel : codonModels) {
             codonModel.updatePosition();
         }
-    }
 
-
-    ArrayList<CodonBaseModel> getCodonList() {
-        return codonModels;
-    }
-
-
-    PVector getPosition() {
-        return position;
+        if(previousExecuteHandPosition >= codonModels.size() || executeHandPosition >= codonModels.size()) {
+            previousExecuteHandPosition = floor(random(codonModels.size()));
+            executeHandPosition = floor(random(codonModels.size()));
+        }
     }
 
 
@@ -119,6 +116,9 @@ class CellModel implements CodonModelParent {
                 codonModels.get(currentCodon).executeCodon();
             }
         }
+
+        previousExecuteHandPosition = executeHandPosition;
+        previousIsExecuteHandPointingOutward = isExecuteHandPointingOutward;
     }
 
 
@@ -146,20 +146,43 @@ class CellModel implements CodonModelParent {
     }
 
 
+    ArrayList<CodonBaseModel> getCodonList() {
+        return codonModels;
+    }
+
+
+    PVector getPosition() {
+        return position;
+    }
+
+
+    int getCurrentCodon() {
+        return currentCodon;
+    }
+
+    int getExecuteHandPosition() {
+        return executeHandPosition;
+    }
+
+    boolean getIsExecuteHandPointingOutward() {
+        return isExecuteHandPointingOutward;
+    }
+
+
     float getWallHealth() {
         return wallHealth;
     }
 
     void setWallHealth(float health) {
-        wallHealth = health;
+        wallHealth = constrain(health, 0, 1);
     }
 
     void addWallHealth(float health) {
-        wallHealth += health;
+        wallHealth = constrain(wallHealth + health, 0, 1);
     }
 
     void subtractWallHealth(float health) {
-        wallHealth -= health;
+        wallHealth = constrain(wallHealth - health, 0, 1);
     }
 
 
@@ -168,15 +191,15 @@ class CellModel implements CodonModelParent {
     }
 
     void setEnergyLevel(float energy) {
-        energyLevel = energy;
+        energyLevel = constrain(energy, 0, 1);
     }
 
     void addEnergyLevel(float energy) {
-        energyLevel += energy;
+        energyLevel = constrain(energyLevel + energy, 0, 1);
     }
 
     void subtractEnergyLevel(float energy) {
-        energyLevel -= energy;
+        energyLevel = constrain(energyLevel - energy, 0, 1);
     }
 
 

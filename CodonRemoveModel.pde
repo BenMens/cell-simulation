@@ -16,33 +16,53 @@ class CodonRemoveModel extends CodonBaseModel {
 
     float getEnergyCost() {
         switch (codonParameter) {
+            case "wall" :
+                if (parentModel.getIsExecuteHandPointingOutward()) {
+                    return baseEnergyCost;
+                } else {
+                    return 0;
+                }
+            case "energy" :
+                if (parentModel.getIsExecuteHandPointingOutward()) {
+                    return 0;
+                } else {
+                    return baseEnergyCost;
+                }
             case "codons" :
-                ArrayList<CodonBaseModel> codonList = parentModel.getCodonList();
-                return baseEnergyCost + baseEnergyCost * min(abs(removeCodonsFirstPoint - removeCodonsSecondPoint), codonList.size());
-            default :
-                return baseEnergyCost;
+                if (parentModel.getIsExecuteHandPointingOutward()) {
+                    return 0;
+                } else {
+                    ArrayList<CodonBaseModel> codonList = parentModel.getCodonList();
+                    return baseEnergyCost + baseEnergyCost * min(abs(removeCodonsFirstPoint - removeCodonsSecondPoint), codonList.size());
+                }
         }
+
+        return 0;
     }
 
 
     void executeCodon() {
         switch (codonParameter) {
             case "wall":
-                parentModel.setWallHealth(0);
+                if (parentModel.getIsExecuteHandPointingOutward()) {
+                    parentModel.setWallHealth(0);
+                }
                 break;
             case "energy":
-                parentModel.setEnergyLevel(0);
+                if (!parentModel.getIsExecuteHandPointingOutward()) {
+                    parentModel.setEnergyLevel(0);
+                }
                 break;
             case "codons":
-                ArrayList<CodonBaseModel> codonList = parentModel.getCodonList();
-                int index = codonList.indexOf(this);
-                for (int i = index + min(removeCodonsFirstPoint, removeCodonsSecondPoint); i <= index + max(removeCodonsFirstPoint, removeCodonsSecondPoint); i++) {
-                    codonList.get(abs(i % codonList.size())).isDead = true;
+                if (!parentModel.getIsExecuteHandPointingOutward()) {
+                    ArrayList<CodonBaseModel> codonList = parentModel.getCodonList();
+                    int index = parentModel.getExecuteHandPosition();
+                    for (int i = index + min(removeCodonsFirstPoint, removeCodonsSecondPoint); i <= index + max(removeCodonsFirstPoint, removeCodonsSecondPoint); i++) {
+                        codonList.get(abs(i % codonList.size())).isDead = true;
+                    }
                 }
                 break;
         }
-        if (codonParameter != "none") {
-            parentModel.subtractEnergyLevel(getEnergyCost());
-        }
+        parentModel.subtractEnergyLevel(getEnergyCost());
     }
 }

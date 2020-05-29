@@ -10,6 +10,13 @@ interface CodonModelParent {
     PVector getPosition();
 
 
+    int getCurrentCodon();
+
+    int getExecuteHandPosition();
+
+    boolean getIsExecuteHandPointingOutward();
+
+
     float getWallHealth();
 
     void setWallHealth(float health);

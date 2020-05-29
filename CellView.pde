@@ -45,6 +45,19 @@ class CellView extends ViewBase {
     }
 
 
+    float smoothLerp(float start, float end, float startLerping, float stopLerping, float fraction) {
+        float lerpFraction = 1;
+
+        if (fraction < startLerping) {
+            lerpFraction = 0;
+        } else if (fraction < stopLerping) {
+            lerpFraction = 1 / (1 + exp(-map(fraction, startLerping, stopLerping, -6, 6)));
+        }
+
+        return lerp(start, end, lerpFraction);
+    }
+
+
     void beforeDrawChildren() {
         float screenSize = composedScale().x * 100;
         makeChildsInvisible();
@@ -98,13 +111,6 @@ class CellView extends ViewBase {
                         // calculating codon hand angle
                         float codonHandAngle = 0;
                         if (cellModel.codonModels.size() != 0) {
-                            float codonHandPositionBetweenCodon = 1;
-                            if (progressToNextCodonTick < 0.1) {
-                                codonHandPositionBetweenCodon = 0;
-                            } else if (progressToNextCodonTick < 0.8) {
-                                codonHandPositionBetweenCodon = 1 / (1 + exp(-map(progressToNextCodonTick, 0, 1, -6, 6)));
-                            }
-    
                             float currentCodonAngle = cellModel.codonModels.get(cellModel.currentCodon).segmentAngleInCodonCircle;
                             float nextCodonAngle;
                             if (cellModel.currentCodon + 1 == cellModel.codonModels.size()) {
@@ -113,7 +119,7 @@ class CellView extends ViewBase {
                                 nextCodonAngle = cellModel.codonModels.get(cellModel.currentCodon + 1).segmentAngleInCodonCircle;
                             }
     
-                            codonHandAngle = lerp(currentCodonAngle, nextCodonAngle, codonHandPositionBetweenCodon);
+                            codonHandAngle = smoothLerp(currentCodonAngle, nextCodonAngle, 0.1, 0.8, progressToNextCodonTick);
                         }
 
                         // drawing codon hand
@@ -131,35 +137,28 @@ class CellView extends ViewBase {
                         triangle(x1, y1, x2, y2, x3, y3);
 
                         // calculating execution hand angle
-                        float executionHandPositionBetweenAngles = 1;
-                        if (progressToNextCodonTick < 0.1) {
-                            executionHandPositionBetweenAngles = 0;
-                        } else if (progressToNextCodonTick < 0.8) {
-                            executionHandPositionBetweenAngles = 1 / (1 + exp(-map(progressToNextCodonTick, 0, 1, -6, 6)));
+                        float executeHandAngle = 0;
+                        if (cellModel.codonModels.size() != 0) {
+                            float previousCodonAngle = cellModel.codonModels.get(cellModel.previousExecuteHandPosition).segmentAngleInCodonCircle;
+                            float currentCodonAngle = cellModel.codonModels.get(cellModel.executeHandPosition).segmentAngleInCodonCircle;
+    
+                            executeHandAngle = smoothLerp(previousCodonAngle, currentCodonAngle, 0.05, 0.95, progressToNextCodonTick);
                         }
-                        float executionHandAngle = lerp(cellModel.executionHandPosition, cellModel.nextExecutionHandPosition, executionHandPositionBetweenAngles);
 
                         // calculating execution hand pointer radius
-                        float executionHandRotationBetweenAngles = 1;
-                        if (progressToNextCodonTick < 0.1) {
-                            executionHandRotationBetweenAngles = 0;
-                        } else if (progressToNextCodonTick < 0.8) {
-                            executionHandRotationBetweenAngles = 1 / (1 + exp(-map(progressToNextCodonTick, 0, 1, -6, 6)));
-                        }
-
-                        float currentExecutionHandPointerRadius = (cellModel.isExecutionHandPointingOutward) ? handPointerRadiusOutward : handPointerRadiusInward;
-                        float nextExecutionHandPointerRadius = (cellModel.nextIsExecutionHandPointingOutward) ? handPointerRadiusOutward : handPointerRadiusInward;
-                        float executionHandPointerRadius = lerp(currentExecutionHandPointerRadius, nextExecutionHandPointerRadius, executionHandRotationBetweenAngles);
+                        float previousExecuteHandPointerRadius = (cellModel.previousIsExecuteHandPointingOutward) ? handPointerRadiusOutward : handPointerRadiusInward;
+                        float currentExecuteHandPointerRadius = (cellModel.isExecuteHandPointingOutward) ? handPointerRadiusOutward : handPointerRadiusInward;
+                        float executeHandPointerRadius = smoothLerp(previousExecuteHandPointerRadius, currentExecuteHandPointerRadius, 0.05, 0.95, progressToNextCodonTick);
 
                         // drawing execution hand
-                        x1 = 50 + sin(executionHandAngle - handAnchorAngle) * HAND_CIRCLE_RADIUS;
-                        y1 = 50 - cos(executionHandAngle - handAnchorAngle) * HAND_CIRCLE_RADIUS;
+                        x1 = 50 + sin(executeHandAngle - handAnchorAngle) * HAND_CIRCLE_RADIUS;
+                        y1 = 50 - cos(executeHandAngle - handAnchorAngle) * HAND_CIRCLE_RADIUS;
 
-                        x2 = 50 + sin(executionHandAngle + handAnchorAngle) * HAND_CIRCLE_RADIUS;
-                        y2 = 50 - cos(executionHandAngle + handAnchorAngle) * HAND_CIRCLE_RADIUS;
+                        x2 = 50 + sin(executeHandAngle + handAnchorAngle) * HAND_CIRCLE_RADIUS;
+                        y2 = 50 - cos(executeHandAngle + handAnchorAngle) * HAND_CIRCLE_RADIUS;
 
-                        x3 = 50 + sin(executionHandAngle) * executionHandPointerRadius;
-                        y3 = 50 - cos(executionHandAngle) * executionHandPointerRadius;
+                        x3 = 50 + sin(executeHandAngle) * executeHandPointerRadius;
+                        y3 = 50 - cos(executeHandAngle) * executeHandPointerRadius;
 
                         noStroke();
                         fill(0, 200, 0);
