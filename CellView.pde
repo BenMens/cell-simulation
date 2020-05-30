@@ -143,6 +143,9 @@ class CellView extends ViewBase {
                         if (cellModel.codonModels.size() != 0) {
                             float previousCodonAngle = cellModel.codonModels.get(cellModel.previousExecuteHandPosition).segmentAngleInCodonCircle;
                             float currentCodonAngle = cellModel.codonModels.get(cellModel.executeHandPosition).segmentAngleInCodonCircle;
+                            if (currentCodonAngle < previousCodonAngle) {
+                                currentCodonAngle += TWO_PI;
+                            }
     
                             executeHandAngle = smoothLerp(previousCodonAngle, currentCodonAngle, 0.05, 0.95, progressToNextCodonTick);
                         }
