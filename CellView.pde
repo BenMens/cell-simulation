@@ -105,18 +105,20 @@ class CellView extends ViewBase {
                     vertex(50 - 0.15 * energySymbolSize, 50 - 0.15 * energySymbolSize);
                     endShape(CLOSE);
 
-                    if(screenSize > 75) {
+                    if(screenSize > 80) {
                         float progressToNextCodonTick = norm(cellModel.ticksSinceLastCodonTick, 0, cellModel.ticksPerCodonTick);
+                        ArrayList<CodonBaseModel> codonModels = cellModel.codonModels;
 
                         // calculating codon hand angle
                         float codonHandAngle = 0;
                         if (cellModel.codonModels.size() != 0) {
-                            float currentCodonAngle = cellModel.codonModels.get(cellModel.currentCodon).segmentAngleInCodonCircle;
-                            float nextCodonAngle;
-                            if (cellModel.currentCodon + 1 == cellModel.codonModels.size()) {
-                                nextCodonAngle = cellModel.codonModels.get(0).segmentAngleInCodonCircle + TWO_PI;
-                            } else {
-                                nextCodonAngle = cellModel.codonModels.get(cellModel.currentCodon + 1).segmentAngleInCodonCircle;
+                            float currentCodonAngle = codonModels.get(cellModel.currentCodon % codonModels.size()).segmentAngleInCodonCircle;
+                            float nextCodonAngle = codonModels.get((cellModel.currentCodon + 1) % codonModels.size()).segmentAngleInCodonCircle;
+                            if (cellModel.currentCodon >= codonModels.size()) {
+                                currentCodonAngle += TWO_PI;
+                            }
+                            if (cellModel.currentCodon + 1 >= codonModels.size()) {
+                                nextCodonAngle += TWO_PI;
                             }
     
                             codonHandAngle = smoothLerp(currentCodonAngle, nextCodonAngle, 0.1, 0.8, progressToNextCodonTick);
