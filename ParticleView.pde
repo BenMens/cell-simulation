@@ -12,16 +12,8 @@ class ParticleView extends ViewBase {
         
         this.particleModel = particleModel;
 
-        String imageName = "";
- 
-        if (particleModel instanceof ParticleFoodModel) {
-            imageName = "food";
-        } else if (particleModel instanceof ParticleWasteModel) {
-            imageName = "waste";
-        }
-
         for (int i = 0; i < 7; i++) {
-            images[i] = ImageCache.getImage(applet, "images/" + imageName + "_" + String.format("%d", (long)Math.pow(2, i+3)) + ".png");        
+            images[i] = ImageCache.getImage(applet, "images/" + particleModel.getImageName() + "_" + String.format("%d", (long)Math.pow(2, i+3)) + ".png");        
         }
     }
 

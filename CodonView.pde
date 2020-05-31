@@ -11,8 +11,6 @@ class CodonView extends ViewBase {
     ArrayList<CodonViewClient> clients = new ArrayList<CodonViewClient>();
     CodonBaseModel codonModel;
 
-    float segmentCircleBetweenRadius;
-
 
     CodonView(ViewBase parentView, CodonBaseModel codonModel) {
         super(parentView);

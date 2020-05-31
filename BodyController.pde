@@ -11,14 +11,6 @@ class BodyController extends ControllerBase implements BodyModelClient, BodyView
 
         this.bodyModel.registerClient(this);
         this.bodyView.registerClient(this);
-
-        for (int i = 0; i < 50; i++) {
-            ParticleBaseModel particleModel = new ParticleFoodModel(bodyModel);
-        }   
-
-        for (int i = 0; i < 50; i++) {
-            ParticleBaseModel particleModel = new ParticleWasteModel(bodyModel);
-        }
     }
 
 
