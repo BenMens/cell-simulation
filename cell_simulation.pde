@@ -6,9 +6,6 @@ GuiController guiController;
 
 boolean[] keysPressed = new boolean[128];
 
-int lastTickTimestamp = millis();
-int millisPerTick = 20;
-
 ParticleFactory particleFactory = new ParticleFactory();
 
 void setup() {
@@ -33,7 +30,6 @@ void setup() {
     }
 
     guiController = new GuiController(null, rootView, bodyModel);
-    lastTickTimestamp = millis();
 
     createFont("courrier.dfont", 24);
 }
@@ -43,10 +39,7 @@ void draw() {
     noClip();
     background(255);
 
-    while (millis() - lastTickTimestamp >= millisPerTick) {
-        bodyModel.tick();
-        lastTickTimestamp += millisPerTick;
-    }
+    bodyModel.loop();
 
     rootView.draw();
 }

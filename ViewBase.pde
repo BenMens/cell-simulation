@@ -11,6 +11,9 @@ class ViewBase {
     boolean shouldClip = false;
     boolean isVisible = true;
 
+    boolean hasBackground = false;
+    color backgroundColor = color(255);
+
 
     ViewBase(ViewBase parent) {
         if (parent == null) {
@@ -86,6 +89,10 @@ class ViewBase {
             translate(-boundsRect.x, -boundsRect.y);
             
             if (isVisible) {
+                if (hasBackground) {
+                    background(backgroundColor);
+
+                }
                 beforeDrawChildren();
 
                 for (ViewBase childView: childViews) {
@@ -354,7 +361,7 @@ class ViewBase {
 
 
     // ########################################################################
-    // Mouse press handling
+    // Key press handling
     // ########################################################################
 
     final boolean processKeyEvent(boolean pressed, int key) {
@@ -395,7 +402,9 @@ class ViewBase {
         return (Rectangle2D.Float)frameRect.clone();
     }
 
-    void onFrameRectChange(Rectangle2D.Float oldRect) {}
+    void onFrameRectChange(Rectangle2D.Float oldRect) {
+        setBoundsRect(0, 0, frameRect.width, frameRect.height);
+    }
 
 
     // ########################################################################

@@ -1,5 +1,5 @@
 class ZoomView extends ViewBase {
-    final float MAX_SCALE_FACTOR = 1. / 200;
+    final float MAX_SCALE_FACTOR = 1. / 100;
     float scaleMin;
     float scaleMax;
     ViewBase zoomView = null;

@@ -28,6 +28,9 @@ class BodyView extends ViewBase {
         );
      }
 
+    void onFrameRectChange(Rectangle2D.Float oldRect) {
+    }
+
 
     void registerClient(BodyViewClient client) {
         if(!clients.contains(client)) {
