@@ -82,6 +82,10 @@ class CellModel implements CodonModelParent {
             codonModel.updatePosition();
         }
 
+        if (currentCodon >= codonModels.size()) {
+            currentCodon = codonModels.size() - 1;
+        }
+
         if(previousExecuteHandPosition >= codonModels.size() || executeHandPosition >= codonModels.size()) {
             previousExecuteHandPosition = floor(random(codonModels.size()));
             executeHandPosition = floor(random(codonModels.size()));

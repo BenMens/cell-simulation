@@ -107,7 +107,7 @@ class CellView extends ViewBase {
 
                     if(screenSize > 80) {
                         float progressToNextCodonTick = norm(cellModel.ticksSinceLastCodonTick, 0, cellModel.ticksPerCodonTick);
-                        ArrayList<CodonBaseModel> codonModels = cellModel.codonModels;
+                        ArrayList<CodonBaseModel> codonModels = (ArrayList<CodonBaseModel>)cellModel.codonModels.clone();
 
                         // calculating codon hand angle
                         float codonHandAngle = 0;
