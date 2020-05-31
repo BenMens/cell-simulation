@@ -40,6 +40,8 @@ abstract class CodonBaseModel {
         if(!clients.contains(client)) {
             clients.add(client);
         }
+
+        client.updateView();
     }
 
     void unregisterClient(CodonModelClient client) {
@@ -55,13 +57,21 @@ abstract class CodonBaseModel {
     void updatePosition() {
         ArrayList<CodonBaseModel> codonArray = getParentCodonList();
 
-        segmentSizeInCodonCircle = min(TWO_PI / codonArray.size(), MAXIMUM_SEGMENT_ANGLE);
+        segmentSizeInCodonCircle = TWO_PI / codonArray.size();
         indexInCodonArray = codonArray.indexOf(this);
 
-        segmentAngleInCodonCircle = indexInCodonArray * segmentSizeInCodonCircle;
+        if (segmentSizeInCodonCircle < MAXIMUM_SEGMENT_ANGLE) {
+            segmentAngleInCodonCircle = indexInCodonArray * segmentSizeInCodonCircle;
+        } else {
+            segmentSizeInCodonCircle = MAXIMUM_SEGMENT_ANGLE;
+        }
 
         position.x = parentModel.getPosition().x + 0.5 + sin(segmentAngleInCodonCircle) * SEGMENT_CIRCLE_RADIUS;
         position.y = parentModel.getPosition().y + 0.5 + -cos(segmentAngleInCodonCircle) * SEGMENT_CIRCLE_RADIUS;
+
+        for (CodonModelClient client: new ArrayList<CodonModelClient>(clients)) {
+            client.updateView();
+        }
     }
 
     PVector getPosition() {

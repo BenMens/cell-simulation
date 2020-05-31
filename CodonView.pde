@@ -9,6 +9,8 @@ class CodonView extends ViewBase {
     ArrayList<CodonViewClient> clients = new ArrayList<CodonViewClient>();
     CodonBaseModel codonModel;
 
+    float segmentCircleBetweenRadius;
+
 
     CodonView(ViewBase parentView, CodonBaseModel codonModel) {
         super(parentView);
@@ -31,16 +33,25 @@ class CodonView extends ViewBase {
     }
 
 
+    void updateSegmentCircleBetweenRadius() {
+        // float angle = (0.5 - 0.5 * SEGMENT_SPACING_PERCENTAGE) * codonModel.segmentSizeInCodonCircle;
+        // float radius = lerp(SEGMENT_CIRCLE_INNER_RADIUS, SEGMENT_CIRCLE_OUTER_RADIUS, 0.5);
+
+        // segmentCircleBetweenRadius = cos(angle) * sq(sin(angle)) * radius + radius / cos(angle);
+        
+        segmentCircleBetweenRadius = lerp(SEGMENT_CIRCLE_INNER_RADIUS, SEGMENT_CIRCLE_OUTER_RADIUS, 0.5);
+    }
+
+
     void beforeDrawChildren() {
         float screenSize = composedScale().x * 100;
         makeChildsInvisible();
 
         if (screenSize > 75) {
             float secondVertexAngle = codonModel.segmentAngleInCodonCircle;
-            float firstVertexAngle = secondVertexAngle + (0.5 * SEGMENT_SPACING_PERCENTAGE - 0.5) * codonModel.segmentSizeInCodonCircle;
-            float thirdVertexAngle = secondVertexAngle + (0.5 - 0.5 * SEGMENT_SPACING_PERCENTAGE) * codonModel.segmentSizeInCodonCircle;
+            float firstVertexAngle = secondVertexAngle + (0.5 - 0.5 * SEGMENT_SPACING_PERCENTAGE) * codonModel.segmentSizeInCodonCircle;
+            float thirdVertexAngle = secondVertexAngle - (0.5 - 0.5 * SEGMENT_SPACING_PERCENTAGE) * codonModel.segmentSizeInCodonCircle;
 
-            float segmentCircleBetweenRadius = lerp(SEGMENT_CIRCLE_INNER_RADIUS, SEGMENT_CIRCLE_OUTER_RADIUS, 0.5);
             float segmentCircleInnerDegradationRadius = lerp(SEGMENT_CIRCLE_INNER_RADIUS, segmentCircleBetweenRadius, codonModel.degradation);
             float segmentCircleOuterDegradationRadius = lerp(SEGMENT_CIRCLE_OUTER_RADIUS, segmentCircleBetweenRadius, codonModel.degradation);
             

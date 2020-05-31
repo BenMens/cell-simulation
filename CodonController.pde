@@ -12,6 +12,11 @@ class CodonController implements CodonModelClient, CodonViewClient {
     }
 
 
+    void updateView() {
+        codonView.updateSegmentCircleBetweenRadius();
+    }
+
+
     void destroy() {
         codonView.setParentView(null);
         codonView.unregisterClient(this);
