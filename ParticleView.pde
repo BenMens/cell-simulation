@@ -30,8 +30,11 @@ class ParticleView extends ViewBase {
 
     void beforeDrawChildren() {
         PVector composedScale = this.composedScale();
+        float imageScale = particleModel.getImageScale();
 
-        float imageDimension = max(composedScale.x * PARTICLE_SIZE, composedScale.y * PARTICLE_SIZE);
+        float imageDimension = max(
+            composedScale.x * PARTICLE_SIZE * imageScale, 
+            composedScale.y * PARTICLE_SIZE * imageScale);
         PImage img = images[images.length - 1];
 
         for (int i = 0; i < images.length; i++) {
@@ -41,6 +44,10 @@ class ParticleView extends ViewBase {
             } 
         }
 
-        image(img, particleModel.getPosition().x * 100 - PARTICLE_SIZE * 0.5, particleModel.getPosition().y * 100 - PARTICLE_SIZE * 0.5, PARTICLE_SIZE, PARTICLE_SIZE);
+        image(img, 
+            particleModel.getPosition().x * 100 - PARTICLE_SIZE * 0.5 * imageScale, 
+            particleModel.getPosition().y * 100 - PARTICLE_SIZE * 0.5 * imageScale, 
+            PARTICLE_SIZE * imageScale, 
+            PARTICLE_SIZE * imageScale);
     }
 }

@@ -15,6 +15,10 @@ class ParticleCO2Model extends ParticleBaseModel {
         return "co2";
     }
 
+    float getImageScale() {
+        return 1.5;
+    };
+
 
     String getTypeName() {
         return "co2";

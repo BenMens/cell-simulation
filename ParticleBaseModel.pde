@@ -16,6 +16,7 @@ abstract class ParticleBaseModel implements CellModelClient {
     private CellModel containingCell;
 
 
+
     ParticleBaseModel(BodyModel bodyModel) {
         this(bodyModel, random(bodyModel.gridSize.x), random(bodyModel.gridSize.y));
     }
@@ -136,6 +137,10 @@ abstract class ParticleBaseModel implements CellModelClient {
     }
 
     abstract String getImageName();
+
+    float getImageScale() {
+        return 1;
+    };
 
     abstract String getTypeName();
 

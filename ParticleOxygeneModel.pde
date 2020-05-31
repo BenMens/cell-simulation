@@ -15,6 +15,11 @@ class ParticleOxygeneModel extends ParticleBaseModel {
         return "oxygene";
     }
 
+    float getImageScale() {
+        return 1.5;
+    };
+
+
     String getTypeName() {
         return "oxygene";
     }
@@ -29,5 +34,6 @@ class ParticleOxygeneModel extends ParticleBaseModel {
         }
 
     }
+
 
 }
