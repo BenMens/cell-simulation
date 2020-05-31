@@ -5,6 +5,8 @@ class CellEditorView extends ViewBase {
 
     PFont font;
 
+    final float CODONS_Y_POS = 300f;
+    final float CODONS_SPACING = 5f;
 
     CellEditorView(ViewBase parentView, CellModel cellModel) {
         super(parentView);
@@ -33,13 +35,64 @@ class CellEditorView extends ViewBase {
     }
 
 
+    float calcCodonsHeight() {
+        
+        float verticalSpace = getFrameRect().height - CODONS_Y_POS - 20;
+        float codonHeight = (verticalSpace + CODONS_SPACING) / cellModel.codonModels.size() - CODONS_SPACING;
+        codonHeight = min(codonHeight , 60);
+
+        return codonHeight;
+    }
+
+
     void beforeDrawChildren() {
         background(10, 10, 10);
+        
+        Rectangle2D.Float boundsRect = getBoundsRect();
 
         fill(255);
         textFont(font);
         text(String.format("Energy: %.1f",this.cellModel.energyLevel * 100), 10, 252);
         text(String.format("WallHealth: %.1f",this.cellModel.wallHealth * 100), 10, 284);
+
+        float codonHeight = calcCodonsHeight();
+
+        float progressToNextCodonTick = norm(cellModel.ticksSinceLastCodonTick, 0, cellModel.ticksPerCodonTick);
+
+        float currentCodonPos = cellModel.currentCodon * (codonHeight + CODONS_SPACING) + codonHeight * .5;
+        float nextCodonPos = ((cellModel.currentCodon + 1) % cellModel.codonModels.size()) * (codonHeight + CODONS_SPACING) + codonHeight * .5;
+
+        float codonHandYPos = smoothLerp(currentCodonPos, nextCodonPos, 0.1, 0.8, progressToNextCodonTick) + CODONS_Y_POS;
+
+        noStroke();
+        fill(245, 245, 115);
+
+        beginShape();
+        vertex(  5, codonHandYPos - 15);
+        vertex( 20, codonHandYPos);
+        vertex(  5, codonHandYPos + 15);
+        endShape(CLOSE);
+
+        beginShape();
+        vertex( boundsRect.width -  5, codonHandYPos - 15);
+        vertex( boundsRect.width - 20, codonHandYPos);
+        vertex( boundsRect.width -  5, codonHandYPos + 15);
+        endShape(CLOSE);
+
     }
+
+
+    float smoothLerp(float start, float end, float startLerping, float stopLerping, float fraction) {
+        float lerpFraction = 1;
+
+        if (fraction < startLerping) {
+            lerpFraction = 0;
+        } else if (fraction < stopLerping) {
+            lerpFraction = 1 / (1 + exp(-map(fraction, startLerping, stopLerping, -6, 6)));
+        }
+
+        return lerp(start, end, lerpFraction);
+    }
+
 
 }

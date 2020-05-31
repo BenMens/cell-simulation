@@ -1,10 +1,14 @@
 class CodonDetailsView extends ViewBase {
     ArrayList<CodonDetailsViewClient> clients = new ArrayList<CodonDetailsViewClient>();
 
+    CodonBaseModel codonModel;
+
     boolean isSelected = false;
 
-    CodonDetailsView(ViewBase parentView) {
+    CodonDetailsView(ViewBase parentView, CodonBaseModel codonModel) {
         super(parentView);
+
+        this.codonModel = codonModel;
 
         this.shouldClip = true;
     }
@@ -40,7 +44,12 @@ class CodonDetailsView extends ViewBase {
             background(10, 100, 10);
         }
 
-        text("Action", 5, 30);
+        text("Codon", 20, 30);
     }
+
+    void onFrameRectChange(Rectangle2D.Float oldRect) {
+        setBoundsRect(0, 0, this.getFrameRect().width, this.getFrameRect().height);
+    }
+
 
 }
