@@ -29,14 +29,20 @@ class CellModel implements CodonModelParent {
 
         this.position = position;
 
-        for(int i = 0; i < 6; i++) {
-            new CodonNoneModel(this);
-        }
+        CodonBaseModel codon = new CodonMoveExecuteHandModel(this);
+        codon.setCodonParameter("outward");
 
-        CodonBaseModel codon = new CodonRepairModel(this);
-        codon.setCodonParameter(codon.possibleCodonParameters.get(floor(random(codon.possibleCodonParameters.size()))));
+        codon = new CodonRepairModel(this);
+        codon.setCodonParameter("wall");
 
-        executeHandPosition = codonModels.size() - 1;
+        codon = new CodonMoveExecuteHandModel(this);
+        codon.setCodonParameter("inward");
+
+        codon = new CodonMoveExecuteHandModel(this);
+        codon.setCodonParameter("weakest codon");
+
+        codon = new CodonRepairModel(this);
+        codon.setCodonParameter("codon");
     }
 
 
@@ -111,6 +117,9 @@ class CellModel implements CodonModelParent {
     }
 
     void codonTick() {
+        previousExecuteHandPosition = executeHandPosition;
+        previousIsExecuteHandPointingOutward = isExecuteHandPointingOutward;
+
         if (codonModels.size() != 0 ) {
             energyLevel = max(energyLevel - energyCostPerTick, 0);
             currentCodon = (currentCodon + 1) % codonModels.size();
@@ -119,11 +128,6 @@ class CellModel implements CodonModelParent {
                 codonModels.get(currentCodon).executeCodon();
             }
         }
-
-        previousExecuteHandPosition = executeHandPosition;
-        previousIsExecuteHandPointingOutward = isExecuteHandPointingOutward;
-
-        isExecuteHandPointingOutward = !isExecuteHandPointingOutward;
     }
 
 
@@ -173,9 +177,12 @@ class CellModel implements CodonModelParent {
         return isExecuteHandPointingOutward;
     }
 
+    void setExecuteHandPosition(int executeHandPosition) {
+        this.executeHandPosition = (executeHandPosition % codonModels.size() + codonModels.size()) % codonModels.size();
+    }
 
-    void handleCollision(ParticleBaseModel particle) {
-        wallHealth -= particle.cellWallHarmfulness;
+    void setIsExecuteHandPointingOutward(boolean isExecuteHandPointingOutward) {
+        this.isExecuteHandPointingOutward = isExecuteHandPointingOutward;
     }
 
 
@@ -183,6 +190,11 @@ class CellModel implements CodonModelParent {
         oldCodon.isDead = true;
         codonModels.remove(newCodon);
         codonModels.add(codonModels.indexOf(oldCodon), newCodon);
+    }
+
+
+    void handleCollision(ParticleBaseModel particle) {
+        wallHealth -= particle.cellWallHarmfulness;
     }
 
 

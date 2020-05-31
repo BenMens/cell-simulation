@@ -121,7 +121,7 @@ class CellView extends ViewBase {
                                 nextCodonAngle += TWO_PI;
                             }
     
-                            codonHandAngle = smoothLerp(currentCodonAngle, nextCodonAngle, 0.1, 0.8, progressToNextCodonTick);
+                            codonHandAngle = smoothLerp(currentCodonAngle, nextCodonAngle, 0.1, 0.85, progressToNextCodonTick);
                         }
 
                         // drawing codon hand
@@ -147,13 +147,13 @@ class CellView extends ViewBase {
                                 currentCodonAngle += TWO_PI;
                             }
     
-                            executeHandAngle = smoothLerp(previousCodonAngle, currentCodonAngle, 0.05, 0.85, progressToNextCodonTick);
+                            executeHandAngle = smoothLerp(previousCodonAngle, currentCodonAngle, 0.15, 0.8, progressToNextCodonTick);
                         }
 
                         // calculating execution hand pointer radius
                         float previousExecuteHandPointerRadius = (cellModel.previousIsExecuteHandPointingOutward) ? handPointerRadiusOutward : handPointerRadiusInward;
                         float currentExecuteHandPointerRadius = (cellModel.isExecuteHandPointingOutward) ? handPointerRadiusOutward : handPointerRadiusInward;
-                        float executeHandPointerRadius = smoothLerp(previousExecuteHandPointerRadius, currentExecuteHandPointerRadius, 0.05, 0.85, progressToNextCodonTick);
+                        float executeHandPointerRadius = smoothLerp(previousExecuteHandPointerRadius, currentExecuteHandPointerRadius, 0.15, 0.8, progressToNextCodonTick);
 
                         // drawing execution hand
                         x1 = 50 + sin(executeHandAngle - handAnchorAngle) * HAND_CIRCLE_RADIUS;

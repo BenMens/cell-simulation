@@ -33,6 +33,10 @@ abstract class CodonBaseModel {
         secondaryColors.put("wall", color(250, 90, 70));
         secondaryColors.put("energy", color(245, 239, 50));
         secondaryColors.put("codon", color(45, 240, 190));
+        secondaryColors.put("inward", color(245, 30, 115));
+        secondaryColors.put("outward", color(245, 30, 115));
+        secondaryColors.put("amount", color(90, 100, 105));
+        secondaryColors.put("weakest codon", color(45, 240, 190));
     }
     
 
@@ -95,10 +99,14 @@ abstract class CodonBaseModel {
 
 
     void tick() {
-        degradation = min(degradation + random(degradationRate * 2), 1);
+        if (!(this instanceof CodonNoneModel)) {
+            degradation = min(degradation + random(degradationRate * 2), 1);
 
-        if (degradation >= 1 && !(this instanceof CodonNoneModel)) {
-            parentModel.replaceCodon(this, new CodonNoneModel(parentModel));
+            if (degradation >= 1) {
+                parentModel.replaceCodon(this, new CodonNoneModel(parentModel));
+            }
+        } else {
+            degradation = 0;
         }
     }
 

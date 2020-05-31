@@ -6,7 +6,7 @@ class CodonRepairModel extends CodonBaseModel {
     CodonRepairModel(CodonModelParent parentModel) {
         super(parentModel);
 
-        mainColor = color(50, 240, 95);
+        mainColor = color(15, 215, 160);
         possibleCodonParameters.add("none");
         possibleCodonParameters.add("wall");
         possibleCodonParameters.add("codon");

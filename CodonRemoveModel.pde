@@ -56,9 +56,10 @@ class CodonRemoveModel extends CodonBaseModel {
             case "codon":
                 if (!parentModel.getIsExecuteHandPointingOutward()) {
                     ArrayList<CodonBaseModel> codonList = parentModel.getCodonList();
-                    int index = parentModel.getExecuteHandPosition();
-                    for (int i = index + min(removeCodonsFirstPoint, removeCodonsSecondPoint); i <= index + max(removeCodonsFirstPoint, removeCodonsSecondPoint); i++) {
-                        codonList.get(abs(i % codonList.size())).isDead = true;
+                    int executeHandPosition = parentModel.getExecuteHandPosition();
+                    for (int i = executeHandPosition + min(removeCodonsFirstPoint, removeCodonsSecondPoint); i <= executeHandPosition + max(removeCodonsFirstPoint, removeCodonsSecondPoint); i++) {
+                        int index = (i % codonList.size() + codonList.size()) % codonList.size();
+                        codonList.get(index).isDead = true;
                     }
                 }
                 break;

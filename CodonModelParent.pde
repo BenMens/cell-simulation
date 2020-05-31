@@ -16,6 +16,11 @@ interface CodonModelParent {
 
     boolean getIsExecuteHandPointingOutward();
 
+    void setExecuteHandPosition(int executeHandPosition);
+
+    void setIsExecuteHandPointingOutward(boolean isExecuteHandPointingOutward);
+
+
     void replaceCodon(CodonBaseModel oldCodon, CodonBaseModel newCodon);
 
 

@@ -2,7 +2,6 @@ class CodonNoneModel extends CodonBaseModel {
     CodonNoneModel(CodonModelParent parentModel) {
         super(parentModel);
 
-        baseEnergyCost = 0;
         mainColor = color(0);
         possibleCodonParameters.add("none");
         possibleCodonParameters.add("wall");
@@ -12,7 +11,7 @@ class CodonNoneModel extends CodonBaseModel {
 
 
     float getEnergyCost() {
-        return baseEnergyCost;
+        return 0;
     }
 
 
