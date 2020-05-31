@@ -112,16 +112,16 @@ class CellView extends ViewBase {
                         // calculating codon hand angle
                         float codonHandAngle = 0;
                         if (cellModel.codonModels.size() != 0) {
-                            float currentCodonAngle = codonModels.get(cellModel.currentCodon % codonModels.size()).segmentAngleInCodonCircle;
-                            float nextCodonAngle = codonModels.get((cellModel.currentCodon + 1) % codonModels.size()).segmentAngleInCodonCircle;
-                            if (cellModel.currentCodon >= codonModels.size()) {
-                                currentCodonAngle += TWO_PI;
+                            float codonHandPositionAngle = codonModels.get(cellModel.codonHandPosition % codonModels.size()).segmentAngleInCodonCircle;
+                            float nextCodonAngle = codonModels.get((cellModel.codonHandPosition + 1) % codonModels.size()).segmentAngleInCodonCircle;
+                            if (cellModel.codonHandPosition >= codonModels.size()) {
+                                codonHandPositionAngle += TWO_PI;
                             }
-                            if (cellModel.currentCodon + 1 >= codonModels.size()) {
+                            if (cellModel.codonHandPosition + 1 >= codonModels.size()) {
                                 nextCodonAngle += TWO_PI;
                             }
     
-                            codonHandAngle = smoothLerp(currentCodonAngle, nextCodonAngle, 0.1, 0.85, progressToNextCodonTick);
+                            codonHandAngle = smoothLerp(codonHandPositionAngle, nextCodonAngle, 0.1, 0.85, progressToNextCodonTick);
                         }
 
                         // drawing codon hand
@@ -142,12 +142,12 @@ class CellView extends ViewBase {
                         float executeHandAngle = 0;
                         if (cellModel.codonModels.size() != 0) {
                             float previousCodonAngle = cellModel.codonModels.get(cellModel.previousExecuteHandPosition).segmentAngleInCodonCircle;
-                            float currentCodonAngle = cellModel.codonModels.get(cellModel.executeHandPosition).segmentAngleInCodonCircle;
-                            if (currentCodonAngle < previousCodonAngle) {
-                                currentCodonAngle += TWO_PI;
+                            float codonHandPositionAngle = cellModel.codonModels.get(cellModel.executeHandPosition).segmentAngleInCodonCircle;
+                            if (codonHandPositionAngle < previousCodonAngle) {
+                                codonHandPositionAngle += TWO_PI;
                             }
     
-                            executeHandAngle = smoothLerp(previousCodonAngle, currentCodonAngle, 0.15, 0.8, progressToNextCodonTick);
+                            executeHandAngle = smoothLerp(previousCodonAngle, codonHandPositionAngle, 0.15, 0.8, progressToNextCodonTick);
                         }
 
                         // calculating execution hand pointer radius

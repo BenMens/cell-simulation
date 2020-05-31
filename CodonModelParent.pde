@@ -4,13 +4,16 @@ interface CodonModelParent {
     void removeCodon(CodonBaseModel codonModel);
 
 
-    ArrayList<CodonBaseModel> getCodonList();
-
-
     PVector getPosition();
 
 
-    int getCurrentCodon();
+    ArrayList<CodonBaseModel> getCodonList();
+
+
+    int getCodonHandPosition();
+
+    void setCodonHandPosition(int codonHandPosition);
+
 
     int getExecuteHandPosition();
 

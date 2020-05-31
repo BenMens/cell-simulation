@@ -14,7 +14,7 @@ class CellModel implements CodonModelParent {
     private float energyLevel = 1;
     float energyCostPerTick = 0.01;
 
-    int currentCodon = 0;
+    int codonHandPosition = 0;
     int executeHandPosition = 0;
     boolean isExecuteHandPointingOutward = false;
     int previousExecuteHandPosition = 0;
@@ -76,8 +76,8 @@ class CellModel implements CodonModelParent {
     void removeCodon(CodonBaseModel oldCodonModel) {
         codonModels.remove(oldCodonModel);
 
-        if (currentCodon >= codonModels.indexOf(oldCodonModel)) {
-            currentCodon--;
+        if (codonHandPosition >= codonModels.indexOf(oldCodonModel)) {
+            codonHandPosition--;
         }
 
         for(CellModelClient client: clients) {
@@ -97,6 +97,31 @@ class CellModel implements CodonModelParent {
     }
 
 
+    void handleCollision(ParticleBaseModel particle) {
+        wallHealth -= particle.cellWallHarmfulness;
+    }
+
+
+    void replaceCodon(CodonBaseModel oldCodon, CodonBaseModel newCodon) {
+        oldCodon.isDead = true;
+        codonModels.remove(newCodon);
+        codonModels.add(codonModels.indexOf(oldCodon), newCodon);
+    }
+
+
+    PVector getPosition() {
+        return position;
+    }
+
+
+    ArrayList<CodonBaseModel> getCodonList() {
+        return codonModels;
+    }
+
+
+    // ################################################################################################################################################
+    // tick
+    // ################################################################################################################################################
     void tick() {
         if (energyLevel > energyCostPerTick) {
             while (ticksSinceLastCodonTick >= ticksPerCodonTick) {
@@ -116,21 +141,27 @@ class CellModel implements CodonModelParent {
         }
     }
 
+    // ################################################################################################################################################
+    // codon tick
+    // ################################################################################################################################################
     void codonTick() {
         previousExecuteHandPosition = executeHandPosition;
         previousIsExecuteHandPointingOutward = isExecuteHandPointingOutward;
 
         if (codonModels.size() != 0 ) {
             energyLevel = max(energyLevel - energyCostPerTick, 0);
-            currentCodon = (currentCodon + 1) % codonModels.size();
+            codonHandPosition = (codonHandPosition + 1) % codonModels.size();
 
-            if (energyLevel > codonModels.get(currentCodon).getEnergyCost()) {
-                codonModels.get(currentCodon).executeCodon();
+            if (energyLevel > codonModels.get(codonHandPosition).getEnergyCost()) {
+                codonModels.get(codonHandPosition).executeCodon();
             }
         }
     }
 
 
+    // ################################################################################################################################################
+    // clean up tick
+    // ################################################################################################################################################
     void cleanUpTick() {
         for (int i = codonModels.size() - 1; i >= 0; i--) {
             codonModels.get(i).cleanUpTick();
@@ -155,20 +186,21 @@ class CellModel implements CodonModelParent {
     }
 
 
-    ArrayList<CodonBaseModel> getCodonList() {
-        return codonModels;
+    // ################################################################################################################################################
+    // codon hand getters and setters
+    // ################################################################################################################################################
+    int getCodonHandPosition() {
+        return codonHandPosition;
+    }
+
+    void setCodonHandPosition(int codonHandPosition) {
+        this.codonHandPosition = (codonHandPosition % codonModels.size() + codonModels.size()) % codonModels.size();
     }
 
 
-    PVector getPosition() {
-        return position;
-    }
-
-
-    int getCurrentCodon() {
-        return currentCodon;
-    }
-
+    // ################################################################################################################################################
+    // execute hand getters and setters
+    // ################################################################################################################################################
     int getExecuteHandPosition() {
         return executeHandPosition;
     }
@@ -183,18 +215,6 @@ class CellModel implements CodonModelParent {
 
     void setIsExecuteHandPointingOutward(boolean isExecuteHandPointingOutward) {
         this.isExecuteHandPointingOutward = isExecuteHandPointingOutward;
-    }
-
-
-    void replaceCodon(CodonBaseModel oldCodon, CodonBaseModel newCodon) {
-        oldCodon.isDead = true;
-        codonModels.remove(newCodon);
-        codonModels.add(codonModels.indexOf(oldCodon), newCodon);
-    }
-
-
-    void handleCollision(ParticleBaseModel particle) {
-        wallHealth -= particle.cellWallHarmfulness;
     }
 
 
