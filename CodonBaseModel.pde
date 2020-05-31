@@ -1,5 +1,4 @@
 abstract class CodonBaseModel {
-    final float MAXIMUM_SEGMENT_ANGLE = 1.2;
     final float SEGMENT_CIRCLE_RADIUS = 0.15;
 
     ArrayList<CodonModelClient> clients = new ArrayList<CodonModelClient>();
@@ -55,7 +54,7 @@ abstract class CodonBaseModel {
     void updatePosition() {
         ArrayList<CodonBaseModel> codonArray = getParentCodonList();
 
-        segmentSizeInCodonCircle = min(TWO_PI / codonArray.size(), MAXIMUM_SEGMENT_ANGLE);
+        segmentSizeInCodonCircle = TWO_PI / codonArray.size();
         indexInCodonArray = codonArray.indexOf(this);
 
         segmentAngleInCodonCircle = indexInCodonArray * segmentSizeInCodonCircle;

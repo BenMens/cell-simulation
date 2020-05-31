@@ -5,9 +5,13 @@ class CodonView extends ViewBase {
     final float SEGMENT_SPACING_PERCENTAGE = 0.2;
     final float SEGMENT_CIRCLE_INNER_RADIUS = 10;
     final float SEGMENT_CIRCLE_OUTER_RADIUS = 20;
+    final float SEGMENT_CIRCLE_CENTER_RADIUS = lerp(SEGMENT_CIRCLE_INNER_RADIUS, SEGMENT_CIRCLE_OUTER_RADIUS, 0.5);
+    final float MAX_CODON_WIDTH = 7;
 
     ArrayList<CodonViewClient> clients = new ArrayList<CodonViewClient>();
     CodonBaseModel codonModel;
+
+    float segmentCircleBetweenRadius;
 
 
     CodonView(ViewBase parentView, CodonBaseModel codonModel) {
@@ -35,47 +39,42 @@ class CodonView extends ViewBase {
         makeChildsInvisible();
 
         if (screenSize > 75) {
-            float secondVertexAngle = codonModel.segmentAngleInCodonCircle;
-            float firstVertexAngle = secondVertexAngle + (0.5 * SEGMENT_SPACING_PERCENTAGE - 0.5) * codonModel.segmentSizeInCodonCircle;
-            float thirdVertexAngle = secondVertexAngle + (0.5 - 0.5 * SEGMENT_SPACING_PERCENTAGE) * codonModel.segmentSizeInCodonCircle;
+            float codonWidth = SEGMENT_CIRCLE_CENTER_RADIUS * tan((0.5 - 0.5 * SEGMENT_SPACING_PERCENTAGE) * codonModel.segmentSizeInCodonCircle);
+            codonWidth = min(codonWidth, MAX_CODON_WIDTH);
 
-            float segmentCircleBetweenRadius = lerp(SEGMENT_CIRCLE_INNER_RADIUS, SEGMENT_CIRCLE_OUTER_RADIUS, 0.5);
-            float segmentCircleInnerDegradationRadius = lerp(SEGMENT_CIRCLE_INNER_RADIUS, segmentCircleBetweenRadius, codonModel.degradation);
-            float segmentCircleOuterDegradationRadius = lerp(SEGMENT_CIRCLE_OUTER_RADIUS, segmentCircleBetweenRadius, codonModel.degradation);
-            
-            float sinFirstVertexAngle = sin(firstVertexAngle);
-            float sinSecondVertexAngle = sin(secondVertexAngle);
-            float sinThirdVertexAngle = sin(thirdVertexAngle);
-            float cosFirstVertexAngle = cos(firstVertexAngle);
-            float cosSecondVertexAngle = cos(secondVertexAngle);
-            float cosThirdVertexAngle = cos(thirdVertexAngle);
+            PVector x1Point = new PVector( -codonWidth, -SEGMENT_CIRCLE_CENTER_RADIUS);
+            PVector x2Point = new PVector(  codonWidth, -SEGMENT_CIRCLE_CENTER_RADIUS);
+            PVector y1Point = new PVector(0, -SEGMENT_CIRCLE_INNER_RADIUS);
+            PVector y2Point = new PVector(0, -SEGMENT_CIRCLE_OUTER_RADIUS);
+
+            PVector degradatedY1Point = new PVector(0, -lerp(SEGMENT_CIRCLE_OUTER_RADIUS, SEGMENT_CIRCLE_CENTER_RADIUS, codonModel.degradation));
+            PVector degradatedY2Point = new PVector(0, -lerp(SEGMENT_CIRCLE_INNER_RADIUS, SEGMENT_CIRCLE_CENTER_RADIUS, codonModel.degradation));
+
+            float secondVertexAngle = codonModel.segmentAngleInCodonCircle;
+            rotate(codonModel.segmentAngleInCodonCircle);
 
             noStroke();
             fill(color(0));
             beginShape();
-            vertex(sinSecondVertexAngle * SEGMENT_CIRCLE_INNER_RADIUS, -cosSecondVertexAngle * SEGMENT_CIRCLE_INNER_RADIUS);
-            vertex(sinFirstVertexAngle * segmentCircleBetweenRadius, -cosFirstVertexAngle * segmentCircleBetweenRadius);
-            vertex(sinSecondVertexAngle * SEGMENT_CIRCLE_OUTER_RADIUS, -cosSecondVertexAngle * SEGMENT_CIRCLE_OUTER_RADIUS);
-            vertex(sinThirdVertexAngle * segmentCircleBetweenRadius, -cosThirdVertexAngle * segmentCircleBetweenRadius);
+            vertex(x1Point.x, x1Point.y);
+            vertex(y1Point.x, y1Point.y);
+            vertex(x2Point.x, x2Point.y);
+            vertex(y2Point.x, y2Point.y);
             endShape(CLOSE);
 
-            if (codonModel.getMainColor() != color(0)) {
-                fill(codonModel.getMainColor());
-                beginShape();
-                vertex(sinFirstVertexAngle * segmentCircleBetweenRadius, -cosFirstVertexAngle * segmentCircleBetweenRadius);
-                vertex(sinSecondVertexAngle * segmentCircleOuterDegradationRadius, -cosSecondVertexAngle * segmentCircleOuterDegradationRadius);
-                vertex(sinThirdVertexAngle * segmentCircleBetweenRadius, -cosThirdVertexAngle * segmentCircleBetweenRadius);
-                endShape(CLOSE);
-            }
+            fill(codonModel.getMainColor());
+            beginShape();
+            vertex(x1Point.x, x1Point.y);
+            vertex(x2Point.x, x2Point.y);
+            vertex(degradatedY1Point.x, degradatedY1Point.y);
+            endShape(CLOSE);
 
-            if (codonModel.getSecondaryColor() != color(0)) {
-                fill(codonModel.getSecondaryColor());
-                beginShape();
-                vertex(sinSecondVertexAngle * segmentCircleInnerDegradationRadius, -cosSecondVertexAngle * segmentCircleInnerDegradationRadius);
-                vertex(sinFirstVertexAngle * segmentCircleBetweenRadius, -cosFirstVertexAngle * segmentCircleBetweenRadius);
-                vertex(sinThirdVertexAngle * segmentCircleBetweenRadius, -cosThirdVertexAngle * segmentCircleBetweenRadius);
-                endShape(CLOSE);
-            }
+            fill(codonModel.getSecondaryColor());
+            beginShape();
+            vertex(x1Point.x, x1Point.y);
+            vertex(x2Point.x, x2Point.y);
+            vertex(degradatedY2Point.x, degradatedY2Point.y);
+            endShape(CLOSE);
 
         } else if (screenSize > 35) {
             float segmentCircleRadius = SEGMENT_CIRCLE_OUTER_RADIUS - SEGMENT_CIRCLE_INNER_RADIUS;
