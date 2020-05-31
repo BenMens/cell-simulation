@@ -54,8 +54,8 @@ class CellEditorView extends ViewBase {
         textFont(font);
         textAlign(LEFT, TOP);
 
-        text(String.format("Food #: NA"), 250, 20);
-        text(String.format("Waste #: NA"), 250, 50);
+        text(String.format("Food #: %d", cellModel.getContainingParticles("food").size()), 250, 20);
+        text(String.format("Waste #: %d", cellModel.getContainingParticles("waste").size()), 250, 50);
 
 
         text(String.format("Oxygen: NA"), 20, 234);
@@ -67,29 +67,31 @@ class CellEditorView extends ViewBase {
 
         float progressToNextCodonTick = norm(cellModel.ticksSinceLastCodonTick, 0, cellModel.ticksPerCodonTick);
 
-        float currentCodonPos = cellModel.currentCodon * (codonHeight + CODONS_SPACING) + codonHeight * .5;
-        float nextCodonPos = ((cellModel.currentCodon + 1) % cellModel.codonModels.size()) * (codonHeight + CODONS_SPACING) + codonHeight * .5;
+        if (cellModel.codonModels.size() > 0) {
+            float currentCodonPos = cellModel.currentCodon * (codonHeight + CODONS_SPACING) + codonHeight * .5;
+            float nextCodonPos = ((cellModel.currentCodon + 1) % cellModel.codonModels.size()) * (codonHeight + CODONS_SPACING) + codonHeight * .5;
 
-        float codonHandYPos = smoothLerp(currentCodonPos, nextCodonPos, 0.1, 0.8, progressToNextCodonTick) + CODONS_Y_POS;
+            float codonHandYPos = smoothLerp(currentCodonPos, nextCodonPos, 0.1, 0.8, progressToNextCodonTick) + CODONS_Y_POS;
 
-        noStroke();
+            noStroke();
 
-        fill(200, 200, 200);
-        rect(20, CODONS_Y_POS - 20, boundsRect.width - 40, boundsRect.height - CODONS_Y_POS) ;
+            fill(200, 200, 200);
+            rect(20, CODONS_Y_POS - 20, boundsRect.width - 40, boundsRect.height - CODONS_Y_POS) ;
 
-        fill(245, 245, 115);
+            fill(245, 245, 115);
 
-        beginShape();
-        vertex(  25, codonHandYPos - 15);
-        vertex(  40, codonHandYPos);
-        vertex(  25, codonHandYPos + 15);
-        endShape(CLOSE);
+            beginShape();
+            vertex(  25, codonHandYPos - 15);
+            vertex(  40, codonHandYPos);
+            vertex(  25, codonHandYPos + 15);
+            endShape(CLOSE);
 
-        beginShape();
-        vertex( boundsRect.width - 25, codonHandYPos - 15);
-        vertex( boundsRect.width - 40, codonHandYPos);
-        vertex( boundsRect.width - 25, codonHandYPos + 15);
-        endShape(CLOSE);
+            beginShape();
+            vertex( boundsRect.width - 25, codonHandYPos - 15);
+            vertex( boundsRect.width - 40, codonHandYPos);
+            vertex( boundsRect.width - 25, codonHandYPos + 15);
+            endShape(CLOSE);
+        }
     }
 
 
