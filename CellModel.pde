@@ -69,17 +69,17 @@ class CellModel implements CodonModelParent {
 
     void removeCodon(CodonBaseModel oldCodonModel) {
         codonModels.remove(oldCodonModel);
-
-        if (currentCodon >= codonModels.indexOf(oldCodonModel)) {
-            currentCodon--;
-        }
-
+        
         for(CellModelClient client: clients) {
             client.onRemoveCodon(oldCodonModel);
         }
 
         for (CodonBaseModel codonModel : codonModels) {
             codonModel.updatePosition();
+        }
+
+        if (currentCodon >= codonModels.size()) {
+            currentCodon = codonModels.size() - 1;
         }
 
         if(previousExecuteHandPosition >= codonModels.size() || executeHandPosition >= codonModels.size()) {
