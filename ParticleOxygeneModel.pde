@@ -1,24 +1,23 @@
-class ParticleFoodModel extends ParticleBaseModel {
+class ParticleOxygeneModel extends ParticleBaseModel {
 
-    ParticleFoodModel(BodyModel bodyModel) {
+    ParticleOxygeneModel(BodyModel bodyModel) {
         super(bodyModel);
     }
-    ParticleFoodModel(BodyModel bodyModel, float positionX, float positionY) {
+    ParticleOxygeneModel(BodyModel bodyModel, float positionX, float positionY) {
         super(bodyModel, positionX, positionY);
     }
-    ParticleFoodModel(BodyModel bodyModel, float positionX, float positionY, float speedX, float speedY) {
+    ParticleOxygeneModel(BodyModel bodyModel, float positionX, float positionY, float speedX, float speedY) {
         super(bodyModel, positionX, positionY, speedX, speedY);
     }
-
+    
 
     String getImageName() {
-        return "food";
+        return "oxygene";
     }
 
     String getTypeName() {
-        return "food";
+        return "oxygene";
     }
-
 
     void onCellCollide(CellModel currendTouchedCell, CellModel previousTouchedCell) {
         if (previousTouchedCell != null) {
@@ -28,8 +27,6 @@ class ParticleFoodModel extends ParticleBaseModel {
         if (currendTouchedCell != null) {
             currendTouchedCell.handleCollision(this);
         }
-
-        setContainingCell(currendTouchedCell);
 
     }
 

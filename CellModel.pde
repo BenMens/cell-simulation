@@ -4,6 +4,8 @@ class CellModel implements CodonModelParent {
 
     ArrayList<CodonBaseModel> codonModels = new ArrayList<CodonBaseModel>();
 
+    private ArrayList<ParticleBaseModel> containingParticles = new ArrayList<ParticleBaseModel>();
+
     float ticksPerCodonTick = 50;
     float ticksSinceLastCodonTick;
 
@@ -240,4 +242,34 @@ class CellModel implements CodonModelParent {
     void unSelectCell() {
         bodyModel.unSelectCell(this);
     }
+
+    // ################################################################################################################################################
+    // containing particles
+    // ################################################################################################################################################
+    void receiveParticle(ParticleBaseModel particle) {
+        if (!containingParticles.contains(particle)) {
+            containingParticles.add(particle);
+        }
+    }
+
+    void expelParticle(ParticleBaseModel particle) {
+        containingParticles.remove(particle);
+    }
+
+    ArrayList<ParticleBaseModel> getContainingParticles() {
+        return (ArrayList<ParticleBaseModel>)containingParticles.clone();
+    }
+
+    ArrayList<ParticleBaseModel> getContainingParticles(String type) {
+        ArrayList<ParticleBaseModel> result = new ArrayList<ParticleBaseModel>();
+
+        for (ParticleBaseModel particle: containingParticles) {
+            if (particle.getTypeName() == type) {
+                result.add(particle);
+            }
+        }
+
+        return result;
+    }
+
 }

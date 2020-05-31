@@ -11,6 +11,22 @@ class BodyModel {
 
     BodyModel(PVector gridSize) {
         this.gridSize = gridSize;
+
+        for (int i = 0; i < 25; i++) {
+            particleFactory.createParticle("food", this);
+        }   
+
+        for (int i = 0; i < 25; i++) {
+            particleFactory.createParticle("waste", this);
+        }
+
+        for (int i = 0; i < 25; i++) {
+            particleFactory.createParticle("oxygene", this);
+        }
+
+        for (int i = 0; i < 25; i++) {
+            particleFactory.createParticle("co2", this);
+        }
     }
 
 
