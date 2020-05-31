@@ -1,9 +1,11 @@
-class BodyController implements BodyModelClient, BodyViewClient {
+class BodyController extends ControllerBase implements BodyModelClient, BodyViewClient {
     BodyModel bodyModel;
     BodyView bodyView;
 
 
-    BodyController(ViewBase parentView, BodyModel bodyModel) {
+    BodyController(ControllerBase parentController, ViewBase parentView, BodyModel bodyModel) {
+        super (parentController);
+        
         this.bodyModel = bodyModel;
         this.bodyView = new BodyView(parentView, bodyModel);
 
@@ -21,11 +23,11 @@ class BodyController implements BodyModelClient, BodyViewClient {
 
 
     void onAddCell(CellModel cellModel) {
-        new CellController(bodyView.cellLayerView, cellModel);
+        new CellController(this, bodyView.cellLayerView, cellModel);
     }
 
     void onAddParticle(ParticleBaseModel particleModel) { 
-        new ParticleController(bodyView.particleLayerView, particleModel);
+        new ParticleController(this, bodyView.particleLayerView, particleModel);
     }
     
     void onSelectCell(CellModel selectedCell) {}

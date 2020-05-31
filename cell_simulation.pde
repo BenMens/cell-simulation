@@ -30,7 +30,7 @@ void setup() {
         }
     }
 
-    guiController = new GuiController(rootView, bodyModel);
+    guiController = new GuiController(null, rootView, bodyModel);
     lastTickTimestamp = millis();
 }
 

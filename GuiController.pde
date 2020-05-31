@@ -1,43 +1,49 @@
 import java.awt.geom.Rectangle2D;
 
 
-class GuiController  implements BodyModelClient {
+class GuiController extends ControllerBase implements BodyModelClient {
     ViewBase parentView;
     BodyModel bodyModel;
     BodyController bodyController;
     ZoomView bodyContainerView;
-    CellController selectedCellController;
     CellEditorController cellEditorController;
 
 
-    GuiController(ViewBase parentView, BodyModel bodyModel) {
+    GuiController(ControllerBase parentController, ViewBase parentView, BodyModel bodyModel) {
+        super(parentController);
+
         this.parentView = parentView;
 
         bodyContainerView = new ZoomView(parentView);
-        bodyContainerView.frameRect = new Rectangle2D.Float(20, 20, height - 40, height - 40);
-        bodyContainerView.boundsRect = new Rectangle2D.Float(0, 0, height - 40, height - 40);
-        bodyContainerView.shouldClip = true;
-
-        bodyController = new BodyController(bodyContainerView, bodyModel);
+        
+        bodyController = new BodyController(this, bodyContainerView, bodyModel);
 
         bodyContainerView.setZoomView(bodyController.bodyView);
 
         bodyModel.registerClient(this);
 
+        this.updateLayout();
+    }
+
+    void beforeLayoutChildren() {
+        bodyContainerView.setFrameRect(20, 20, height - 40, height - 40);
+
+        if (this.cellEditorController != null) {
+            this.cellEditorController.cellEditorView.setFrameRect(height, 20, width - height - 20, height - 40);
+        }
     }
 
     void onSelectCell(CellModel selectedCell) {
-        if (this.selectedCellController != null) {
-            this.selectedCellController = null;
+        if (this.cellEditorController != null) {
+            this.cellEditorController.destroy();
             this.cellEditorController = null;
         }
 
         if (selectedCell != null) {
-            this.selectedCellController = new CellController(parentView, selectedCell);
-            this.selectedCellController.cellView.frameRect = new Rectangle2D.Float(height, 20, 200, 200);
-            
-            this.cellEditorController = new CellEditorController(parentView, selectedCell, new Rectangle2D.Float(height, 240, width - height - 20, height - 260));
+            this.cellEditorController = new CellEditorController(this, parentView, selectedCell);
         }
+
+        this.updateLayout();
     }
 
 

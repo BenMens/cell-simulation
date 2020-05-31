@@ -1,27 +1,29 @@
-class CellController implements CellModelClient, CellViewClient {
+class CellController extends ControllerBase implements CellModelClient, CellViewClient {
     CellModel cellModel;
     CellView cellView;
 
-    CellController(ViewBase parentView, CellModel cellModel) {
+    CellController(ControllerBase parentController, ViewBase parentView, CellModel cellModel) {
+        super(parentController);
+        
         this.cellModel = cellModel;
         this.cellView = new CellView(parentView, cellModel);
 
-        this.cellView.frameRect = new Rectangle2D.Float(cellModel.position.x * 100, cellModel.position.y * 100, 100, 100);
+        this.cellView.setFrameRect(cellModel.position.x * 100, cellModel.position.y * 100, 100, 100);
 
         this.cellModel.registerClient(this);
         this.cellView.registerClient(this);
     }
 
 
-    void destroy() {
-        cellView.setParentView(null);
+    void onDestroy() {
+        cellView.destroy();
         cellView.unregisterClient(this);
         cellModel.unregisterClient(this);
     }
 
 
     void onAddCodon(CodonBaseModel codonModel) {
-        new CodonController(cellView ,codonModel);
+        new CodonController(this, cellView ,codonModel);
     }
 
 

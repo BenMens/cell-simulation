@@ -5,8 +5,8 @@ class ViewBase {
     private ViewBase parentView = null;
     protected ArrayList<ViewBase> childViews = new ArrayList<ViewBase>();
 
-    Rectangle2D.Float frameRect;  // View dimension in Parent coordinates
-    Rectangle2D.Float boundsRect; // View dimension 
+    private Rectangle2D.Float frameRect;  // View dimension in Parent coordinates
+    private Rectangle2D.Float boundsRect; // View dimension 
 
     boolean shouldClip = false;
     boolean isVisible = true;
@@ -380,6 +380,35 @@ class ViewBase {
         return false;
     }
 
+    // ########################################################################
+    // FrameRect
+    // ########################################################################
+    void setFrameRect(double x, double y, double width, double height) {
+        Rectangle2D.Float oldRect = (Rectangle2D.Float)frameRect.clone();
+
+        frameRect.setRect(x, y, width, height);
+
+        onFrameRectChange(oldRect);
+    }
+
+    Rectangle2D.Float getFrameRect() {
+        return (Rectangle2D.Float)frameRect.clone();
+    }
+
+    void onFrameRectChange(Rectangle2D.Float oldRect) {}
+
+
+    // ########################################################################
+    // Bounds
+    // ########################################################################
+    void setBoundsRect(double x, double y, double width, double height) {
+        boundsRect.setRect(x, y, width, height);
+    }
+
+    Rectangle2D.Float getBoundsRect() {
+        return (Rectangle2D.Float)boundsRect.clone();
+    }
+
 
     // ########################################################################
     // View child events
@@ -387,5 +416,21 @@ class ViewBase {
 
     void onChildViewAdded(ViewBase clientView) {
     }
+
+
+    // ########################################################################
+    // Destruction
+    // ########################################################################
+    final void destroy() {
+        this.setParentView(null);
+        
+        for (ViewBase childView: (ArrayList<ViewBase>)childViews.clone()) {
+            childView.destroy();
+        }
+
+        onDestroy();
+    }
+
+    void onDestroy() {}
 
 }

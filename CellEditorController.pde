@@ -1,24 +1,39 @@
-class CellEditorController implements CellModelClient, CellEditorViewClient {
+class CellEditorController extends ControllerBase implements CellModelClient, CellEditorViewClient {
     CellModel cellModel;
     CellEditorView cellEditorView;
+    CellController cellController;
+    CodonDetailsView codonDetailsView;
 
-    CellEditorController(ViewBase parentView, CellModel cellModel, Rectangle2D.Float frameRect) {
+    CellEditorController(ControllerBase parentController, ViewBase parentView, CellModel cellModel) {
+        super(parentController);
+        
         this.cellModel = cellModel;
-        this.cellEditorView = new CellEditorView(parentView, cellModel);
+        cellEditorView = new CellEditorView(parentView, cellModel);
 
-        this.cellEditorView.frameRect = frameRect;
+        cellController = new CellController(this, cellEditorView, cellModel);
+            
+        codonDetailsView = new CodonDetailsView(this.cellEditorView);
 
-        this.cellModel.registerClient(this);
-        this.cellEditorView.registerClient(this);
+        cellModel.registerClient(this);
+        cellEditorView.registerClient(this);
+    }
+
+    void beforeLayoutChildren() {
+        cellEditorView.setBoundsRect(0, 0, cellEditorView.getFrameRect().width, cellEditorView.getFrameRect().height);
+        cellController.cellView.setFrameRect(20, 20, 200, 200);
+
+        codonDetailsView.setFrameRect(20, 290, 100, 80);
+        codonDetailsView.setBoundsRect(0, 0, 100, 80);
     }
 
 
-    void destroy() {
-        cellEditorView.setParentView(null);
+    void onDestroy() {
+        cellEditorView.destroy();
         cellEditorView.unregisterClient(this);
         cellModel.unregisterClient(this);
-    }
 
+        codonDetailsView.destroy();
+    }
 
     void onDestroy(CellModel cellModel) {
         destroy();

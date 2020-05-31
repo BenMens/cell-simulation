@@ -15,8 +15,7 @@ class CodonView extends ViewBase {
         
         this.codonModel = codonModel;
 
-        this.boundsRect.x = -50;
-        this.boundsRect.y = -50;
+        this.setBoundsRect(-50, -50, getBoundsRect().width,  getBoundsRect().height);
     }
 
 

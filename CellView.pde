@@ -19,7 +19,7 @@ class CellView extends ViewBase {
         
         this.cellModel = cellModel;
 
-        this.boundsRect = new Rectangle2D.Float(0, 0, 100, 100);
+        this.setBoundsRect(0, 0, 100, 100);
         
         this.shouldClip = true;
 
@@ -177,7 +177,7 @@ class CellView extends ViewBase {
 
     boolean onMouseButtonEvent(float mouseX, float mouseY, boolean mousePressed, int mouseButton) {
         if (mousePressed) {
-            if (boundsRect.contains(mouseX, mouseY)) {
+            if (getBoundsRect().contains(mouseX, mouseY)) {
                 if (cellModel.isSelected()) {
                     cellModel.unSelectCell();
                 } else {

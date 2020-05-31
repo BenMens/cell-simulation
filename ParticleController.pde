@@ -1,8 +1,10 @@
-class ParticleController implements ParticleModelClient, ParticleViewClient {
+class ParticleController extends ControllerBase implements ParticleModelClient, ParticleViewClient {
     ParticleBaseModel particleModel;
     ParticleView particleView;
 
-    ParticleController(ViewBase parentView, ParticleBaseModel particleModel) {
+    ParticleController(ControllerBase parentController, ViewBase parentView, ParticleBaseModel particleModel) {
+        super(parentController);
+        
         this.particleModel = particleModel;
         this.particleView = new ParticleView(parentView, particleModel);
 
@@ -11,7 +13,8 @@ class ParticleController implements ParticleModelClient, ParticleViewClient {
     }
 
 
-    void destroy() {
+    void onDestroy() {
+        particleView.destroy();
         particleView.unregisterClient(this);
         particleModel.unregisterClient(this);
     }
