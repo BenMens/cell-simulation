@@ -32,6 +32,8 @@ void setup() {
 
     guiController = new GuiController(null, rootView, bodyModel);
     lastTickTimestamp = millis();
+
+    createFont("courrier.dfont", 24);
 }
 
 

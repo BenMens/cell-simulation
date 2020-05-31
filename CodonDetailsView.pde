@@ -36,15 +36,34 @@ class CodonDetailsView extends ViewBase {
 
 
     void beforeDrawChildren() {
-        if (isSelected) {
-            fill(255);
-            background(10, 10, 100);
-        } else {
-            fill(255);
-            background(10, 100, 10);
-        }
+        Rectangle2D.Float boundsRect = getBoundsRect();
 
-        text("Codon", 20, 30);
+        // if (isSelected) {
+        //     fill(255);
+        //     background(10, 10, 100);
+        // } else {
+        //     fill(255);
+        //     background(10, 100, 10);
+        // }
+
+
+        background(0);
+
+        float xOffset = codonModel.degradation * boundsRect.width / 2;
+
+        fill(codonModel.getMainColor());
+        rect(xOffset, 0, boundsRect.width / 2 - xOffset, boundsRect.height);
+
+        fill(codonModel.getSecondaryColor());
+        rect(boundsRect.width / 2, 0, boundsRect.width / 2 - xOffset, boundsRect.height);
+
+        textAlign(CENTER, CENTER);
+
+        fill(255);
+
+        text(codonModel.getDisplayName(), boundsRect.width / 4, boundsRect.height / 2);
+
+        text(codonModel.codonParameter, boundsRect.width * 3 / 4, boundsRect.height / 2);
     }
 
     void onFrameRectChange(Rectangle2D.Float oldRect) {
