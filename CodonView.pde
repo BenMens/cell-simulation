@@ -41,8 +41,8 @@ class CodonView extends ViewBase {
             float thirdVertexAngle = secondVertexAngle + (0.5 - 0.5 * SEGMENT_SPACING_PERCENTAGE) * codonModel.segmentSizeInCodonCircle;
 
             float segmentCircleBetweenRadius = lerp(SEGMENT_CIRCLE_INNER_RADIUS, SEGMENT_CIRCLE_OUTER_RADIUS, 0.5);
-            float segmentCircleInnerDegradationRadius = lerp(SEGMENT_CIRCLE_INNER_RADIUS, segmentCircleBetweenRadius, codonModel.degradation);
-            float segmentCircleOuterDegradationRadius = lerp(SEGMENT_CIRCLE_OUTER_RADIUS, segmentCircleBetweenRadius, codonModel.degradation);
+            float segmentCircleInnerDegradationRadius = lerp(SEGMENT_CIRCLE_INNER_RADIUS, segmentCircleBetweenRadius, codonModel.getDegradation());
+            float segmentCircleOuterDegradationRadius = lerp(SEGMENT_CIRCLE_OUTER_RADIUS, segmentCircleBetweenRadius, codonModel.getDegradation());
             
             float sinFirstVertexAngle = sin(firstVertexAngle);
             float sinSecondVertexAngle = sin(secondVertexAngle);
@@ -84,11 +84,11 @@ class CodonView extends ViewBase {
             pushMatrix();
             rotate(codonModel.segmentAngleInCodonCircle + PI);
 
-            stroke(lerpColor(codonModel.getMainColor(), color(0), codonModel.degradation));
+            stroke(lerpColor(codonModel.getMainColor(), color(0), codonModel.getDegradation()));
             strokeWeight(segmentCircleRadius * 0.5);
             point(0, SEGMENT_CIRCLE_INNER_RADIUS + segmentCircleRadius * 0.75);
 
-            stroke(lerpColor(codonModel.getSecondaryColor(), color(0), codonModel.degradation));
+            stroke(lerpColor(codonModel.getSecondaryColor(), color(0), codonModel.getDegradation()));
             strokeWeight(segmentCircleRadius * 0.5);
             point(0, SEGMENT_CIRCLE_INNER_RADIUS + segmentCircleRadius * 0.25);
             popMatrix();

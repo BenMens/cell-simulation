@@ -29,12 +29,14 @@ class CellModel implements CodonModelParent {
 
         this.position = position;
 
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < 6; i++) {
             new CodonNoneModel(this);
         }
 
-        CodonBaseModel removeCodon = new CodonRemoveModel(this);
-        removeCodon.setCodonParameter(removeCodon.possibleCodonParameters.get(floor(random(removeCodon.possibleCodonParameters.size()))));
+        CodonBaseModel codon = new CodonRepairModel(this);
+        codon.setCodonParameter(codon.possibleCodonParameters.get(floor(random(codon.possibleCodonParameters.size()))));
+
+        executeHandPosition = codonModels.size() - 1;
     }
 
 
@@ -63,8 +65,6 @@ class CellModel implements CodonModelParent {
         for (CodonBaseModel codonModel : codonModels) {
             codonModel.updatePosition();
         }
-
-        executeHandPosition = floor(random(codonModels.size()));
     }
 
     void removeCodon(CodonBaseModel oldCodonModel) {
@@ -82,9 +82,11 @@ class CellModel implements CodonModelParent {
             codonModel.updatePosition();
         }
 
-        if(previousExecuteHandPosition >= codonModels.size() || executeHandPosition >= codonModels.size()) {
-            previousExecuteHandPosition = floor(random(codonModels.size()));
-            executeHandPosition = floor(random(codonModels.size()));
+        if (previousExecuteHandPosition >= codonModels.size()) {
+            previousExecuteHandPosition = codonModels.size() - 1;
+        }
+        if (executeHandPosition >= codonModels.size()) {
+            executeHandPosition = codonModels.size() - 1;
         }
     }
 
@@ -111,15 +113,17 @@ class CellModel implements CodonModelParent {
     void codonTick() {
         if (codonModels.size() != 0 ) {
             energyLevel = max(energyLevel - energyCostPerTick, 0);
+            currentCodon = (currentCodon + 1) % codonModels.size();
 
             if (energyLevel > codonModels.get(currentCodon).getEnergyCost()) {
-                currentCodon = (currentCodon + 1) % codonModels.size();
                 codonModels.get(currentCodon).executeCodon();
             }
         }
 
         previousExecuteHandPosition = executeHandPosition;
         previousIsExecuteHandPointingOutward = isExecuteHandPointingOutward;
+
+        isExecuteHandPointingOutward = !isExecuteHandPointingOutward;
     }
 
 

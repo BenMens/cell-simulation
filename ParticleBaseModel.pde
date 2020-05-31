@@ -11,7 +11,7 @@ class ParticleBaseModel {
     private PVector speed = new PVector(0, 0);
 
     CellModel containingCell;
-    float cellWallHarmfulness = 0.03;
+    float cellWallHarmfulness = 0.01;
 
 
     ParticleBaseModel(BodyModel bodyModel) {

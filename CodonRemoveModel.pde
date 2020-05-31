@@ -10,7 +10,7 @@ class CodonRemoveModel extends CodonBaseModel {
         possibleCodonParameters.add("none");
         possibleCodonParameters.add("wall");
         possibleCodonParameters.add("energy");
-        possibleCodonParameters.add("codons");
+        possibleCodonParameters.add("codon");
     }
 
 
@@ -28,7 +28,7 @@ class CodonRemoveModel extends CodonBaseModel {
                 } else {
                     return baseEnergyCost;
                 }
-            case "codons" :
+            case "codon" :
                 if (parentModel.getIsExecuteHandPointingOutward()) {
                     return 0;
                 } else {
@@ -53,7 +53,7 @@ class CodonRemoveModel extends CodonBaseModel {
                     parentModel.setEnergyLevel(0);
                 }
                 break;
-            case "codons":
+            case "codon":
                 if (!parentModel.getIsExecuteHandPointingOutward()) {
                     ArrayList<CodonBaseModel> codonList = parentModel.getCodonList();
                     int index = parentModel.getExecuteHandPosition();

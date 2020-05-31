@@ -16,7 +16,7 @@ abstract class CodonBaseModel {
     protected String codonParameter = "none";
 
     float baseEnergyCost = 0.01;
-    float degradation = 0;
+    protected float degradation = 0;
     float degradationRate = 0.0002;
 
     protected color mainColor = color(0);
@@ -32,7 +32,7 @@ abstract class CodonBaseModel {
         secondaryColors.put("none", color(0));
         secondaryColors.put("wall", color(250, 90, 70));
         secondaryColors.put("energy", color(245, 239, 50));
-        secondaryColors.put("codons", color(45, 240, 190));
+        secondaryColors.put("codon", color(45, 240, 190));
     }
     
 
@@ -82,6 +82,15 @@ abstract class CodonBaseModel {
 
     color getSecondaryColor() {
         return secondaryColors.get(codonParameter);
+    }
+
+
+    float getDegradation() {
+        return degradation;
+    }
+
+    void setDegradation(float degradation) {
+        this.degradation = constrain(degradation, 0, 1);
     }
 
 
