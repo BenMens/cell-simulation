@@ -47,10 +47,10 @@ class ZoomView extends ViewBase {
 
 
     boolean onMouseDragged(float mouseX, float mouseY, float pmouseX, float pmouseY) {
-        clipMovement();
-
         zoomView.frameRect.x += (mouseX - pmouseX);
         zoomView.frameRect.y += (mouseY - pmouseY);
+        
+        clipMovement();
 
         return true;
     }
