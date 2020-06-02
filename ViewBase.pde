@@ -14,6 +14,8 @@ class ViewBase {
     boolean hasBackground = false;
     color backgroundColor = color(255);
 
+    private ArrayList<Object> subscribers = new ArrayList<Object>();
+
 
     ViewBase(ViewBase parent) {
         if (parent == null) {
@@ -75,7 +77,7 @@ class ViewBase {
         Rectangle2D.Float clipBoundary = getClipBoundary();
 
         if(clipBoundary == null || (clipBoundary.width > 0 && clipBoundary.height > 0)) {
-            pushMatrix();
+            push();
 
             if (clipBoundary != null) {
                 clip(clipBoundary.x, clipBoundary.y, clipBoundary.width, clipBoundary.height);
@@ -102,7 +104,7 @@ class ViewBase {
                 afterDrawChildren();
             }
 
-            popMatrix();
+            pop();
         }
     }
 
@@ -241,6 +243,31 @@ class ViewBase {
         return null;
     }
 
+
+    // ########################################################################
+    // Subscriber handling
+    // ########################################################################
+    protected <T> ArrayList<T> getSubscribersImplementing(Class<T> interfaceClass) {
+        ArrayList<T> result = new ArrayList<T>();
+
+        for (Object subscriber: subscribers) {
+            if (interfaceClass.isInstance(subscriber)) {
+                result.add((T)subscriber);
+            }
+        }
+
+        return result;
+    }
+
+    protected void registerSubscriber(Object subscriber) {
+        if(!subscribers.contains(subscriber)) {
+            subscribers.add(subscriber);
+        }
+    }
+
+    protected void unregisterSubscriber(Object subscriber) {
+        subscribers.remove(subscriber);
+    }
 
     // ########################################################################
     // Mouse move handling
@@ -402,9 +429,7 @@ class ViewBase {
         return (Rectangle2D.Float)frameRect.clone();
     }
 
-    void onFrameRectChange(Rectangle2D.Float oldRect) {
-        setBoundsRect(0, 0, frameRect.width, frameRect.height);
-    }
+    void onFrameRectChange(Rectangle2D.Float oldRect) {}
 
 
     // ########################################################################

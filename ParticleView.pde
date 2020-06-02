@@ -1,7 +1,6 @@
 class ParticleView extends ViewBase {
     final float PARTICLE_SIZE = 15;
 
-    ArrayList<ParticleViewClient> clients = new ArrayList<ParticleViewClient>();
     ParticleBaseModel particleModel;
 
     PImage images[] = new PImage[7]; 
@@ -18,13 +17,11 @@ class ParticleView extends ViewBase {
     }
 
     void registerClient(ParticleViewClient client) {
-        if(!clients.contains(client)) {
-            clients.add(client);
-        }
+        registerSubscriber(client);
     }
 
     void unregisterClient(ParticleViewClient client) {
-        clients.remove(client);
+        unregisterSubscriber(client);
     }
 
 

@@ -1,8 +1,6 @@
 class CellEditorView extends ViewBase {
     CellModel cellModel;
 
-    ArrayList<CellEditorViewClient> clients = new ArrayList<CellEditorViewClient>();
-
     PFont font;
 
     final float CODONS_Y_POS = 380f;
@@ -24,14 +22,12 @@ class CellEditorView extends ViewBase {
 
 
     void registerClient(CellEditorViewClient client) {
-        if(!clients.contains(client)) {
-            clients.add(client);
-        }  
+        registerSubscriber(client);
     }
 
 
     void unregisterClient(CellEditorViewClient client) {
-        clients.remove(client);
+        unregisterSubscriber(client);
     }
 
 

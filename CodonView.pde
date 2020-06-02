@@ -8,7 +8,6 @@ class CodonView extends ViewBase {
     final float SEGMENT_CIRCLE_CENTER_RADIUS = lerp(SEGMENT_CIRCLE_INNER_RADIUS, SEGMENT_CIRCLE_OUTER_RADIUS, 0.5);
     final float MAX_CODON_WIDTH = 7;
 
-    ArrayList<CodonViewClient> clients = new ArrayList<CodonViewClient>();
     CodonBaseModel codonModel;
 
 
@@ -22,13 +21,11 @@ class CodonView extends ViewBase {
 
 
     void registerClient(CodonViewClient client) {
-        if(!clients.contains(client)) {
-            clients.add(client);
-        }
+        registerSubscriber(client);
     }
 
     void unregisterClient(CodonViewClient client) {
-        clients.remove(client);
+        unregisterSubscriber(client);
     }
 
 

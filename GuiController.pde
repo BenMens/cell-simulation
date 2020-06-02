@@ -48,6 +48,7 @@ class GuiController extends ControllerBase implements BodyModelClient, ButtonVie
         Rectangle2D.Float parentRect = this.parentView.getFrameRect();
 
         toolbarView.setFrameRect(0, 0, parentRect.width, 80);
+        toolbarView.setBoundsRect(0, 0, parentRect.width, 80);
 
         playButton.setFrameRect(parentRect.width - 170, 10, 60, 60);
         pauzeButton.setFrameRect(parentRect.width - 100, 10, 60, 60);

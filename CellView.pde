@@ -6,12 +6,13 @@ class CellView extends ViewBase {
     final float WALL_SIZE_ON_MAX_HEALTH = 10;
     final float ENERGY_SYMBOL_SIZE_ON_MAX_ENERGY = 8;
 
-    ArrayList<CellViewClient> clients = new ArrayList<CellViewClient>();
     CellModel cellModel;
 
     float handAnchorAngle;
     float handPointerRadiusInward;
     float handPointerRadiusOutward;
+
+    boolean isDisabled = false;
 
 
     CellView(ViewBase parentView, CellModel cellModel) {
@@ -34,16 +35,13 @@ class CellView extends ViewBase {
 
 
     void registerClient(CellViewClient client) {
-        if(!clients.contains(client)) {
-            clients.add(client);
-        }  
+        registerSubscriber(client);
     }
 
 
     void unregisterClient(CellViewClient client) {
-        clients.remove(client);
+        unregisterSubscriber(client);
     }
-
 
     float smoothLerp(float start, float end, float startLerping, float stopLerping, float fraction) {
         float lerpFraction = 1;
@@ -62,7 +60,7 @@ class CellView extends ViewBase {
         float screenSize = composedScale().x * 100;
         makeChildsInvisible();
         
-        if(screenSize < 10) {
+        if (screenSize < 10) {
             noStroke();
             fill(255, 165, 135);
             rect(0, 0, 100, 100);
@@ -75,7 +73,7 @@ class CellView extends ViewBase {
             if (cellModel.edited == true) {
                 fill(115, 230, 155);
 
-            } else if (cellModel.isSelected()) {
+            } else if (!isDisabled && cellModel.isSelected()) {
                 fill(35, 225, 230);
 
             } else {
@@ -84,7 +82,8 @@ class CellView extends ViewBase {
             float wallSize = cellModel.wallHealth * WALL_SIZE_ON_MAX_HEALTH;
             rect(wallSize, wallSize, 100 - 2 * wallSize, 100 - 2 * wallSize);
 
-            if(screenSize > 15) {
+
+            if (screenSize > 15) {
                 makeChildsVisible();
 
                 fill(0);
@@ -181,7 +180,7 @@ class CellView extends ViewBase {
 
 
     boolean onMouseButtonEvent(float mouseX, float mouseY, boolean mousePressed, int mouseButton) {
-        if (mousePressed) {
+        if (mousePressed && !isDisabled) {
             if (getBoundsRect().contains(mouseX, mouseY)) {
                 if (cellModel.isSelected()) {
                     cellModel.unSelectCell();

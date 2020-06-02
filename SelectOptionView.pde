@@ -1,5 +1,4 @@
 class SelectOptionView extends ViewBase {
-    ArrayList<SelectOptionViewClient> clients = new ArrayList<SelectOptionViewClient>();
 
     boolean isSelected = false;
 
@@ -11,13 +10,11 @@ class SelectOptionView extends ViewBase {
 
 
     void registerClient(SelectOptionViewClient client) {
-        if(!clients.contains(client)) {
-            clients.add(client);
-        }  
+        registerSubscriber(client);
     }
 
     void unregisterClient(SelectOptionViewClient client) {
-        clients.remove(client);
+        unregisterSubscriber(client);
     }
 
     boolean onMouseButtonEvent(float mouseX, float mouseY, boolean mousePressed, int mouseButton) {

@@ -1,6 +1,4 @@
 class CodonDetailsView extends ViewBase {
-    ArrayList<CodonDetailsViewClient> clients = new ArrayList<CodonDetailsViewClient>();
-
     CodonBaseModel codonModel;
 
     boolean isSelected = false;
@@ -15,13 +13,11 @@ class CodonDetailsView extends ViewBase {
 
 
     void registerClient(CodonDetailsViewClient client) {
-        if(!clients.contains(client)) {
-            clients.add(client);
-        }  
+        registerSubscriber(client);
     }
 
     void unregisterClient(CodonDetailsViewClient client) {
-        clients.remove(client);
+        unregisterSubscriber(client);
     }
 
     boolean onMouseButtonEvent(float mouseX, float mouseY, boolean mousePressed, int mouseButton) {

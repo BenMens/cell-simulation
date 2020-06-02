@@ -1,7 +1,5 @@
 class ButtonView extends ViewBase {
 
-    ArrayList<ButtonViewClient> clients = new ArrayList<ButtonViewClient>();
-
     PImage buttonImage;
 
     ButtonView(ViewBase parentView) {
@@ -10,13 +8,12 @@ class ButtonView extends ViewBase {
 
 
     void registerClient(ButtonViewClient client) {
-        if(!clients.contains(client)) {
-            clients.add(client);
-        }
+        registerSubscriber(client);
     }
 
+
     void unregisterClient(ButtonViewClient client) {
-        clients.remove(client);
+        unregisterSubscriber(client);
     }
 
 
@@ -32,8 +29,9 @@ class ButtonView extends ViewBase {
         }
     }
 
+
     boolean onMouseButtonEvent(float mouseX, float mouseY, boolean mousePressed, int mouseButton) {
-        for (ButtonViewClient client: clients) {
+        for (ButtonViewClient client: getSubscribersImplementing(ButtonViewClient.class)) {
             client.onClick(this);
         }
 

@@ -12,6 +12,7 @@ class CellEditorController extends ControllerBase implements CellModelClient, Ce
         cellEditorView = new CellEditorView(parentView, cellModel);
 
         cellController = new CellController(this, cellEditorView, cellModel);
+        cellController.cellView.isDisabled = true;
             
         cellModel.registerClient(this);
         cellEditorView.registerClient(this);
