@@ -16,14 +16,6 @@ class ParticleView extends ViewBase {
         }
     }
 
-    void registerClient(ParticleViewClient client) {
-        registerSubscriber(client);
-    }
-
-    void unregisterClient(ParticleViewClient client) {
-        unregisterSubscriber(client);
-    }
-
 
     void beforeDrawChildren() {
         PVector composedScale = this.composedScale();

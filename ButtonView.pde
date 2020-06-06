@@ -7,23 +7,13 @@ class ButtonView extends ViewBase {
     }
 
 
-    void registerClient(ButtonViewClient client) {
-        registerSubscriber(client);
-    }
-
-
-    void unregisterClient(ButtonViewClient client) {
-        unregisterSubscriber(client);
-    }
-
-
     void beforeDrawChildren() {
-        Rectangle2D.Float boundsRect = getBoundsRect();
-
         if (buttonImage != null) {
+            Rectangle2D.Float boundsRect = getBoundsRect();
+
             image(buttonImage, 
-                0, 
-                0, 
+                boundsRect.x, 
+                boundsRect.y, 
                 boundsRect.width, 
                 boundsRect.height);
         }
@@ -31,7 +21,7 @@ class ButtonView extends ViewBase {
 
 
     boolean onMouseButtonEvent(float mouseX, float mouseY, boolean mousePressed, int mouseButton) {
-        for (ButtonViewClient client: getSubscribersImplementing(ButtonViewClient.class)) {
+        for (ButtonViewClient client: getClientsImplementing(ButtonViewClient.class)) {
             client.onClick(this);
         }
 

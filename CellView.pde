@@ -34,15 +34,6 @@ class CellView extends ViewBase {
     }
 
 
-    void registerClient(CellViewClient client) {
-        registerSubscriber(client);
-    }
-
-
-    void unregisterClient(CellViewClient client) {
-        unregisterSubscriber(client);
-    }
-
     float smoothLerp(float start, float end, float startLerping, float stopLerping, float fraction) {
         float lerpFraction = 1;
 

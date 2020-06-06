@@ -9,14 +9,6 @@ class SelectOptionView extends ViewBase {
     }
 
 
-    void registerClient(SelectOptionViewClient client) {
-        registerSubscriber(client);
-    }
-
-    void unregisterClient(SelectOptionViewClient client) {
-        unregisterSubscriber(client);
-    }
-
     boolean onMouseButtonEvent(float mouseX, float mouseY, boolean mousePressed, int mouseButton) {
         if (mousePressed) {
             this.isSelected = !this.isSelected;

@@ -16,23 +16,8 @@ class CellEditorView extends ViewBase {
         font = createFont("courrier.dfont", 24);
     }
 
-    void beforeLayoutChildren() {
-        setBoundsRect(0, 0, getFrameRect().width, getFrameRect().height);
-    }
 
-
-    void registerClient(CellEditorViewClient client) {
-        registerSubscriber(client);
-    }
-
-
-    void unregisterClient(CellEditorViewClient client) {
-        unregisterSubscriber(client);
-    }
-
-
-    float calcCodonsHeight() {
-        
+    float calculatedCodonsHeight() {
         float verticalSpace = getFrameRect().height - CODONS_Y_POS - 40;
         float codonHeight = (verticalSpace + CODONS_SPACING) / cellModel.codonModels.size() - CODONS_SPACING;
         codonHeight = min(codonHeight , 60);
@@ -59,7 +44,7 @@ class CellEditorView extends ViewBase {
         text(String.format("Energy: %.1f",this.cellModel.energyLevel * 100), 20, 294);
         text(String.format("WallHealth: %.1f",this.cellModel.wallHealth * 100), 20, 324);
 
-        float codonHeight = calcCodonsHeight();
+        float codonHeight = calculatedCodonsHeight();
 
         float progressToNextCodonTick = norm(cellModel.ticksSinceLastCodonTick, 0, cellModel.ticksPerCodonTick);
 

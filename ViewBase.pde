@@ -14,7 +14,7 @@ class ViewBase {
     boolean hasBackground = false;
     color backgroundColor = color(255);
 
-    private ArrayList<Object> subscribers = new ArrayList<Object>();
+    private ArrayList<Object> clients = new ArrayList<Object>();
 
 
     ViewBase(ViewBase parent) {
@@ -247,26 +247,26 @@ class ViewBase {
     // ########################################################################
     // Subscriber handling
     // ########################################################################
-    protected <T> ArrayList<T> getSubscribersImplementing(Class<T> interfaceClass) {
+    protected <T> ArrayList<T> getClientsImplementing(Class<T> interfaceClass) {
         ArrayList<T> result = new ArrayList<T>();
 
-        for (Object subscriber: subscribers) {
-            if (interfaceClass.isInstance(subscriber)) {
-                result.add((T)subscriber);
+        for (Object client: clients) {
+            if (interfaceClass.isInstance(client)) {
+                result.add((T)client);
             }
         }
 
         return result;
     }
 
-    protected void registerSubscriber(Object subscriber) {
-        if(!subscribers.contains(subscriber)) {
-            subscribers.add(subscriber);
+    void registerClient(Object client) {
+        if(!clients.contains(client)) {
+            clients.add(client);
         }
     }
 
-    protected void unregisterSubscriber(Object subscriber) {
-        subscribers.remove(subscriber);
+    void unregisterClient(Object client) {
+        clients.remove(client);
     }
 
     // ########################################################################
@@ -417,6 +417,7 @@ class ViewBase {
     // ########################################################################
     // FrameRect
     // ########################################################################
+
     void setFrameRect(double x, double y, double width, double height) {
         Rectangle2D.Float oldRect = (Rectangle2D.Float)frameRect.clone();
 
@@ -435,6 +436,7 @@ class ViewBase {
     // ########################################################################
     // Bounds
     // ########################################################################
+
     void setBoundsRect(double x, double y, double width, double height) {
         boundsRect.setRect(x, y, width, height);
     }
@@ -455,6 +457,7 @@ class ViewBase {
     // ########################################################################
     // Destruction
     // ########################################################################
+    
     final void destroy() {
         this.setParentView(null);
         

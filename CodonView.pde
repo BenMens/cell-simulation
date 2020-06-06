@@ -20,15 +20,6 @@ class CodonView extends ViewBase {
     }
 
 
-    void registerClient(CodonViewClient client) {
-        registerSubscriber(client);
-    }
-
-    void unregisterClient(CodonViewClient client) {
-        unregisterSubscriber(client);
-    }
-
-
     void beforeDrawChildren() {
         float screenSize = composedScale().x * 100;
         makeChildsInvisible();

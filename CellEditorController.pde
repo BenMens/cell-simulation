@@ -26,7 +26,7 @@ class CellEditorController extends ControllerBase implements CellModelClient, Ce
         cellEditorView.setBoundsRect(0, 0, frameRect.width, frameRect.height);
         cellController.cellView.setFrameRect(20, 20, 200, 200);
 
-        float codonHeight = cellEditorView.calcCodonsHeight();
+        float codonHeight = cellEditorView.calculatedCodonsHeight();
         float codonY = cellEditorView.CODONS_Y_POS;
         for (CodonDetailsView codonView: codonDetailsViews) {
             codonView.setFrameRect(40, codonY, frameRect.width - 80, codonHeight);

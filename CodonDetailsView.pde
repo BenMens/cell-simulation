@@ -12,14 +12,6 @@ class CodonDetailsView extends ViewBase {
     }
 
 
-    void registerClient(CodonDetailsViewClient client) {
-        registerSubscriber(client);
-    }
-
-    void unregisterClient(CodonDetailsViewClient client) {
-        unregisterSubscriber(client);
-    }
-
     boolean onMouseButtonEvent(float mouseX, float mouseY, boolean mousePressed, int mouseButton) {
         if (mousePressed) {
             this.isSelected = !this.isSelected;

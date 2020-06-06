@@ -25,17 +25,7 @@ class BodyView extends ViewBase {
           getFrameRect().width,
           getFrameRect().height
         );
-     }
-
-
-    void registerClient(BodyViewClient client) {
-        registerSubscriber(client);
     }
-
-    void unregisterClient(BodyViewClient client) {
-        unregisterSubscriber(client);
-    }
-
 
     void beforeDrawChildren() {
         PVector gridSize = bodyModel.gridSize;
