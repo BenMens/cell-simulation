@@ -12,16 +12,8 @@ class ParticleView extends ViewBase {
         
         this.particleModel = particleModel;
 
-        String imageName = "";
- 
-        if (particleModel instanceof ParticleFoodModel) {
-            imageName = "food";
-        } else if (particleModel instanceof ParticleWasteModel) {
-            imageName = "waste";
-        }
-
         for (int i = 0; i < 7; i++) {
-            images[i] = ImageCache.getImage(applet, "images/" + imageName + "_" + String.format("%d", (long)Math.pow(2, i+3)) + ".png");        
+            images[i] = ImageCache.getImage(applet, "images/" + particleModel.getImageName() + "_" + String.format("%d", (long)Math.pow(2, i+3)) + ".png");        
         }
     }
 
@@ -38,8 +30,11 @@ class ParticleView extends ViewBase {
 
     void beforeDrawChildren() {
         PVector composedScale = this.composedScale();
+        float imageScale = particleModel.getImageScale();
 
-        float imageDimension = max(composedScale.x * PARTICLE_SIZE, composedScale.y * PARTICLE_SIZE);
+        float imageDimension = max(
+            composedScale.x * PARTICLE_SIZE * imageScale, 
+            composedScale.y * PARTICLE_SIZE * imageScale);
         PImage img = images[images.length - 1];
 
         for (int i = 0; i < images.length; i++) {
@@ -49,6 +44,10 @@ class ParticleView extends ViewBase {
             } 
         }
 
-        image(img, particleModel.getPosition().x * 100 - PARTICLE_SIZE * 0.5, particleModel.getPosition().y * 100 - PARTICLE_SIZE * 0.5, PARTICLE_SIZE, PARTICLE_SIZE);
+        image(img, 
+            particleModel.getPosition().x * 100 - PARTICLE_SIZE * 0.5 * imageScale, 
+            particleModel.getPosition().y * 100 - PARTICLE_SIZE * 0.5 * imageScale, 
+            PARTICLE_SIZE * imageScale, 
+            PARTICLE_SIZE * imageScale);
     }
 }

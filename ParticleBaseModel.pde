@@ -1,4 +1,4 @@
-class ParticleBaseModel {
+abstract class ParticleBaseModel implements CellModelClient {
     ArrayList<ParticleModelClient> clients = new ArrayList<ParticleModelClient>();
     BodyModel bodyModel;
 
@@ -10,8 +10,11 @@ class ParticleBaseModel {
     private PVector position = new PVector(0, 0);
     private PVector speed = new PVector(0, 0);
 
-    CellModel containingCell;
+    CellModel previousTouchedCell;
     float cellWallHarmfulness = 0.03;
+
+    private CellModel containingCell;
+
 
 
     ParticleBaseModel(BodyModel bodyModel) {
@@ -90,16 +93,15 @@ class ParticleBaseModel {
             speed.y = -speed.y;
         }
 
-        CellModel newContainingCell = findContainingCell();
+        CellModel currendTouchedCell = findContainingCell();
 
-        if (containingCell != newContainingCell) {
-            if (newContainingCell != null) {
-                newContainingCell.handleCollision(this);
-            }
-            containingCell = newContainingCell;
+        if (previousTouchedCell != currendTouchedCell) {
+
+            onCellCollide(currendTouchedCell, previousTouchedCell);
+
+            previousTouchedCell = currendTouchedCell;
         }
     }
-
 
     void cleanUpTick() {
         if (isDead) {
@@ -107,8 +109,51 @@ class ParticleBaseModel {
         }
     }
 
+    void setContainingCell(CellModel newContainingCell) {
+        if (this.containingCell == newContainingCell) {
+            return;
+        }
+
+        if (this.containingCell != null) {
+            this.containingCell.unregisterClient(this);
+            this.containingCell.expelParticle(this);
+        } 
+
+        this.containingCell = newContainingCell;
+
+        if (newContainingCell != null) {
+            newContainingCell.registerClient(this);
+            newContainingCell.receiveParticle(this);
+        }
+    }
+
+    CellModel getContainingCell() {
+        return this.containingCell;
+    }
+
 
     CellModel findContainingCell() {
         return bodyModel.findCellAtPosition(floor(position.x), floor(position.y));
     }
+
+    abstract String getImageName();
+
+    float getImageScale() {
+        return 1;
+    };
+
+    abstract String getTypeName();
+
+    abstract void onCellCollide(CellModel currendTouchedCell, CellModel previousTouchedCell);
+
+    void onAddCodon(CodonBaseModel codonModel) {};
+
+    void onDestroy(CellModel cellModel) {
+        if (containingCell == cellModel) {
+            containingCell.expelParticle(this);
+            containingCell = null;
+        }
+    };
+
+    void onRemoveCodon(CodonBaseModel codonModel) {};
 }

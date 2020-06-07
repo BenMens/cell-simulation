@@ -9,6 +9,8 @@ boolean[] keysPressed = new boolean[128];
 int lastTickTimestamp = millis();
 int millisPerTick = 20;
 
+ParticleFactory particleFactory = new ParticleFactory();
+
 void setup() {
 
     fullScreen(P2D);
