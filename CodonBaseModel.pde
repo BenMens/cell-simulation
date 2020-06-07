@@ -108,4 +108,6 @@ abstract class CodonBaseModel {
 
 
     abstract void executeCodon();
+
+    abstract String getDisplayName();
 }

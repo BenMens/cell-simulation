@@ -17,4 +17,9 @@ class CodonNoneModel extends CodonBaseModel {
 
 
     void executeCodon() {}
+
+    String getDisplayName() {
+        return "none";
+    };
+
 }

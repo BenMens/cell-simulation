@@ -5,11 +5,16 @@ class ViewBase {
     private ViewBase parentView = null;
     protected ArrayList<ViewBase> childViews = new ArrayList<ViewBase>();
 
-    Rectangle2D.Float frameRect;  // View dimension in Parent coordinates
-    Rectangle2D.Float boundsRect; // View dimension 
+    private Rectangle2D.Float frameRect;  // View dimension in Parent coordinates
+    private Rectangle2D.Float boundsRect; // View dimension 
 
     boolean shouldClip = false;
     boolean isVisible = true;
+
+    boolean hasBackground = false;
+    color backgroundColor = color(255);
+
+    private ArrayList<Object> clients = new ArrayList<Object>();
 
 
     ViewBase(ViewBase parent) {
@@ -72,7 +77,7 @@ class ViewBase {
         Rectangle2D.Float clipBoundary = getClipBoundary();
 
         if(clipBoundary == null || (clipBoundary.width > 0 && clipBoundary.height > 0)) {
-            pushMatrix();
+            push();
 
             if (clipBoundary != null) {
                 clip(clipBoundary.x, clipBoundary.y, clipBoundary.width, clipBoundary.height);
@@ -86,6 +91,10 @@ class ViewBase {
             translate(-boundsRect.x, -boundsRect.y);
             
             if (isVisible) {
+                if (hasBackground) {
+                    background(backgroundColor);
+
+                }
                 beforeDrawChildren();
 
                 for (ViewBase childView: childViews) {
@@ -95,7 +104,7 @@ class ViewBase {
                 afterDrawChildren();
             }
 
-            popMatrix();
+            pop();
         }
     }
 
@@ -236,6 +245,31 @@ class ViewBase {
 
 
     // ########################################################################
+    // Subscriber handling
+    // ########################################################################
+    protected <T> ArrayList<T> getClientsImplementing(Class<T> interfaceClass) {
+        ArrayList<T> result = new ArrayList<T>();
+
+        for (Object client: clients) {
+            if (interfaceClass.isInstance(client)) {
+                result.add((T)client);
+            }
+        }
+
+        return result;
+    }
+
+    void registerClient(Object client) {
+        if(!clients.contains(client)) {
+            clients.add(client);
+        }
+    }
+
+    void unregisterClient(Object client) {
+        clients.remove(client);
+    }
+
+    // ########################################################################
     // Mouse move handling
     // ########################################################################
 
@@ -354,7 +388,7 @@ class ViewBase {
 
 
     // ########################################################################
-    // Mouse press handling
+    // Key press handling
     // ########################################################################
 
     final boolean processKeyEvent(boolean pressed, int key) {
@@ -380,6 +414,37 @@ class ViewBase {
         return false;
     }
 
+    // ########################################################################
+    // FrameRect
+    // ########################################################################
+
+    void setFrameRect(double x, double y, double width, double height) {
+        Rectangle2D.Float oldRect = (Rectangle2D.Float)frameRect.clone();
+
+        frameRect.setRect(x, y, width, height);
+
+        onFrameRectChange(oldRect);
+    }
+
+    Rectangle2D.Float getFrameRect() {
+        return (Rectangle2D.Float)frameRect.clone();
+    }
+
+    void onFrameRectChange(Rectangle2D.Float oldRect) {}
+
+
+    // ########################################################################
+    // BoundsRect
+    // ########################################################################
+
+    void setBoundsRect(double x, double y, double width, double height) {
+        boundsRect.setRect(x, y, width, height);
+    }
+
+    Rectangle2D.Float getBoundsRect() {
+        return (Rectangle2D.Float)boundsRect.clone();
+    }
+
 
     // ########################################################################
     // View child events
@@ -387,5 +452,22 @@ class ViewBase {
 
     void onChildViewAdded(ViewBase clientView) {
     }
+
+
+    // ########################################################################
+    // Destruction
+    // ########################################################################
+    
+    final void destroy() {
+        this.setParentView(null);
+        
+        for (ViewBase childView: (ArrayList<ViewBase>)childViews.clone()) {
+            childView.destroy();
+        }
+
+        onDestroy();
+    }
+
+    void onDestroy() {}
 
 }

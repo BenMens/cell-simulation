@@ -1,5 +1,4 @@
 class BodyView extends ViewBase {
-    ArrayList<BodyViewClient> clients = new ArrayList<BodyViewClient>();
     BodyModel bodyModel;
 
     ViewBase cellLayerView;
@@ -15,30 +14,18 @@ class BodyView extends ViewBase {
 
         particleLayerView = new ViewBase(this);
         
-        frameRect = new Rectangle2D.Float(
+        setFrameRect(
           0, 0,
           bodyModel.gridSize.x * 100 + 20,
           bodyModel.gridSize.y * 100 + 20
         );
 
-        boundsRect = new Rectangle2D.Float(
+        setBoundsRect(
           -10, -10,
-          frameRect.width,
-          frameRect.height
+          getFrameRect().width,
+          getFrameRect().height
         );
-     }
-
-
-    void registerClient(BodyViewClient client) {
-        if(!clients.contains(client)) {
-            clients.add(client);
-        }
     }
-
-    void unregisterClient(BodyViewClient client) {
-        clients.remove(client);
-    }
-
 
     void beforeDrawChildren() {
         PVector gridSize = bodyModel.gridSize;

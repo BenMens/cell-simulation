@@ -65,4 +65,9 @@ class CodonRemoveModel extends CodonBaseModel {
         }
         parentModel.subtractEnergyLevel(getEnergyCost());
     }
+
+
+    String getDisplayName() {
+        return "remove";
+    };
 }

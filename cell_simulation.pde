@@ -6,9 +6,6 @@ GuiController guiController;
 
 boolean[] keysPressed = new boolean[128];
 
-int lastTickTimestamp = millis();
-int millisPerTick = 20;
-
 ParticleFactory particleFactory = new ParticleFactory();
 
 void setup() {
@@ -16,35 +13,20 @@ void setup() {
     fullScreen(P2D);
 
     rootView = new ViewBase(null);
+    rootView.hasBackground = true;
+    rootView.backgroundColor = color(255);
     bodyModel = new BodyModel(new PVector(10, 10));
 
-    boolean[][] occupiedSpaces = new boolean[int(bodyModel.gridSize.x)][int(bodyModel.gridSize.y)];
-    for (int i = 0; i < 25; i++) {
-        for (int j = 0; j < 10; j++) {
-            int x = floor(random(bodyModel.gridSize.x));
-            int y = floor(random(bodyModel.gridSize.y));
+    guiController = new GuiController(null, rootView, bodyModel);
 
-            if (!occupiedSpaces[x][y]) {
-                new CellModel(bodyModel, new PVector(x, y));
-                occupiedSpaces[x][y] = true;
-                break;
-            }
-        }
-    }
+    createFont("courrier.dfont", 24);
 
-    guiController = new GuiController(rootView, bodyModel);
-    lastTickTimestamp = millis();
+    frameRate(30);
 }
 
 
 void draw() {
-    noClip();
-    background(255);
-
-    while (millis() - lastTickTimestamp >= millisPerTick) {
-        bodyModel.tick();
-        lastTickTimestamp += millisPerTick;
-    }
+    bodyModel.loop();
 
     rootView.draw();
 }

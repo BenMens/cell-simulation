@@ -8,9 +8,15 @@ class BodyModel {
 
     PVector gridSize;
 
+    int lastTickTimestamp = millis();
+    int millisPerTick = 20;
+
+    boolean pauzed = false;
 
     BodyModel(PVector gridSize) {
         this.gridSize = gridSize;
+
+        lastTickTimestamp = millis();
 
         for (int i = 0; i < 25; i++) {
             particleFactory.createParticle("food", this);
@@ -27,6 +33,21 @@ class BodyModel {
         for (int i = 0; i < 25; i++) {
             particleFactory.createParticle("co2", this);
         }
+
+        boolean[][] occupiedSpaces = new boolean[int(gridSize.x)][int(gridSize.y)];
+        for (int i = 0; i < 25; i++) {
+            for (int j = 0; j < 10; j++) {
+                int x = floor(random(gridSize.x));
+                int y = floor(random(gridSize.y));
+
+                if (!occupiedSpaces[x][y]) {
+                    new CellModel(this, new PVector(x, y));
+                    occupiedSpaces[x][y] = true;
+                    break;
+                }
+            }
+        }
+
     }
 
 
@@ -115,6 +136,15 @@ class BodyModel {
         return null;
     }
 
+
+    void loop() {
+        while (millis() - lastTickTimestamp >= millisPerTick) {
+            if (!pauzed) {
+                tick();
+            }
+            lastTickTimestamp += millisPerTick;
+        }
+    }
 
     void tick() {
         for (ParticleBaseModel particle: particleModels) {

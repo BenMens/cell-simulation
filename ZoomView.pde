@@ -1,5 +1,5 @@
 class ZoomView extends ViewBase {
-    final float MAX_SCALE_FACTOR = 1. / 200;
+    final float MAX_SCALE_FACTOR = 1. / 100;
     float scaleMin;
     float scaleMax;
     ViewBase zoomView = null;
@@ -10,13 +10,26 @@ class ZoomView extends ViewBase {
 
     ZoomView(ViewBase parentView) {
         super(parentView);
+        
+        shouldClip = true;
+    }
+
+    void onFrameRectChange(Rectangle2D.Float oldRect) {
+        if (zoomView != null && (zoomViewFrameRect == null || zoomView.frameRect.width != zoomViewFrameRect.width || zoomView.frameRect.height != zoomViewFrameRect.height)) {
+            setBoundsRect(0, 0, getFrameRect().width, getFrameRect().height);
+
+            zoomViewFrameRect = (Rectangle2D.Float)zoomView.frameRect.clone();
+
+            scaleMin = getFrameRect().width / zoomView.getFrameRect().width;
+            scaleMax = getFrameRect().width * MAX_SCALE_FACTOR;
+
+            zoomView.setScale(scaleMin);
+        }
     }
 
 
     void setZoomView(ViewBase zoomView) {
         this.zoomView = zoomView;
-
-        updateMinMaxScale();
     }
 
 
@@ -34,8 +47,6 @@ class ZoomView extends ViewBase {
 
 
     boolean onMouseDragged(float mouseX, float mouseY, float pmouseX, float pmouseY) {
-        updateMinMaxScale();
-
         zoomView.frameRect.x += (mouseX - pmouseX);
         zoomView.frameRect.y += (mouseY - pmouseY);
         
@@ -71,26 +82,18 @@ class ZoomView extends ViewBase {
     }
 
 
-    void updateMinMaxScale() {
-        if (zoomView != null && (zoomViewFrameRect == null || zoomView.frameRect.width != zoomViewFrameRect.width || zoomView.frameRect.height != zoomViewFrameRect.height)) {
-            zoomViewFrameRect = (Rectangle2D.Float)zoomView.frameRect.clone();
-
-            scaleMin = frameRect.width / zoomView.frameRect.width;
-            scaleMax = frameRect.width * MAX_SCALE_FACTOR;
-
-            zoomView.setScale(scaleMin);
-        }
-    }
-
-
     void clipMovement() {
         PVector scale = zoomView.getScale();
+        
+        float x,y;
 
-        zoomView.frameRect.x = max(zoomView.frameRect.x, -zoomView.frameRect.width * scale.x + frameRect.width);
-        zoomView.frameRect.y = max(zoomView.frameRect.y, -zoomView.frameRect.height * scale.y + frameRect.height);
+        x = max(zoomView.frameRect.x, -zoomView.getFrameRect().width * scale.x + getFrameRect().width);
+        x = min(x, 0);
 
-        zoomView.frameRect.x = min(zoomView.frameRect.x, 0);
-        zoomView.frameRect.y = min(zoomView.frameRect.y, 0);        
+        y = max(zoomView.frameRect.y, -zoomView.getFrameRect().height * scale.y + getFrameRect().height);
+        y = min(y, 0);        
+        
+        zoomView.setFrameRect(x, y, zoomView.getFrameRect().width, zoomView.getFrameRect().width);
     }
 
 }
