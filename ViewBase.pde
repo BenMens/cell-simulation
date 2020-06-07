@@ -434,7 +434,7 @@ class ViewBase {
 
 
     // ########################################################################
-    // Bounds
+    // BoundsRect
     // ########################################################################
 
     void setBoundsRect(double x, double y, double width, double height) {
