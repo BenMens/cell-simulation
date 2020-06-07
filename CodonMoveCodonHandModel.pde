@@ -27,7 +27,7 @@ class CodonMoveCodonHandModel extends CodonBaseModel {
     void executeCodon() {
         switch (codonParameter) {
             case "amount" :
-                parentModel.setExecuteHandPosition(parentModel.getExecuteHandPosition() + moveHandAmount);
+                parentModel.setExecuteHandPosition(parentModel.getExecuteHandPosition() + moveHandAmount - 1);
                 break;
         }
         parentModel.subtractEnergyLevel(getEnergyCost());
