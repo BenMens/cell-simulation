@@ -11,7 +11,7 @@ public class CodonDetailsView extends ViewBase {
 
   boolean isSelected = false;
 
-  CodonDetailsView(ViewBase parentView, CodonBaseModel codonModel) {
+  public CodonDetailsView(ViewBase parentView, CodonBaseModel codonModel) {
     super(parentView);
 
     this.codonModel = codonModel;

@@ -15,7 +15,7 @@ public class ViewBase {
   public Rectangle2D.Float frameRect; // View dimension in Parent coordinates
   public Rectangle2D.Float boundsRect; // View dimension
 
-  boolean shouldClip = false;
+  protected boolean shouldClip = false;
   boolean isVisible = true;
 
   boolean hasBackground = false;

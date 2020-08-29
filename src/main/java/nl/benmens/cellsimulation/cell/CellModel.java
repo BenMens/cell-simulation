@@ -1,7 +1,11 @@
-package nl.benmens.cellsimulation;
+package nl.benmens.cellsimulation.cell;
 
 import java.util.ArrayList;
 
+import nl.benmens.cellsimulation.CodonBaseModel;
+import nl.benmens.cellsimulation.CodonModelParent;
+import nl.benmens.cellsimulation.CodonNoneModel;
+import nl.benmens.cellsimulation.CodonRemoveModel;
 import nl.benmens.cellsimulation.body.BodyModel;
 import nl.benmens.cellsimulation.particle.ParticleBaseModel;
 import nl.benmens.cellsimulation.particle.ParticleWasteModel;

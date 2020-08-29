@@ -1,7 +1,9 @@
-package nl.benmens.cellsimulation;
+package nl.benmens.cellsimulation.cell;
 
 import java.util.ArrayList;
 
+import nl.benmens.cellsimulation.CodonBaseModel;
+import nl.benmens.cellsimulation.ViewBase;
 import nl.benmens.processing.PApplet;
 import nl.benmens.processing.SharedPApplet;
 

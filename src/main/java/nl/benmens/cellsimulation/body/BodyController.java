@@ -1,9 +1,9 @@
 package nl.benmens.cellsimulation.body;
 
-import nl.benmens.cellsimulation.CellController;
-import nl.benmens.cellsimulation.CellModel;
 import nl.benmens.cellsimulation.ControllerBase;
 import nl.benmens.cellsimulation.ViewBase;
+import nl.benmens.cellsimulation.cell.CellController;
+import nl.benmens.cellsimulation.cell.CellModel;
 import nl.benmens.cellsimulation.particle.ParticleBaseModel;
 import nl.benmens.cellsimulation.particle.ParticleController;
 

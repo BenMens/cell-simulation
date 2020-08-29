@@ -13,14 +13,14 @@ public abstract class CodonBaseModel {
   ArrayList<CodonModelClient> clients = new ArrayList<CodonModelClient>();
   CodonModelParent parentModel;
 
-  boolean isDead = false;
+  public boolean isDead = false;
 
   int indexInCodonArray;
   float segmentSizeInCodonCircle;
-  float segmentAngleInCodonCircle;
+  public float segmentAngleInCodonCircle;
   protected PVector position = new PVector();
 
-  ArrayList<String> possibleCodonParameters = new ArrayList<String>();
+  public ArrayList<String> possibleCodonParameters = new ArrayList<String>();
   protected String codonParameter = "none";
 
   float baseEnergyCost = 0.01f;

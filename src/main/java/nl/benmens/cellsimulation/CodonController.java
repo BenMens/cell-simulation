@@ -4,7 +4,7 @@ public class CodonController extends ControllerBase implements CodonModelClient,
   CodonBaseModel codonModel;
   CodonView codonView;
 
-  CodonController(ControllerBase parentController, ViewBase parentView, CodonBaseModel codonModel) {
+  public CodonController(ControllerBase parentController, ViewBase parentView, CodonBaseModel codonModel) {
     super(parentController);
 
     this.codonModel = codonModel;

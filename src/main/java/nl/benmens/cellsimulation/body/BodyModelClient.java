@@ -1,6 +1,6 @@
 package nl.benmens.cellsimulation.body;
 
-import nl.benmens.cellsimulation.CellModel;
+import nl.benmens.cellsimulation.cell.CellModel;
 import nl.benmens.cellsimulation.particle.ParticleBaseModel;
 
 public interface BodyModelClient {

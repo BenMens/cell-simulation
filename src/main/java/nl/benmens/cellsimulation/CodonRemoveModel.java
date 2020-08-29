@@ -9,7 +9,7 @@ public class CodonRemoveModel extends CodonBaseModel {
   int removeCodonsFirstPoint = PApplet.floor(SharedPApplet.random(5) - 2);
   int removeCodonsSecondPoint = PApplet.floor(SharedPApplet.random(5) - 2);
 
-  CodonRemoveModel(CodonModelParent parentModel) {
+  public CodonRemoveModel(CodonModelParent parentModel) {
     super(parentModel);
 
     mainColor = SharedPApplet.color(255, 190, 35);

@@ -1,7 +1,7 @@
 package nl.benmens.cellsimulation.particle;
 
-import nl.benmens.cellsimulation.CellModel;
 import nl.benmens.cellsimulation.body.BodyModel;
+import nl.benmens.cellsimulation.cell.CellModel;
 
 public class ParticleFoodModel extends ParticleBaseModel {
 

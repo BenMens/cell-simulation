@@ -1,16 +1,22 @@
-package nl.benmens.cellsimulation;
+package nl.benmens.cellsimulation.cell;
 
 import java.util.ArrayList;
+
+import nl.benmens.cellsimulation.CodonBaseModel;
+import nl.benmens.cellsimulation.CodonDetailsView;
+import nl.benmens.cellsimulation.ControllerBase;
+import nl.benmens.cellsimulation.ViewBase;
+
 import java.awt.geom.Rectangle2D;
 
 
 public class CellEditorController extends ControllerBase implements CellModelClient, CellEditorViewClient {
   CellModel cellModel;
-  CellEditorView cellEditorView;
+  public CellEditorView cellEditorView;
   CellController cellController;
   ArrayList<CodonDetailsView> codonDetailsViews = new ArrayList<CodonDetailsView>();
 
-  CellEditorController(ControllerBase parentController, ViewBase parentView, CellModel cellModel) {
+  public CellEditorController(ControllerBase parentController, ViewBase parentView, CellModel cellModel) {
     super(parentController);
 
     this.cellModel = cellModel;

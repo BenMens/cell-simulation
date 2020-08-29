@@ -2,7 +2,7 @@ package nl.benmens.cellsimulation.body;
 
 import java.util.ArrayList;
 
-import nl.benmens.cellsimulation.CellModel;
+import nl.benmens.cellsimulation.cell.CellModel;
 import nl.benmens.cellsimulation.particle.ParticleBaseModel;
 import nl.benmens.cellsimulation.particle.ParticleFactory;
 import nl.benmens.processing.PApplet;
