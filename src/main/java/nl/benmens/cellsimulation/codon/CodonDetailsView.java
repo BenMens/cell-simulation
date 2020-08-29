@@ -1,5 +1,6 @@
-package nl.benmens.cellsimulation;
+package nl.benmens.cellsimulation.codon;
 
+import nl.benmens.cellsimulation.ViewBase;
 import nl.benmens.processing.SharedPApplet;
 import processing.core.PApplet;
 

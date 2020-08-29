@@ -2,10 +2,10 @@ package nl.benmens.cellsimulation.cell;
 
 import java.util.ArrayList;
 
-import nl.benmens.cellsimulation.CodonBaseModel;
-import nl.benmens.cellsimulation.CodonDetailsView;
-import nl.benmens.cellsimulation.ControllerBase;
 import nl.benmens.cellsimulation.ViewBase;
+import nl.benmens.cellsimulation.codon.CodonBaseModel;
+import nl.benmens.cellsimulation.codon.CodonDetailsView;
+import nl.benmens.cellsimulation.codon.ControllerBase;
 
 import java.awt.geom.Rectangle2D;
 

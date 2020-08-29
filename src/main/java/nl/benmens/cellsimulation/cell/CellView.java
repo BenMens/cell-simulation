@@ -2,8 +2,8 @@ package nl.benmens.cellsimulation.cell;
 
 import java.util.ArrayList;
 
-import nl.benmens.cellsimulation.CodonBaseModel;
 import nl.benmens.cellsimulation.ViewBase;
+import nl.benmens.cellsimulation.codon.CodonBaseModel;
 import nl.benmens.processing.PApplet;
 import nl.benmens.processing.SharedPApplet;
 

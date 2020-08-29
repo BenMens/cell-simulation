@@ -1,6 +1,6 @@
 package nl.benmens.cellsimulation.cell;
 
-import nl.benmens.cellsimulation.CodonBaseModel;
+import nl.benmens.cellsimulation.codon.CodonBaseModel;
 
 public interface CellModelClient {
   public void onAddCodon(CodonBaseModel codonModel);

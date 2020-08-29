@@ -1,4 +1,4 @@
-package nl.benmens.cellsimulation;
+package nl.benmens.cellsimulation.codon;
 
 import nl.benmens.processing.SharedPApplet;
 

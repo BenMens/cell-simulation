@@ -2,10 +2,10 @@ package nl.benmens.cellsimulation.particle;
 
 import java.util.ArrayList;
 
-import nl.benmens.cellsimulation.CodonBaseModel;
 import nl.benmens.cellsimulation.body.BodyModel;
 import nl.benmens.cellsimulation.cell.CellModel;
 import nl.benmens.cellsimulation.cell.CellModelClient;
+import nl.benmens.cellsimulation.codon.CodonBaseModel;
 import nl.benmens.processing.SharedPApplet;
 import processing.core.PApplet;
 import processing.core.PVector;

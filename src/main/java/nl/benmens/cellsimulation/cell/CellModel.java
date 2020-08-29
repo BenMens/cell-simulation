@@ -2,11 +2,11 @@ package nl.benmens.cellsimulation.cell;
 
 import java.util.ArrayList;
 
-import nl.benmens.cellsimulation.CodonBaseModel;
-import nl.benmens.cellsimulation.CodonModelParent;
-import nl.benmens.cellsimulation.CodonNoneModel;
-import nl.benmens.cellsimulation.CodonRemoveModel;
 import nl.benmens.cellsimulation.body.BodyModel;
+import nl.benmens.cellsimulation.codon.CodonBaseModel;
+import nl.benmens.cellsimulation.codon.CodonModelParent;
+import nl.benmens.cellsimulation.codon.CodonNoneModel;
+import nl.benmens.cellsimulation.codon.CodonRemoveModel;
 import nl.benmens.cellsimulation.particle.ParticleBaseModel;
 import nl.benmens.cellsimulation.particle.ParticleWasteModel;
 import nl.benmens.processing.PApplet;

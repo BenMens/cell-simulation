@@ -1,4 +1,4 @@
-package nl.benmens.cellsimulation;
+package nl.benmens.cellsimulation.codon;
 
 import java.util.ArrayList;
 import java.util.HashMap;

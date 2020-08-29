@@ -1,9 +1,9 @@
 package nl.benmens.cellsimulation.cell;
 
-import nl.benmens.cellsimulation.CodonBaseModel;
-import nl.benmens.cellsimulation.CodonController;
-import nl.benmens.cellsimulation.ControllerBase;
 import nl.benmens.cellsimulation.ViewBase;
+import nl.benmens.cellsimulation.codon.CodonBaseModel;
+import nl.benmens.cellsimulation.codon.CodonController;
+import nl.benmens.cellsimulation.codon.ControllerBase;
 
 public class CellController extends ControllerBase implements CellModelClient, CellViewClient {
 
