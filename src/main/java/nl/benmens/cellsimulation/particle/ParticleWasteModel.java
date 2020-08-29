@@ -1,5 +1,6 @@
-package nl.benmens.cellsimulation;
+package nl.benmens.cellsimulation.particle;
 
+import nl.benmens.cellsimulation.CellModel;
 import nl.benmens.cellsimulation.body.BodyModel;
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -10,7 +11,7 @@ public class ParticleWasteModel extends ParticleBaseModel {
     super(bodyModel);
   }
 
-  ParticleWasteModel(BodyModel bodyModel, float positionX, float positionY) {
+  public ParticleWasteModel(BodyModel bodyModel, float positionX, float positionY) {
     super(bodyModel, positionX, positionY);
   }
 

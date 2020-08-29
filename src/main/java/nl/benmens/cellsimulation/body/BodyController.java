@@ -3,9 +3,9 @@ package nl.benmens.cellsimulation.body;
 import nl.benmens.cellsimulation.CellController;
 import nl.benmens.cellsimulation.CellModel;
 import nl.benmens.cellsimulation.ControllerBase;
-import nl.benmens.cellsimulation.ParticleBaseModel;
-import nl.benmens.cellsimulation.ParticleController;
 import nl.benmens.cellsimulation.ViewBase;
+import nl.benmens.cellsimulation.particle.ParticleBaseModel;
+import nl.benmens.cellsimulation.particle.ParticleController;
 
 public class BodyController extends ControllerBase implements BodyModelClient, BodyViewClient {
   public BodyModel bodyModel;

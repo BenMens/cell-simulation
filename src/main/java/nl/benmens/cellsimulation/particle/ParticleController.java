@@ -1,4 +1,7 @@
-package nl.benmens.cellsimulation;
+package nl.benmens.cellsimulation.particle;
+
+import nl.benmens.cellsimulation.ControllerBase;
+import nl.benmens.cellsimulation.ViewBase;
 
 public class ParticleController extends ControllerBase implements ParticleModelClient, ParticleViewClient {
   ParticleBaseModel particleModel;

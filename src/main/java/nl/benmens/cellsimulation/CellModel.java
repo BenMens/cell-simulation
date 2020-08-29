@@ -3,6 +3,8 @@ package nl.benmens.cellsimulation;
 import java.util.ArrayList;
 
 import nl.benmens.cellsimulation.body.BodyModel;
+import nl.benmens.cellsimulation.particle.ParticleBaseModel;
+import nl.benmens.cellsimulation.particle.ParticleWasteModel;
 import nl.benmens.processing.PApplet;
 import nl.benmens.processing.SharedPApplet;
 import processing.core.PVector;

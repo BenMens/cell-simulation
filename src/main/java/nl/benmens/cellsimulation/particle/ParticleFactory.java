@@ -1,4 +1,4 @@
-package nl.benmens.cellsimulation;
+package nl.benmens.cellsimulation.particle;
 
 import nl.benmens.cellsimulation.body.BodyModel;
 

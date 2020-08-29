@@ -3,6 +3,7 @@ package nl.benmens.cellsimulation;
 import nl.benmens.cellsimulation.body.BodyController;
 import nl.benmens.cellsimulation.body.BodyModel;
 import nl.benmens.cellsimulation.body.BodyModelClient;
+import nl.benmens.cellsimulation.particle.ParticleBaseModel;
 import nl.benmens.processing.SharedPApplet;
 import java.awt.geom.Rectangle2D;
 

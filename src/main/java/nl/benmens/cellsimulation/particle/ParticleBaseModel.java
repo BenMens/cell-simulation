@@ -1,7 +1,10 @@
-package nl.benmens.cellsimulation;
+package nl.benmens.cellsimulation.particle;
 
 import java.util.ArrayList;
 
+import nl.benmens.cellsimulation.CellModel;
+import nl.benmens.cellsimulation.CellModelClient;
+import nl.benmens.cellsimulation.CodonBaseModel;
 import nl.benmens.cellsimulation.body.BodyModel;
 import nl.benmens.processing.SharedPApplet;
 import processing.core.PApplet;
@@ -20,7 +23,7 @@ public abstract class ParticleBaseModel implements CellModelClient {
   private PVector speed = new PVector(0, 0);
 
   CellModel previousTouchedCell;
-  float cellWallHarmfulness = 0.0003f;
+  public float cellWallHarmfulness = 0.0003f;
 
   private CellModel containingCell;
 

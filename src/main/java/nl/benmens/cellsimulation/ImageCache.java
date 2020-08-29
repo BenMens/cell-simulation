@@ -9,7 +9,7 @@ public class ImageCache {
 
   static HashMap<String, PImage> imageCache = new HashMap<String, PImage>();
 
-  static PImage getImage(String name) {
+  public static PImage getImage(String name) {
     PImage resultImage = imageCache.get(name);
 
     if (resultImage == null) {

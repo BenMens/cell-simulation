@@ -1,5 +1,7 @@
-package nl.benmens.cellsimulation;
+package nl.benmens.cellsimulation.particle;
 
+import nl.benmens.cellsimulation.ImageCache;
+import nl.benmens.cellsimulation.ViewBase;
 import nl.benmens.processing.SharedPApplet;
 import processing.core.PApplet;
 import processing.core.PImage;
