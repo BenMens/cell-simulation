@@ -1,9 +1,10 @@
 package nl.benmens.cellsimulation;
 
+import nl.benmens.cellsimulation.body.BodyModel;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-class ParticleWasteModel extends ParticleBaseModel {
+public class ParticleWasteModel extends ParticleBaseModel {
 
   ParticleWasteModel(BodyModel bodyModel) {
     super(bodyModel);

@@ -6,7 +6,7 @@ import processing.core.PApplet;
 import java.awt.geom.Rectangle2D;
 
 
-class CodonDetailsView extends ViewBase {
+public class CodonDetailsView extends ViewBase {
   CodonBaseModel codonModel;
 
   boolean isSelected = false;

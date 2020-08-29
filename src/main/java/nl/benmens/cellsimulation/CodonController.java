@@ -1,6 +1,6 @@
 package nl.benmens.cellsimulation;
 
-class CodonController extends ControllerBase implements CodonModelClient, CodonViewClient {
+public class CodonController extends ControllerBase implements CodonModelClient, CodonViewClient {
   CodonBaseModel codonModel;
   CodonView codonView;
 

@@ -1,15 +1,16 @@
-package nl.benmens.cellsimulation;
+package nl.benmens.cellsimulation.body;
 
+import nl.benmens.cellsimulation.ViewBase;
 import nl.benmens.processing.SharedPApplet;
 import processing.core.PVector;
 
-class BodyView extends ViewBase {
+public class BodyView extends ViewBase {
   BodyModel bodyModel;
 
   ViewBase cellLayerView;
   ViewBase particleLayerView;
 
-  BodyView(ViewBase parentView, BodyModel bodyModel) {
+  public BodyView(ViewBase parentView, BodyModel bodyModel) {
     super(parentView);
 
     this.bodyModel = bodyModel;

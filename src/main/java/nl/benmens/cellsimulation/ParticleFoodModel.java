@@ -1,6 +1,8 @@
 package nl.benmens.cellsimulation;
 
-class ParticleFoodModel extends ParticleBaseModel {
+import nl.benmens.cellsimulation.body.BodyModel;
+
+public class ParticleFoodModel extends ParticleBaseModel {
 
   ParticleFoodModel(BodyModel bodyModel) {
     super(bodyModel);

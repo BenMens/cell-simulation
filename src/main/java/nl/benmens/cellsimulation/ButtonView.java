@@ -6,7 +6,7 @@ import java.awt.geom.Rectangle2D;
 import nl.benmens.processing.SharedPApplet;
 
 
-class ButtonView extends ViewBase {
+public class ButtonView extends ViewBase {
 
   public PImage buttonImage;
 

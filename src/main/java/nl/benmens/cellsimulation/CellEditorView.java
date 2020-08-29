@@ -6,7 +6,7 @@ import processing.core.PFont;
 import java.awt.geom.Rectangle2D;
 
 
-class CellEditorView extends ViewBase {
+public class CellEditorView extends ViewBase {
   CellModel cellModel;
 
   PFont font;

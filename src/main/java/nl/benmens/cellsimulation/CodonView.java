@@ -2,10 +2,9 @@ package nl.benmens.cellsimulation;
 
 import nl.benmens.processing.PApplet;
 import nl.benmens.processing.SharedPApplet;
-import processing.core.PConstants;
 import processing.core.PVector;
 
-class CodonView extends ViewBase {
+public class CodonView extends ViewBase {
   final float SEGMENT_SPACING_PERCENTAGE = 0.2f;
   final float SEGMENT_CIRCLE_INNER_RADIUS = 10;
   final float SEGMENT_CIRCLE_OUTER_RADIUS = 20;

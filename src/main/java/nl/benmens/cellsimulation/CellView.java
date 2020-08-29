@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import nl.benmens.processing.PApplet;
 import nl.benmens.processing.SharedPApplet;
 
-class CellView extends ViewBase {
+public class CellView extends ViewBase {
   float HAND_CIRCLE_RADIUS = 28;
   float HAND_CIRCLE_WIDTH = 1.3f;
   float HAND_SIZE = 6.5f;

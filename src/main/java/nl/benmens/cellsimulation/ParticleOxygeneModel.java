@@ -1,6 +1,8 @@
 package nl.benmens.cellsimulation;
 
-class ParticleOxygeneModel extends ParticleBaseModel {
+import nl.benmens.cellsimulation.body.BodyModel;
+
+public class ParticleOxygeneModel extends ParticleBaseModel {
 
   ParticleOxygeneModel(BodyModel bodyModel) {
     super(bodyModel);

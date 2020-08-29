@@ -2,11 +2,12 @@ package nl.benmens.cellsimulation;
 
 import java.util.ArrayList;
 
+import nl.benmens.cellsimulation.body.BodyModel;
 import nl.benmens.processing.SharedPApplet;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-abstract class ParticleBaseModel implements CellModelClient {
+public abstract class ParticleBaseModel implements CellModelClient {
   ArrayList<ParticleModelClient> clients = new ArrayList<ParticleModelClient>();
   BodyModel bodyModel;
 
@@ -23,15 +24,15 @@ abstract class ParticleBaseModel implements CellModelClient {
 
   private CellModel containingCell;
 
-  ParticleBaseModel(BodyModel bodyModel) {
+  public ParticleBaseModel(BodyModel bodyModel) {
     this(bodyModel, SharedPApplet.random(bodyModel.gridSize.x), SharedPApplet.random(bodyModel.gridSize.y));
   }
 
-  ParticleBaseModel(BodyModel bodyModel, float positionX, float positionY) {
+  public ParticleBaseModel(BodyModel bodyModel, float positionX, float positionY) {
     this(bodyModel, positionX, positionY, SharedPApplet.random(0.1f) - 0.05f, SharedPApplet.random(0.1f) - 0.05f);
   }
 
-  ParticleBaseModel(BodyModel bodyModel, float positionX, float positionY, float speedX, float speedY) {
+  public ParticleBaseModel(BodyModel bodyModel, float positionX, float positionY, float speedX, float speedY) {
     this.bodyModel = bodyModel;
     this.bodyModel.addParticle(this);
 

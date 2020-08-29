@@ -5,7 +5,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PVector;
 
-class ParticleView extends ViewBase {
+public class ParticleView extends ViewBase {
   final float PARTICLE_SIZE = 15;
 
   ParticleBaseModel particleModel;

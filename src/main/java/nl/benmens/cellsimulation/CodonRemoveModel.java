@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import nl.benmens.processing.SharedPApplet;
 import processing.core.PApplet;
 
-class CodonRemoveModel extends CodonBaseModel {
+public class CodonRemoveModel extends CodonBaseModel {
   int removeCodonsFirstPoint = PApplet.floor(SharedPApplet.random(5) - 2);
   int removeCodonsSecondPoint = PApplet.floor(SharedPApplet.random(5) - 2);
 

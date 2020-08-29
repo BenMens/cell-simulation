@@ -2,11 +2,11 @@ package nl.benmens.cellsimulation;
 
 import java.util.ArrayList;
 
-class ControllerBase {
+public class ControllerBase {
   private ControllerBase parentController = null;
   protected ArrayList<ControllerBase> childControllers = new ArrayList<ControllerBase>();
 
-  ControllerBase(ControllerBase parent) {
+  public ControllerBase(ControllerBase parent) {
     if (parent != null) {
       setParentController(parent);
     }

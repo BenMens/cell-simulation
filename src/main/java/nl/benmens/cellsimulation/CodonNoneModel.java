@@ -2,7 +2,7 @@ package nl.benmens.cellsimulation;
 
 import nl.benmens.processing.SharedPApplet;
 
-class CodonNoneModel extends CodonBaseModel {
+public class CodonNoneModel extends CodonBaseModel {
   CodonNoneModel(CodonModelParent parentModel) {
     super(parentModel);
 

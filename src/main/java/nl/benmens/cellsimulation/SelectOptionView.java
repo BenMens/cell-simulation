@@ -2,7 +2,7 @@ package nl.benmens.cellsimulation;
 
 import nl.benmens.processing.SharedPApplet;
 
-class SelectOptionView extends ViewBase {
+public class SelectOptionView extends ViewBase {
 
   boolean isSelected = false;
 

@@ -2,11 +2,12 @@ package nl.benmens.cellsimulation;
 
 import java.util.ArrayList;
 
+import nl.benmens.cellsimulation.body.BodyModel;
 import nl.benmens.processing.PApplet;
 import nl.benmens.processing.SharedPApplet;
 import processing.core.PVector;
 
-class CellModel implements CodonModelParent {
+public class CellModel implements CodonModelParent {
   ArrayList<CellModelClient> clients = new ArrayList<CellModelClient>();
   BodyModel bodyModel;
 
@@ -32,7 +33,7 @@ class CellModel implements CodonModelParent {
 
   boolean edited = false;
 
-  CellModel(BodyModel bodyModel, PVector position) {
+  public CellModel(BodyModel bodyModel, PVector position) {
     this.bodyModel = bodyModel;
     bodyModel.addCell(this);
 

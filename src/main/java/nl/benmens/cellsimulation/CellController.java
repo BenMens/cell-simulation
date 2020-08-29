@@ -1,10 +1,10 @@
 package nl.benmens.cellsimulation;
 
-class CellController extends ControllerBase implements CellModelClient, CellViewClient {
+public class CellController extends ControllerBase implements CellModelClient, CellViewClient {
   CellModel cellModel;
   CellView cellView;
 
-  CellController(ControllerBase parentController, ViewBase parentView, CellModel cellModel) {
+  public CellController(ControllerBase parentController, ViewBase parentView, CellModel cellModel) {
     super(parentController);
 
     this.cellModel = cellModel;

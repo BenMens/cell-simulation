@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.awt.geom.Rectangle2D;
 
 
-class CellEditorController extends ControllerBase implements CellModelClient, CellEditorViewClient {
+public class CellEditorController extends ControllerBase implements CellModelClient, CellEditorViewClient {
   CellModel cellModel;
   CellEditorView cellEditorView;
   CellController cellController;

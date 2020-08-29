@@ -7,7 +7,7 @@ import nl.benmens.processing.SharedPApplet;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-abstract class CodonBaseModel {
+public abstract class CodonBaseModel {
   final float SEGMENT_CIRCLE_RADIUS = 0.15f;
 
   ArrayList<CodonModelClient> clients = new ArrayList<CodonModelClient>();
@@ -30,7 +30,7 @@ abstract class CodonBaseModel {
   protected int mainColor = SharedPApplet.color(0);
   protected HashMap<String, Integer> secondaryColors = new HashMap<String, Integer>();
 
-  CodonBaseModel(CodonModelParent parentModel) {
+  public CodonBaseModel(CodonModelParent parentModel) {
     this.parentModel = parentModel;
     parentModel.addCodon(this);
 

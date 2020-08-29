@@ -1,6 +1,8 @@
 package nl.benmens.cellsimulation;
 
-class ParticleFactory {
+import nl.benmens.cellsimulation.body.BodyModel;
+
+public class ParticleFactory {
 
   static private ParticleFactory particleFactory;
 

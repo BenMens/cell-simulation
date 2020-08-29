@@ -8,7 +8,7 @@ import processing.core.PVector;
 import java.awt.geom.Rectangle2D;
 
 
-class ViewBase {
+public class ViewBase {
   private ViewBase parentView = null;
   protected ArrayList<ViewBase> childViews = new ArrayList<ViewBase>();
 
@@ -23,7 +23,7 @@ class ViewBase {
 
   private ArrayList<Object> clients = new ArrayList<Object>();
 
-  ViewBase(ViewBase parent) {
+  public ViewBase(ViewBase parent) {
     if (parent == null) {
       this.frameRect = new Rectangle2D.Float(0, 0, SharedPApplet.getSharedApplet().width, SharedPApplet.getSharedApplet().height);
       this.boundsRect = new Rectangle2D.Float(0, 0, SharedPApplet.getSharedApplet().width, SharedPApplet.getSharedApplet().height);

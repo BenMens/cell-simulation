@@ -1,12 +1,15 @@
-package nl.benmens.cellsimulation;
+package nl.benmens.cellsimulation.body;
 
 import java.util.ArrayList;
 
+import nl.benmens.cellsimulation.CellModel;
+import nl.benmens.cellsimulation.ParticleBaseModel;
+import nl.benmens.cellsimulation.ParticleFactory;
 import nl.benmens.processing.PApplet;
 import nl.benmens.processing.SharedPApplet;
 import processing.core.PVector;
 
-class BodyModel {
+public class BodyModel {
   ArrayList<BodyModelClient> clients = new ArrayList<BodyModelClient>();
 
   ArrayList<CellModel> cellModels = new ArrayList<CellModel>();
@@ -14,14 +17,14 @@ class BodyModel {
 
   ArrayList<ParticleBaseModel> particleModels = new ArrayList<ParticleBaseModel>();
 
-  PVector gridSize;
+  public PVector gridSize;
 
   int lastTickTimestamp = SharedPApplet.millis();
   int millisPerTick = 20;
 
-  boolean pauzed = false;
+  public boolean pauzed = false;
 
-  BodyModel(PVector gridSize) {
+  public BodyModel(PVector gridSize) {
     this.gridSize = gridSize;
 
     lastTickTimestamp = SharedPApplet.millis();

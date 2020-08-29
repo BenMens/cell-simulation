@@ -3,6 +3,7 @@ package nl.benmens.cellsimulation;
 import processing.core.PVector;
 import processing.event.MouseEvent;
 import nl.benmens.processing.SharedPApplet;
+import nl.benmens.cellsimulation.body.BodyModel;
 import nl.benmens.processing.PApplet;
 
 public class CellSimulation extends PApplet {

@@ -1,6 +1,8 @@
 package nl.benmens.cellsimulation;
 
-class ParticleCO2Model extends ParticleBaseModel {
+import nl.benmens.cellsimulation.body.BodyModel;
+
+public class ParticleCO2Model extends ParticleBaseModel {
 
   ParticleCO2Model(BodyModel bodyModel) {
     super(bodyModel);

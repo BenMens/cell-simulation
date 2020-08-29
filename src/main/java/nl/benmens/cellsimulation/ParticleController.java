@@ -1,10 +1,10 @@
 package nl.benmens.cellsimulation;
 
-class ParticleController extends ControllerBase implements ParticleModelClient, ParticleViewClient {
+public class ParticleController extends ControllerBase implements ParticleModelClient, ParticleViewClient {
   ParticleBaseModel particleModel;
   ParticleView particleView;
 
-  ParticleController(ControllerBase parentController, ViewBase parentView, ParticleBaseModel particleModel) {
+  public ParticleController(ControllerBase parentController, ViewBase parentView, ParticleBaseModel particleModel) {
     super(parentController);
 
     this.particleModel = particleModel;
