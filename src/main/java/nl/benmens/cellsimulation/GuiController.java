@@ -7,6 +7,8 @@ import nl.benmens.cellsimulation.cell.CellEditorController;
 import nl.benmens.cellsimulation.cell.CellModel;
 import nl.benmens.cellsimulation.codon.ControllerBase;
 import nl.benmens.cellsimulation.particle.ParticleBaseModel;
+import nl.benmens.cellsimulation.ui.ButtonView;
+import nl.benmens.cellsimulation.ui.ButtonViewClient;
 import nl.benmens.processing.SharedPApplet;
 import java.awt.geom.Rectangle2D;
 

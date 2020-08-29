@@ -1,8 +1,9 @@
-package nl.benmens.cellsimulation;
+package nl.benmens.cellsimulation.ui;
 
 import processing.core.PImage;
 import java.awt.geom.Rectangle2D;
 
+import nl.benmens.cellsimulation.ViewBase;
 import nl.benmens.processing.SharedPApplet;
 
 
@@ -10,7 +11,7 @@ public class ButtonView extends ViewBase {
 
   public PImage buttonImage;
 
-  ButtonView(ViewBase parentView) {
+  public ButtonView(ViewBase parentView) {
     super(parentView);
   }
 
