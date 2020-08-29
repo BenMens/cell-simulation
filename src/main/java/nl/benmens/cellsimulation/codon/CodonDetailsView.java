@@ -1,18 +1,18 @@
 package nl.benmens.cellsimulation.codon;
 
-import nl.benmens.cellsimulation.ViewBase;
 import nl.benmens.processing.SharedPApplet;
+import nl.benmens.processing.mvc.View;
 import processing.core.PApplet;
 
 import java.awt.geom.Rectangle2D;
 
 
-public class CodonDetailsView extends ViewBase {
+public class CodonDetailsView extends View {
   CodonBaseModel codonModel;
 
   boolean isSelected = false;
 
-  public CodonDetailsView(ViewBase parentView, CodonBaseModel codonModel) {
+  public CodonDetailsView(View parentView, CodonBaseModel codonModel) {
     super(parentView);
 
     this.codonModel = codonModel;

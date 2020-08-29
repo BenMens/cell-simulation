@@ -1,12 +1,13 @@
 package nl.benmens.cellsimulation;
 
 import nl.benmens.processing.SharedPApplet;
+import nl.benmens.processing.mvc.View;
 
-public class SelectOptionView extends ViewBase {
+public class SelectOptionView extends View {
 
   boolean isSelected = false;
 
-  SelectOptionView(ViewBase parentView) {
+  SelectOptionView(View parentView) {
     super(parentView);
 
     this.shouldClip = true;

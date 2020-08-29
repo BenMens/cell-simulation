@@ -1,13 +1,13 @@
 package nl.benmens.cellsimulation.cell;
 
-import nl.benmens.cellsimulation.ViewBase;
 import nl.benmens.processing.PApplet;
 import nl.benmens.processing.SharedPApplet;
+import nl.benmens.processing.mvc.View;
 import processing.core.PFont;
 import java.awt.geom.Rectangle2D;
 
 
-public class CellEditorView extends ViewBase {
+public class CellEditorView extends View {
   CellModel cellModel;
 
   PFont font;
@@ -15,7 +15,7 @@ public class CellEditorView extends ViewBase {
   final float CODONS_Y_POS = 380f;
   final float CODONS_SPACING = 5f;
 
-  CellEditorView(ViewBase parentView, CellModel cellModel) {
+  CellEditorView(View parentView, CellModel cellModel) {
     super(parentView);
 
     this.cellModel = cellModel;

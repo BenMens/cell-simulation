@@ -1,8 +1,8 @@
 package nl.benmens.cellsimulation;
 
 import processing.core.PVector;
-import processing.event.MouseEvent;
 import nl.benmens.processing.SharedPApplet;
+import nl.benmens.processing.mvc.View;
 import nl.benmens.cellsimulation.body.BodyModel;
 import nl.benmens.processing.PApplet;
 
@@ -10,15 +10,18 @@ public class CellSimulation extends PApplet {
 
 	PApplet applet = this;
 
-	ViewBase rootView;
+	View rootView;
 	BodyModel bodyModel;
 	GuiController guiController;
 
-	boolean[] keysPressed = new boolean[128];
+	public void settings() {
+		SharedPApplet.setSharedApplet(this);
+		fullScreen(P2D);
+	}
 
 	public void setup() {
 
-		rootView = new ViewBase(null);
+		rootView = new View(null);
 		rootView.hasBackground = true;
 		rootView.backgroundColor = color(255);
 		bodyModel = new BodyModel(new PVector(10, 10));
@@ -36,46 +39,41 @@ public class CellSimulation extends PApplet {
 		rootView.draw();
 	}
 
-	public void mouseWheel(MouseEvent event) {
-		rootView.processScrollEvent(mouseX, mouseY, -event.getCount());
-	}
+	// public void mouseWheel(MouseEvent event) {
+	// 	rootView.processScrollEvent(mouseX, mouseY, -event.getCount());
+	// }
 
-	public void keyPressed() {
-		if (key < keysPressed.length) {
-			keysPressed[key] = true;
-		}
+	// public void keyPressed() {
+	// 	if (key < keysPressed.length) {
+	// 		keysPressed[key] = true;
+	// 	}
 
-		rootView.processKeyEvent(true, key);
-	}
+	// 	rootView.processKeyEvent(true, key);
+	// }
 
-	public void keyReleased() {
-		if (key < keysPressed.length) {
-			keysPressed[key] = false;
-		}
+	// public void keyReleased() {
+	// 	if (key < keysPressed.length) {
+	// 		keysPressed[key] = false;
+	// 	}
 
-		rootView.processKeyEvent(false, key);
-	}
+	// 	rootView.processKeyEvent(false, key);
+	// }
 
-	public void mousePressed() {
-		rootView.processMouseButtonEvent(mouseX, mouseY, true, mouseButton);
-	}
+	// public void mousePressed() {
+	// 	rootView.processMouseButtonEvent(mouseX, mouseY, true, mouseButton);
+	// }
 
-	public void mouseReleased() {
-		rootView.processMouseButtonEvent(mouseX, mouseY, false, mouseButton);
-	}
+	// public void mouseReleased() {
+	// 	rootView.processMouseButtonEvent(mouseX, mouseY, false, mouseButton);
+	// }
 
-	public void mouseMoved() {
-		rootView.processMouseMoveEvent(mouseX, mouseY, pmouseX, pmouseY);
-	}
+	// public void mouseMoved() {
+	// 	rootView.processMouseMoveEvent(mouseX, mouseY, pmouseX, pmouseY);
+	// }
 
-	public void mouseDragged() {
-		rootView.processMouseDraggedEvent(mouseX, mouseY, pmouseX, pmouseY);
-	}
-
-	public void settings() {
-		SharedPApplet.setSharedApplet(this);
-		fullScreen(P2D);
-	}
+	// public void mouseDragged() {
+	// 	rootView.processMouseDraggedEvent(mouseX, mouseY, pmouseX, pmouseY);
+	// }
 
 	static public void main(String[] passedArgs) {
 		if (passedArgs != null) {

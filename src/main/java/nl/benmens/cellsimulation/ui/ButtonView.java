@@ -3,15 +3,19 @@ package nl.benmens.cellsimulation.ui;
 import processing.core.PImage;
 import java.awt.geom.Rectangle2D;
 
-import nl.benmens.cellsimulation.ViewBase;
 import nl.benmens.processing.SharedPApplet;
+import nl.benmens.processing.mvc.View;
+import nl.benmens.processing.observer.Subject;
+import nl.benmens.processing.observer.Subscription;
+import nl.benmens.processing.observer.SubscriptionManager;
 
-
-public class ButtonView extends ViewBase {
+public class ButtonView extends View {
 
   public PImage buttonImage;
 
-  public ButtonView(ViewBase parentView) {
+  Subject<ButtonViewClient> buttonEvents = new Subject<ButtonViewClient>(this);
+
+  public ButtonView(View parentView) {
     super(parentView);
   }
 
@@ -23,12 +27,17 @@ public class ButtonView extends ViewBase {
     }
   }
 
-  public boolean onMouseButtonEvent(float mouseX, float mouseY, boolean mousePressed, int mouseButton) {
-    for (ButtonViewClient client : getClientsImplementing(ButtonViewClient.class)) {
-      client.onClick(this);
-    }
-
-    return true;
+  @Override
+  public void mousePressed(float mouseX, float mouseY, float pmouseX, float pmouseY) {
+    for (ButtonViewClient s: buttonEvents.getSubscribers()) {
+      s.onClick(this);
+    } 
   }
+
+  public Subscription<?> subscribe(ButtonViewClient observer, SubscriptionManager subscriptionManager) {
+    return buttonEvents.subscribe(observer, subscriptionManager);
+  }
+
+  
 
 }

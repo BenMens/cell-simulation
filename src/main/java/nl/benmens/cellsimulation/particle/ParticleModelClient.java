@@ -2,6 +2,6 @@ package nl.benmens.cellsimulation.particle;
 
 interface ParticleModelClient {
 
-  public void onDestroy(ParticleBaseModel particleModel);
+  default public void onDestroy(ParticleBaseModel particleModel) {};
 
 }

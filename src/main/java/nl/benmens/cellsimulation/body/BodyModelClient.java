@@ -4,9 +4,9 @@ import nl.benmens.cellsimulation.cell.CellModel;
 import nl.benmens.cellsimulation.particle.ParticleBaseModel;
 
 public interface BodyModelClient {
-  public void onAddCell(CellModel cellModel);
+  default public void onAddCell(CellModel cellModel) {};
 
-  public void onAddParticle(ParticleBaseModel particleModel);
+  default public void onAddParticle(ParticleBaseModel particleModel) {};
 
-  public void onSelectCell(CellModel selectedCell);
+  default public void onSelectCell(CellModel selectedCell) {};
 }

@@ -1,20 +1,20 @@
 package nl.benmens.cellsimulation.particle;
 
 import nl.benmens.cellsimulation.ImageCache;
-import nl.benmens.cellsimulation.ViewBase;
 import nl.benmens.processing.SharedPApplet;
+import nl.benmens.processing.mvc.View;
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PVector;
 
-public class ParticleView extends ViewBase {
+public class ParticleView extends View {
   final float PARTICLE_SIZE = 15;
 
   ParticleBaseModel particleModel;
 
   PImage images[] = new PImage[7];
 
-  ParticleView(ViewBase parentView, ParticleBaseModel particleModel) {
+  ParticleView(View parentView, ParticleBaseModel particleModel) {
     super(parentView);
 
     this.particleModel = particleModel;

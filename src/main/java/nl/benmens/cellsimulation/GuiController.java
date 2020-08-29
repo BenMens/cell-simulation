@@ -10,19 +10,26 @@ import nl.benmens.cellsimulation.particle.ParticleBaseModel;
 import nl.benmens.cellsimulation.ui.ButtonView;
 import nl.benmens.cellsimulation.ui.ButtonViewClient;
 import nl.benmens.processing.SharedPApplet;
+import nl.benmens.processing.mvc.View;
+import nl.benmens.processing.observer.Subject;
+import nl.benmens.processing.observer.Subscription;
+import nl.benmens.processing.observer.SubscriptionManager;
+
 import java.awt.geom.Rectangle2D;
 
 public class GuiController extends ControllerBase implements BodyModelClient, ButtonViewClient {
-  ViewBase parentView;
+  View parentView;
   BodyModel bodyModel;
   BodyController bodyController;
   ZoomView bodyContainerView;
   CellEditorController cellEditorController;
-  ViewBase toolbarView;
+  View toolbarView;
   ButtonView playButton;
   ButtonView pauzeButton;
 
-  GuiController(ControllerBase parentController, ViewBase parentView, BodyModel bodyModel) {
+  public SubscriptionManager subscriptionManager = new SubscriptionManager();
+
+  GuiController(ControllerBase parentController, View parentView, BodyModel bodyModel) {
     super(parentController);
 
     this.parentView = parentView;
@@ -32,7 +39,7 @@ public class GuiController extends ControllerBase implements BodyModelClient, Bu
 
     bodyController = new BodyController(this, bodyContainerView, bodyModel);
 
-    toolbarView = new ViewBase(parentView);
+    toolbarView = new View(parentView);
     toolbarView.shouldClip = true;
     toolbarView.hasBackground = true;
     toolbarView.backgroundColor = SharedPApplet.color(100, 100, 255);
@@ -40,12 +47,12 @@ public class GuiController extends ControllerBase implements BodyModelClient, Bu
     playButton = new ButtonView(toolbarView);
     playButton.shouldClip = true;
     playButton.buttonImage = ImageCache.getImage("images/play-button.png");
-    playButton.registerClient(this);
+    playButton.subscribe(this, subscriptionManager);
 
     pauzeButton = new ButtonView(toolbarView);
     pauzeButton.shouldClip = true;
     pauzeButton.buttonImage = ImageCache.getImage("images/pauze-button.png");
-    pauzeButton.registerClient(this);
+    pauzeButton.subscribe(this, subscriptionManager);
 
     bodyContainerView.setZoomView(bodyController.bodyView);
 

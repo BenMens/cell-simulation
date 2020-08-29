@@ -2,19 +2,20 @@ package nl.benmens.cellsimulation;
 
 import java.awt.geom.Rectangle2D;
 
+import nl.benmens.processing.mvc.View;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-class ZoomView extends ViewBase {
+class ZoomView extends View {
   final float MAX_SCALE_FACTOR = 1.f / 100;
   float scaleMin;
   float scaleMax;
-  ViewBase zoomView = null;
+  View zoomView = null;
   Rectangle2D.Float zoomViewFrameRect;
 
   float mouseScrollSensetivity = 1.1f;
 
-  ZoomView(ViewBase parentView) {
+  ZoomView(View parentView) {
     super(parentView);
 
     shouldClip = true;
@@ -34,9 +35,10 @@ class ZoomView extends ViewBase {
     }
   }
 
-  public void setZoomView(ViewBase zoomView) {
+  public void setZoomView(View zoomView) {
     this.zoomView = zoomView;
   }
+
 
   public boolean onKeyEvent(boolean pressed, int key) {
     if (pressed && key == 'c') {
@@ -50,14 +52,15 @@ class ZoomView extends ViewBase {
     return false;
   }
 
-  public boolean onMouseDragged(float mouseX, float mouseY, float pmouseX, float pmouseY) {
+
+  @Override
+  public void mouseDragged(float mouseX, float mouseY, float pmouseX, float pmouseY) {
     zoomView.frameRect.x += (mouseX - pmouseX);
     zoomView.frameRect.y += (mouseY - pmouseY);
 
     clipMovement();
-
-    return true;
   }
+
 
   public boolean onScroll(float mouseX, float mouseY, float mouseScroll) {
     PVector screenPos = viewPosToScreenPos(new PVector(mouseX, mouseY));

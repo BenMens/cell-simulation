@@ -1,11 +1,11 @@
 package nl.benmens.cellsimulation.codon;
 
-import nl.benmens.cellsimulation.ViewBase;
 import nl.benmens.processing.PApplet;
 import nl.benmens.processing.SharedPApplet;
+import nl.benmens.processing.mvc.View;
 import processing.core.PVector;
 
-public class CodonView extends ViewBase {
+public class CodonView extends View {
   final float SEGMENT_SPACING_PERCENTAGE = 0.2f;
   final float SEGMENT_CIRCLE_INNER_RADIUS = 10;
   final float SEGMENT_CIRCLE_OUTER_RADIUS = 20;
@@ -14,7 +14,7 @@ public class CodonView extends ViewBase {
 
   CodonBaseModel codonModel;
 
-  CodonView(ViewBase parentView, CodonBaseModel codonModel) {
+  CodonView(View parentView, CodonBaseModel codonModel) {
     super(parentView);
 
     this.codonModel = codonModel;

@@ -1,23 +1,23 @@
 package nl.benmens.cellsimulation.body;
 
-import nl.benmens.cellsimulation.ViewBase;
 import nl.benmens.processing.SharedPApplet;
+import nl.benmens.processing.mvc.View;
 import processing.core.PVector;
 
-public class BodyView extends ViewBase {
+public class BodyView extends View {
   BodyModel bodyModel;
 
-  ViewBase cellLayerView;
-  ViewBase particleLayerView;
+  View cellLayerView;
+  View particleLayerView;
 
-  public BodyView(ViewBase parentView, BodyModel bodyModel) {
+  public BodyView(View parentView, BodyModel bodyModel) {
     super(parentView);
 
     this.bodyModel = bodyModel;
 
-    cellLayerView = new ViewBase(this);
+    cellLayerView = new View(this);
 
-    particleLayerView = new ViewBase(this);
+    particleLayerView = new View(this);
 
     setFrameRect(0, 0, bodyModel.gridSize.x * 100 + 20, bodyModel.gridSize.y * 100 + 20);
 

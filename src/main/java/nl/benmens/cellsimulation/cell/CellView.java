@@ -2,12 +2,12 @@ package nl.benmens.cellsimulation.cell;
 
 import java.util.ArrayList;
 
-import nl.benmens.cellsimulation.ViewBase;
 import nl.benmens.cellsimulation.codon.CodonBaseModel;
 import nl.benmens.processing.PApplet;
 import nl.benmens.processing.SharedPApplet;
+import nl.benmens.processing.mvc.View;
 
-public class CellView extends ViewBase {
+public class CellView extends View {
   float HAND_CIRCLE_RADIUS = 28;
   float HAND_CIRCLE_WIDTH = 1.3f;
   float HAND_SIZE = 6.5f;
@@ -23,7 +23,7 @@ public class CellView extends ViewBase {
 
   boolean isDisabled = false;
 
-  CellView(ViewBase parentView, CellModel cellModel) {
+  CellView(View parentView, CellModel cellModel) {
     super(parentView);
 
     this.cellModel = cellModel;
@@ -184,22 +184,21 @@ public class CellView extends ViewBase {
     }
   }
 
-  public boolean onMouseButtonEvent(float mouseX, float mouseY, boolean mousePressed, int mouseButton) {
-    if (mousePressed && !isDisabled) {
+  @Override
+  public void mousePressed(float mouseX, float mouseY, float pmouseX, float pmouseY) {
+    if (!isDisabled) {
       if (getBoundsRect().contains(mouseX, mouseY)) {
         if (cellModel.isSelected()) {
           cellModel.unSelectCell();
         } else {
           cellModel.selectCell();
         }
-        return true;
       } else {
         cellModel.unSelectCell();
-        return false;
+        super.mousePressed(mouseX, mouseY, pmouseX, pmouseY);
       }
     }
-
-    return false;
   }
+
 
 }

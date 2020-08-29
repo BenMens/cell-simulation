@@ -2,21 +2,21 @@ package nl.benmens.cellsimulation.cell;
 
 import java.util.ArrayList;
 
-import nl.benmens.cellsimulation.ViewBase;
 import nl.benmens.cellsimulation.codon.CodonBaseModel;
 import nl.benmens.cellsimulation.codon.CodonDetailsView;
 import nl.benmens.cellsimulation.codon.ControllerBase;
+import nl.benmens.processing.mvc.View;
 
 import java.awt.geom.Rectangle2D;
 
 
-public class CellEditorController extends ControllerBase implements CellModelClient, CellEditorViewClient {
+public class CellEditorController extends ControllerBase implements CellModelClient {
   CellModel cellModel;
   public CellEditorView cellEditorView;
   CellController cellController;
   ArrayList<CodonDetailsView> codonDetailsViews = new ArrayList<CodonDetailsView>();
 
-  public CellEditorController(ControllerBase parentController, ViewBase parentView, CellModel cellModel) {
+  public CellEditorController(ControllerBase parentController, View parentView, CellModel cellModel) {
     super(parentController);
 
     this.cellModel = cellModel;
@@ -26,7 +26,6 @@ public class CellEditorController extends ControllerBase implements CellModelCli
     cellController.cellView.isDisabled = true;
 
     cellModel.registerClient(this);
-    cellEditorView.registerClient(this);
 
     rebuildCodonViews();
   }
@@ -48,7 +47,6 @@ public class CellEditorController extends ControllerBase implements CellModelCli
 
   public void onDestroy() {
     cellEditorView.destroy();
-    cellEditorView.unregisterClient(this);
     cellModel.unregisterClient(this);
 
     destroyCodonViews();

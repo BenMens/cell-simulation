@@ -1,24 +1,22 @@
 package nl.benmens.cellsimulation.codon;
 
-import nl.benmens.cellsimulation.ViewBase;
+import nl.benmens.processing.mvc.View;
 
-public class CodonController extends ControllerBase implements CodonModelClient, CodonViewClient {
+public class CodonController extends ControllerBase implements CodonModelClient {
   CodonBaseModel codonModel;
   CodonView codonView;
 
-  public CodonController(ControllerBase parentController, ViewBase parentView, CodonBaseModel codonModel) {
+  public CodonController(ControllerBase parentController, View parentView, CodonBaseModel codonModel) {
     super(parentController);
 
     this.codonModel = codonModel;
     this.codonView = new CodonView(parentView, codonModel);
 
     this.codonModel.registerClient(this);
-    this.codonView.registerClient(this);
   }
 
   public void onDestroy() {
     codonView.destroy();
-    codonView.unregisterClient(this);
     codonModel.unregisterClient(this);
   }
 
