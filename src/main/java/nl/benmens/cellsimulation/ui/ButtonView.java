@@ -28,10 +28,11 @@ public class ButtonView extends View {
   }
 
   @Override
-  public void mousePressed(float mouseX, float mouseY, float pmouseX, float pmouseY) {
+  public boolean mousePressed(float mouseX, float mouseY, float pmouseX, float pmouseY) {
     for (ButtonViewClient s: buttonEvents.getSubscribers()) {
       s.onClick(this);
     } 
+    return true;
   }
 
   public Subscription<?> subscribe(ButtonViewClient observer, SubscriptionManager subscriptionManager) {

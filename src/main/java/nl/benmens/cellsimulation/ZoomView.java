@@ -54,22 +54,24 @@ class ZoomView extends View {
 
 
   @Override
-  public void mouseDragged(float mouseX, float mouseY, float pmouseX, float pmouseY) {
+  public boolean mouseDragged(float mouseX, float mouseY, float pmouseX, float pmouseY) {
     zoomView.frameRect.x += (mouseX - pmouseX);
     zoomView.frameRect.y += (mouseY - pmouseY);
 
     clipMovement();
+
+    return true;
   }
 
-
-  public boolean onScroll(float mouseX, float mouseY, float mouseScroll) {
+  @Override
+  public boolean mouseWheel(float mouseX, float mouseY, int count) {
     PVector screenPos = viewPosToScreenPos(new PVector(mouseX, mouseY));
 
     PVector mouseBodyPosPre = zoomView.screenPosToViewPos(screenPos);
 
     float scale = zoomView.getScale().x;
 
-    scale *= PApplet.pow(mouseScrollSensetivity, mouseScroll);
+    scale *= PApplet.pow(mouseScrollSensetivity, count);
     zoomView.setScale(PApplet.constrain(scale, (float) scaleMin, (float) scaleMax));
 
     PVector mouseBodyPosPost = zoomView.viewPosToScreenPos(mouseBodyPosPre);
@@ -84,8 +86,8 @@ class ZoomView extends View {
 
     clipMovement();
 
-    return true;
-  }
+    return true;  }
+
 
   public void clipMovement() {
     PVector scale = zoomView.getScale();

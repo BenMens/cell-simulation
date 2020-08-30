@@ -7,10 +7,11 @@ import nl.benmens.cellsimulation.cell.CellModel;
 import nl.benmens.cellsimulation.cell.CellModelClient;
 import nl.benmens.cellsimulation.codon.CodonBaseModel;
 import nl.benmens.processing.SharedPApplet;
+import nl.benmens.processing.mvc.Model;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public abstract class ParticleBaseModel implements CellModelClient {
+public abstract class ParticleBaseModel extends Model implements CellModelClient {
   ArrayList<ParticleModelClient> clients = new ArrayList<ParticleModelClient>();
   BodyModel bodyModel;
 
@@ -124,14 +125,14 @@ public abstract class ParticleBaseModel implements CellModelClient {
     }
 
     if (this.containingCell != null) {
-      this.containingCell.unregisterClient(this);
+      this.subscriptionManager.unsubscribeAll(containingCell);
       this.containingCell.expelParticle(this);
     }
 
     this.containingCell = newContainingCell;
 
     if (newContainingCell != null) {
-      newContainingCell.registerClient(this);
+      newContainingCell.subscribe(this, subscriptionManager);
       newContainingCell.receiveParticle(this);
     }
   }

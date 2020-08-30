@@ -1,16 +1,20 @@
 package nl.benmens.cellsimulation.body;
 
 import java.util.ArrayList;
-
+import processing.core.PVector;
 import nl.benmens.cellsimulation.cell.CellModel;
 import nl.benmens.cellsimulation.particle.ParticleBaseModel;
 import nl.benmens.cellsimulation.particle.ParticleFactory;
 import nl.benmens.processing.PApplet;
 import nl.benmens.processing.SharedPApplet;
-import processing.core.PVector;
+import nl.benmens.processing.mvc.Model;
+import nl.benmens.processing.observer.Subject;
+import nl.benmens.processing.observer.Subscription;
+import nl.benmens.processing.observer.SubscriptionManager;
 
-public class BodyModel {
-  ArrayList<BodyModelClient> clients = new ArrayList<BodyModelClient>();
+public class BodyModel extends Model {
+
+  private Subject<BodyModelClient> bodyModelEvents = new Subject<BodyModelClient>(this);
 
   ArrayList<CellModel> cellModels = new ArrayList<CellModel>();
   private CellModel selectedCell = null;
@@ -61,28 +65,10 @@ public class BodyModel {
 
   }
 
-  public void registerClient(BodyModelClient client) {
-    if (!clients.contains(client)) {
-      clients.add(client);
-
-      for (CellModel cellModel : cellModels) {
-        client.onAddCell(cellModel);
-      }
-
-      for (ParticleBaseModel particleModel : particleModels) {
-        client.onAddParticle(particleModel);
-      }
-    }
-  }
-
-  public void unregisterClient(BodyModelClient client) {
-    clients.remove(client);
-  }
-
   public void addCell(CellModel cellModel) {
     cellModels.add(cellModel);
 
-    for (BodyModelClient client : new ArrayList<BodyModelClient>(clients)) {
+    for (BodyModelClient client : bodyModelEvents.getSubscribers()) {
       client.onAddCell(cellModel);
     }
   }
@@ -99,7 +85,7 @@ public class BodyModel {
 
     particleModels.add(particleModel);
 
-    for (BodyModelClient client : new ArrayList<BodyModelClient>(clients)) {
+    for (BodyModelClient client : bodyModelEvents.getSubscribers()) {
       client.onAddParticle(particleModel);
     }
   }
@@ -115,7 +101,7 @@ public class BodyModel {
   public void selectCell(CellModel cell) {
     selectedCell = cell;
 
-    for (BodyModelClient client : new ArrayList<BodyModelClient>(clients)) {
+    for (BodyModelClient client : bodyModelEvents.getSubscribers()) {
       client.onSelectCell(selectedCell);
     }
   }
@@ -124,7 +110,7 @@ public class BodyModel {
     if (cell == selectedCell) {
       selectedCell = null;
 
-      for (BodyModelClient client : new ArrayList<BodyModelClient>(clients)) {
+      for (BodyModelClient client : bodyModelEvents.getSubscribers()) {
         client.onSelectCell(selectedCell);
       }
     }
@@ -132,7 +118,7 @@ public class BodyModel {
 
   public CellModel findCellAtPosition(int x, int y) {
     for (CellModel cellModel : cellModels) {
-      if (cellModel.position.x == x && cellModel.position.y == y) {
+      if (cellModel.getPosition().x == x && cellModel.getPosition().y == y) {
         return cellModel;
       }
     }
@@ -165,5 +151,22 @@ public class BodyModel {
     for (int i = cellModels.size() - 1; i >= 0; i--) {
       cellModels.get(i).cleanUpTick();
     }
+  }
+
+  public Subscription<?> subscribe(BodyModelClient observer, SubscriptionManager subscriptionManager) {
+    boolean newObserver = !bodyModelEvents.getSubscribers().contains(observer);
+    Subscription<?> result = bodyModelEvents.subscribe(observer, subscriptionManager);
+
+    if (newObserver) {
+      for (CellModel cellModel : cellModels) {
+        observer.onAddCell(cellModel);
+      }
+
+      for (ParticleBaseModel particleModel : particleModels) {
+        observer.onAddParticle(particleModel);
+      }
+    }
+
+    return result;
   }
 }

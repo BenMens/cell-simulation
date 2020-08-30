@@ -2,30 +2,28 @@ package nl.benmens.cellsimulation.cell;
 
 import nl.benmens.cellsimulation.codon.CodonBaseModel;
 import nl.benmens.cellsimulation.codon.CodonController;
-import nl.benmens.cellsimulation.codon.ControllerBase;
+import nl.benmens.cellsimulation.Controller;
 import nl.benmens.processing.mvc.View;
 
-public class CellController extends ControllerBase implements CellModelClient {
+public class CellController extends Controller implements CellModelClient {
 
+  private CellModel cellModel;
+  private CellView cellView;
 
-  CellModel cellModel;
-  CellView cellView;
-
-
-  public CellController(ControllerBase parentController, View parentView, CellModel cellModel) {
+  public CellController(Controller parentController, View parentView, CellModel cellModel) {
     super(parentController);
 
     this.cellModel = cellModel;
     this.cellView = new CellView(parentView, cellModel);
 
-    this.cellView.setFrameRect(cellModel.position.x * 100, cellModel.position.y * 100, 100, 100);
+    this.cellView.setFrameRect(cellModel.getPosition().x * 100, cellModel.getPosition().y * 100, 100, 100);
 
-    this.cellModel.registerClient(this);
+    this.cellModel.subscribe(this, subscriptionManager);
   }
 
   public void onDestroy() {
     cellView.destroy();
-    cellModel.unregisterClient(this);
+    subscriptionManager.unsubscribeAll(cellModel);
   }
 
   public void onAddCodon(CodonBaseModel codonModel) {
@@ -36,6 +34,11 @@ public class CellController extends ControllerBase implements CellModelClient {
     destroy();
   }
 
-  public void onRemoveCodon(CodonBaseModel codonModel) {
+  public CellModel getCellModel() {
+    return cellModel;
   }
+
+  public CellView getCellView() {
+    return cellView;
+  }  
 }

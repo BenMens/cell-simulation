@@ -1,22 +1,25 @@
-package nl.benmens.cellsimulation.codon;
+package nl.benmens.cellsimulation;
 
 import java.util.ArrayList;
 
-public class ControllerBase {
-  private ControllerBase parentController = null;
-  protected ArrayList<ControllerBase> childControllers = new ArrayList<ControllerBase>();
+import nl.benmens.processing.observer.SubscriptionManager;
 
-  public ControllerBase(ControllerBase parent) {
+public class Controller {
+  private Controller parentController = null;
+  protected ArrayList<Controller> childControllers = new ArrayList<Controller>();
+  protected SubscriptionManager subscriptionManager = new SubscriptionManager();
+
+  public Controller(Controller parent) {
     if (parent != null) {
       setParentController(parent);
     }
   }
 
-  public final ControllerBase getParentController() {
+  public final Controller getParentController() {
     return parentController;
   }
 
-  public final void setParentController(ControllerBase newParentController) {
+  public final void setParentController(Controller newParentController) {
     if (parentController != newParentController) {
 
       if (parentController != null) {
@@ -34,14 +37,14 @@ public class ControllerBase {
     }
   }
 
-  public final ArrayList<ControllerBase> getChildControllers() {
+  public final ArrayList<Controller> getChildControllers() {
     return childControllers;
   }
 
   public final void updateLayout() {
     beforeLayoutChildren();
 
-    for (ControllerBase child : childControllers) {
+    for (Controller child : childControllers) {
       child.updateLayout();
     }
 
@@ -60,7 +63,7 @@ public class ControllerBase {
   public final void destroy() {
     this.setParentController(null);
 
-    for (ControllerBase childController : (ArrayList<ControllerBase>) childControllers.clone()) {
+    for (Controller childController : new ArrayList<Controller>(childControllers)) {
       childController.destroy();
     }
 

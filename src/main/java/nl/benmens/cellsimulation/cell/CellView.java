@@ -8,20 +8,19 @@ import nl.benmens.processing.SharedPApplet;
 import nl.benmens.processing.mvc.View;
 
 public class CellView extends View {
-  float HAND_CIRCLE_RADIUS = 28;
-  float HAND_CIRCLE_WIDTH = 1.3f;
-  float HAND_SIZE = 6.5f;
-
+  final float HAND_CIRCLE_RADIUS = 28;
+  final float HAND_CIRCLE_WIDTH = 1.3f;
+  final float HAND_SIZE = 6.5f;
   final float WALL_SIZE_ON_MAX_HEALTH = 10;
   final float ENERGY_SYMBOL_SIZE_ON_MAX_ENERGY = 8;
 
-  CellModel cellModel;
+  private CellModel cellModel;
 
-  float handAnchorAngle;
-  float handPointerRadiusInward;
-  float handPointerRadiusOutward;
+  private float handAnchorAngle;
+  private float handPointerRadiusInward;
+  private float handPointerRadiusOutward;
 
-  boolean isDisabled = false;
+  private boolean isDisabled = false;
 
   CellView(View parentView, CellModel cellModel) {
     super(parentView);
@@ -67,7 +66,7 @@ public class CellView extends View {
       SharedPApplet.fill(250, 90, 70);
       SharedPApplet.rect(0, 0, 100, 100);
 
-      if (cellModel.edited == true) {
+      if (cellModel.isEdited() == true) {
         SharedPApplet.fill(115, 230, 155);
 
       } else if (!isDisabled && cellModel.isSelected()) {
@@ -76,7 +75,7 @@ public class CellView extends View {
       } else {
         SharedPApplet.fill(255, 165, 135);
       }
-      float wallSize = cellModel.wallHealth * WALL_SIZE_ON_MAX_HEALTH;
+      float wallSize = cellModel.getWallHealth() * WALL_SIZE_ON_MAX_HEALTH;
       SharedPApplet.rect(wallSize, wallSize, 100 - 2 * wallSize, 100 - 2 * wallSize);
 
       if (screenSize > 15) {
@@ -87,7 +86,7 @@ public class CellView extends View {
         SharedPApplet.ellipse(50, 50, 2 * ENERGY_SYMBOL_SIZE_ON_MAX_ENERGY, 2 * ENERGY_SYMBOL_SIZE_ON_MAX_ENERGY);
 
         if (screenSize > 45) {
-          float energySymbolSize = cellModel.energyLevel * ENERGY_SYMBOL_SIZE_ON_MAX_ENERGY;
+          float energySymbolSize = cellModel.getEnergyLevel() * ENERGY_SYMBOL_SIZE_ON_MAX_ENERGY;
 
           SharedPApplet.noStroke();
           SharedPApplet.fill(245, 245, 115);
@@ -101,20 +100,20 @@ public class CellView extends View {
           SharedPApplet.endShape(PApplet.CLOSE);
 
           if (screenSize > 80) {
-            float progressToNextCodonTick = PApplet.norm(cellModel.ticksSinceLastCodonTick, 0, cellModel.ticksPerCodonTick);
-            ArrayList<CodonBaseModel> codonModels = (ArrayList<CodonBaseModel>) cellModel.codonModels.clone();
+            float progressToNextCodonTick = PApplet.norm(cellModel.getTicksSinceLastCodonTick(), 0, CellModel.TICKS_PER_CODON_TICK);
+            ArrayList<CodonBaseModel> codonModels = new ArrayList<CodonBaseModel>(cellModel.getCodonModels());
 
             // calculating codon hand angle
             float codonHandAngle = 0;
-            if (cellModel.codonModels.size() != 0) {
+            if (cellModel.getCodonModels().size() != 0) {
               float currentCodonAngle = codonModels
-                  .get(cellModel.currentCodon % codonModels.size()).segmentAngleInCodonCircle;
+                  .get(cellModel.getCurrentCodon() % codonModels.size()).segmentAngleInCodonCircle;
               float nextCodonAngle = codonModels
-                  .get((cellModel.currentCodon + 1) % codonModels.size()).segmentAngleInCodonCircle;
-              if (cellModel.currentCodon >= codonModels.size()) {
+                  .get((cellModel.getCurrentCodon() + 1) % codonModels.size()).segmentAngleInCodonCircle;
+              if (cellModel.getCurrentCodon() >= codonModels.size()) {
                 currentCodonAngle += PApplet.TWO_PI;
               }
-              if (cellModel.currentCodon + 1 >= codonModels.size()) {
+              if (cellModel.getCurrentCodon() + 1 >= codonModels.size()) {
                 nextCodonAngle += PApplet.TWO_PI;
               }
 
@@ -137,11 +136,11 @@ public class CellView extends View {
 
             // calculating execution hand angle
             float executeHandAngle = 0;
-            if (cellModel.codonModels.size() != 0) {
-              float previousCodonAngle = cellModel.codonModels
-                  .get(cellModel.previousExecuteHandPosition).segmentAngleInCodonCircle;
-              float currentCodonAngle = cellModel.codonModels
-                  .get(cellModel.executeHandPosition).segmentAngleInCodonCircle;
+            if (cellModel.getCodonModels().size() != 0) {
+              float previousCodonAngle = cellModel.getCodonModels()
+                  .get(cellModel.getExecuteHandPosition()).segmentAngleInCodonCircle;
+              float currentCodonAngle = cellModel.getCodonModels()
+                  .get(cellModel.getExecuteHandPosition()).segmentAngleInCodonCircle;
               if (currentCodonAngle < previousCodonAngle) {
                 currentCodonAngle += PApplet.TWO_PI;
               }
@@ -151,10 +150,10 @@ public class CellView extends View {
             }
 
             // calculating execution hand pointer radius
-            float previousExecuteHandPointerRadius = (cellModel.previousIsExecuteHandPointingOutward)
+            float previousExecuteHandPointerRadius = (cellModel.isPreviousExecuteHandPointingOutward())
                 ? handPointerRadiusOutward
                 : handPointerRadiusInward;
-            float currentExecuteHandPointerRadius = (cellModel.isExecuteHandPointingOutward)
+            float currentExecuteHandPointerRadius = (cellModel.getIsExecuteHandPointingOutward())
                 ? handPointerRadiusOutward
                 : handPointerRadiusInward;
             float executeHandPointerRadius = smoothLerp(previousExecuteHandPointerRadius,
@@ -185,7 +184,7 @@ public class CellView extends View {
   }
 
   @Override
-  public void mousePressed(float mouseX, float mouseY, float pmouseX, float pmouseY) {
+  public boolean mousePressed(float mouseX, float mouseY, float pmouseX, float pmouseY) {
     if (!isDisabled) {
       if (getBoundsRect().contains(mouseX, mouseY)) {
         if (cellModel.isSelected()) {
@@ -193,12 +192,52 @@ public class CellView extends View {
         } else {
           cellModel.selectCell();
         }
+        return true;
       } else {
         cellModel.unSelectCell();
-        super.mousePressed(mouseX, mouseY, pmouseX, pmouseY);
       }
     }
+    
+    return false;
   }
 
+  public CellModel getCellModel() {
+    return cellModel;
+  }
 
+  public void setCellModel(CellModel cellModel) {
+    this.cellModel = cellModel;
+  }
+
+  public float getHandAnchorAngle() {
+    return handAnchorAngle;
+  }
+
+  public void setHandAnchorAngle(float handAnchorAngle) {
+    this.handAnchorAngle = handAnchorAngle;
+  }
+
+  public float getHandPointerRadiusInward() {
+    return handPointerRadiusInward;
+  }
+
+  public void setHandPointerRadiusInward(float handPointerRadiusInward) {
+    this.handPointerRadiusInward = handPointerRadiusInward;
+  }
+
+  public float getHandPointerRadiusOutward() {
+    return handPointerRadiusOutward;
+  }
+
+  public void setHandPointerRadiusOutward(float handPointerRadiusOutward) {
+    this.handPointerRadiusOutward = handPointerRadiusOutward;
+  }
+
+  public boolean isDisabled() {
+    return isDisabled;
+  }
+
+  public void setDisabled(boolean isDisabled) {
+    this.isDisabled = isDisabled;
+  }  
 }

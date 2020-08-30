@@ -11,33 +11,38 @@ import nl.benmens.cellsimulation.particle.ParticleBaseModel;
 import nl.benmens.cellsimulation.particle.ParticleWasteModel;
 import nl.benmens.processing.PApplet;
 import nl.benmens.processing.SharedPApplet;
+import nl.benmens.processing.mvc.Model;
+import nl.benmens.processing.observer.Subject;
+import nl.benmens.processing.observer.Subscription;
+import nl.benmens.processing.observer.SubscriptionManager;
 import processing.core.PVector;
 
-public class CellModel implements CodonModelParent {
-  ArrayList<CellModelClient> clients = new ArrayList<CellModelClient>();
-  BodyModel bodyModel;
+public class CellModel extends Model implements CodonModelParent {
+  static final float TICKS_PER_CODON_TICK = 50;
 
-  ArrayList<CodonBaseModel> codonModels = new ArrayList<CodonBaseModel>();
+  private Subject<CellModelClient> cellModelEvents = new Subject<CellModelClient>(this);
+  private BodyModel bodyModel;
+
+  private ArrayList<CodonBaseModel> codonModels = new ArrayList<CodonBaseModel>();
 
   private ArrayList<ParticleBaseModel> containingParticles = new ArrayList<ParticleBaseModel>();
 
-  float ticksPerCodonTick = 50;
-  float ticksSinceLastCodonTick;
+  private float ticksSinceLastCodonTick;
 
-  boolean isDead = false;
+  private boolean isDead = false;
 
-  public PVector position;
-  public float wallHealth = 1;
-  public float energyLevel = 1;
-  float energyCostPerTick = 0.01f;
+  private PVector position;
+  private float wallHealth = 1;
+  private float energyLevel = 1;
+  private float energyCostPerTick = 0.01f;
 
-  int currentCodon = 0;
-  int executeHandPosition = 0;
-  boolean isExecuteHandPointingOutward = false;
-  int previousExecuteHandPosition = 0;
-  boolean previousIsExecuteHandPointingOutward = false;
+  private int currentCodon = 0;
+  private int executeHandPosition = 0;
+  private boolean isExecuteHandPointingOutward = false;
+  private int previousExecuteHandPosition = 0;
 
-  boolean edited = false;
+  private boolean isPreviousExecuteHandPointingOutward = false;
+  private boolean isEdited = false;
 
   public CellModel(BodyModel bodyModel, PVector position) {
     this.bodyModel = bodyModel;
@@ -50,69 +55,71 @@ public class CellModel implements CodonModelParent {
     }
 
     CodonBaseModel removeCodon = new CodonRemoveModel(this);
-    removeCodon.setCodonParameter(
-        removeCodon.possibleCodonParameters.get(PApplet.floor(SharedPApplet.random(removeCodon.possibleCodonParameters.size()))));
+    removeCodon.setCodonParameter(removeCodon.possibleCodonParameters
+        .get(PApplet.floor(SharedPApplet.random(removeCodon.possibleCodonParameters.size()))));
   }
 
-  public void registerClient(CellModelClient client) {
-    if (!clients.contains(client)) {
-      clients.add(client);
 
-      for (CodonBaseModel codonModel : codonModels) {
-        client.onAddCodon(codonModel);
+public Subscription<?> subscribe(CellModelClient observer, SubscriptionManager subscriptionManager) {    
+    boolean isNewClient = !cellModelEvents.getSubscribers().contains(observer);
+
+    Subscription<?> result =  cellModelEvents.subscribe(observer, subscriptionManager);
+
+    if (isNewClient) {
+      for (CodonBaseModel codonModel : getCodonModels()) {
+        observer.onAddCodon(codonModel);
       }
     }
+
+    return result;
   }
 
-  public void unregisterClient(CellModelClient client) {
-    clients.remove(client);
-  }
 
   public void addCodon(CodonBaseModel newCodonModel) {
-    codonModels.add(newCodonModel);
+    getCodonModels().add(newCodonModel);
 
-    for (CellModelClient client : new ArrayList<CellModelClient>(clients)) {
+    for (CellModelClient client : cellModelEvents.getSubscribers()) {
       client.onAddCodon(newCodonModel);
     }
 
-    for (CodonBaseModel codonModel : codonModels) {
+    for (CodonBaseModel codonModel : getCodonModels()) {
       codonModel.updatePosition();
     }
 
-    executeHandPosition = PApplet.floor(SharedPApplet.random(codonModels.size()));
+    executeHandPosition = PApplet.floor(SharedPApplet.random(getCodonModels().size()));
   }
 
   public void removeCodon(CodonBaseModel oldCodonModel) {
-    codonModels.remove(oldCodonModel);
+    getCodonModels().remove(oldCodonModel);
 
-    for (CellModelClient client : clients) {
+    for (CellModelClient client : cellModelEvents.getSubscribers()) {
       client.onRemoveCodon(oldCodonModel);
     }
 
-    for (CodonBaseModel codonModel : codonModels) {
+    for (CodonBaseModel codonModel : getCodonModels()) {
       codonModel.updatePosition();
     }
 
-    if (currentCodon >= codonModels.size()) {
-      currentCodon = codonModels.size() - 1;
+    if (currentCodon >= getCodonModels().size()) {
+      currentCodon = getCodonModels().size() - 1;
     }
 
-    if (previousExecuteHandPosition >= codonModels.size() || executeHandPosition >= codonModels.size()) {
-      previousExecuteHandPosition = PApplet.floor(SharedPApplet.random(codonModels.size()));
-      executeHandPosition = PApplet.floor(SharedPApplet.random(codonModels.size()));
+    if (previousExecuteHandPosition >= getCodonModels().size() || executeHandPosition >= getCodonModels().size()) {
+      previousExecuteHandPosition = PApplet.floor(SharedPApplet.random(getCodonModels().size()));
+      executeHandPosition = PApplet.floor(SharedPApplet.random(getCodonModels().size()));
     }
   }
 
   public void tick() {
     if (energyLevel > energyCostPerTick) {
-      while (ticksSinceLastCodonTick >= ticksPerCodonTick) {
+      while (getTicksSinceLastCodonTick() >= TICKS_PER_CODON_TICK) {
         codonTick();
-        ticksSinceLastCodonTick -= ticksPerCodonTick;
+        setTicksSinceLastCodonTick(getTicksSinceLastCodonTick() - TICKS_PER_CODON_TICK);
       }
-      ticksSinceLastCodonTick++;
+      setTicksSinceLastCodonTick(getTicksSinceLastCodonTick() + 1);
     }
 
-    ArrayList<CodonBaseModel> codonModelsCopy = (ArrayList<CodonBaseModel>) codonModels.clone();
+    ArrayList<CodonBaseModel> codonModelsCopy = new ArrayList<CodonBaseModel>(getCodonModels()) ;
     for (CodonBaseModel codonModel : codonModelsCopy) {
       codonModel.tick();
     }
@@ -123,27 +130,27 @@ public class CellModel implements CodonModelParent {
   }
 
   public void codonTick() {
-    if (codonModels.size() != 0) {
+    if (getCodonModels().size() != 0) {
       energyLevel = PApplet.max(energyLevel - energyCostPerTick, 0);
 
-      if (energyLevel > codonModels.get(currentCodon).getEnergyCost()) {
-        currentCodon = (currentCodon + 1) % codonModels.size();
-        codonModels.get(currentCodon).executeCodon();
+      if (energyLevel > getCodonModels().get(currentCodon).getEnergyCost()) {
+        currentCodon = (currentCodon + 1) % getCodonModels().size();
+        getCodonModels().get(currentCodon).executeCodon();
       }
     }
 
     previousExecuteHandPosition = executeHandPosition;
-    previousIsExecuteHandPointingOutward = isExecuteHandPointingOutward;
+    isPreviousExecuteHandPointingOutward = isExecuteHandPointingOutward;
   }
 
   public void cleanUpTick() {
-    for (int i = codonModels.size() - 1; i >= 0; i--) {
-      codonModels.get(i).cleanUpTick();
+    for (int i = getCodonModels().size() - 1; i >= 0; i--) {
+      getCodonModels().get(i).cleanUpTick();
     }
 
     if (isDead) {
-      for (int i = codonModels.size() - 1; i >= 0; i--) {
-        CodonBaseModel codonModel = codonModels.get(i);
+      for (int i = getCodonModels().size() - 1; i >= 0; i--) {
+        CodonBaseModel codonModel = getCodonModels().get(i);
 
         new ParticleWasteModel(bodyModel, codonModel.getPosition().x, codonModel.getPosition().y);
 
@@ -151,7 +158,7 @@ public class CellModel implements CodonModelParent {
         codonModel.cleanUpTick();
       }
 
-      for (CellModelClient client : new ArrayList<CellModelClient>(clients)) {
+      for (CellModelClient client : cellModelEvents.getSubscribers()) {
         client.onDestroy(this);
       }
 
@@ -160,7 +167,7 @@ public class CellModel implements CodonModelParent {
   }
 
   public ArrayList<CodonBaseModel> getCodonList() {
-    return codonModels;
+    return getCodonModels();
   }
 
   public PVector getPosition() {
@@ -185,8 +192,8 @@ public class CellModel implements CodonModelParent {
 
   public void replaceCodon(CodonBaseModel oldCodon, CodonBaseModel newCodon) {
     oldCodon.isDead = true;
-    codonModels.remove(newCodon);
-    codonModels.add(codonModels.indexOf(oldCodon), newCodon);
+    getCodonModels().remove(newCodon);
+    getCodonModels().add(getCodonModels().indexOf(oldCodon), newCodon);
   }
 
   // ################################################################################################################################################
@@ -260,7 +267,7 @@ public class CellModel implements CodonModelParent {
   }
 
   public ArrayList<ParticleBaseModel> getContainingParticles() {
-    return (ArrayList<ParticleBaseModel>) containingParticles.clone();
+    return new ArrayList<ParticleBaseModel>(containingParticles) ;
   }
 
   public ArrayList<ParticleBaseModel> getContainingParticles(String type) {
@@ -275,4 +282,29 @@ public class CellModel implements CodonModelParent {
     return result;
   }
 
+  public boolean isPreviousExecuteHandPointingOutward() {
+    return isPreviousExecuteHandPointingOutward;
+  }
+
+  public boolean isEdited() {
+    return isEdited;
+  }
+
+  public void setEdited(boolean isEdited) {
+    this.isEdited = isEdited;
+  }
+
+  public float getTicksSinceLastCodonTick() {
+    return ticksSinceLastCodonTick;
+  }
+  
+  private void setTicksSinceLastCodonTick(float ticksSinceLastCodonTick) {
+    this.ticksSinceLastCodonTick = ticksSinceLastCodonTick;
+  }
+  
+  public ArrayList<CodonBaseModel> getCodonModels() {
+    return codonModels;
+  }
+
+  
 }

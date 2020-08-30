@@ -1,12 +1,13 @@
 package nl.benmens.cellsimulation.codon;
 
+import nl.benmens.cellsimulation.Controller;
 import nl.benmens.processing.mvc.View;
 
-public class CodonController extends ControllerBase implements CodonModelClient {
+public class CodonController extends Controller implements CodonModelClient {
   CodonBaseModel codonModel;
   CodonView codonView;
 
-  public CodonController(ControllerBase parentController, View parentView, CodonBaseModel codonModel) {
+  public CodonController(Controller parentController, View parentView, CodonBaseModel codonModel) {
     super(parentController);
 
     this.codonModel = codonModel;

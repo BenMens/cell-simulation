@@ -5,10 +5,10 @@ import nl.benmens.processing.mvc.View;
 import processing.core.PVector;
 
 public class BodyView extends View {
-  BodyModel bodyModel;
+  private BodyModel bodyModel;
 
-  View cellLayerView;
-  View particleLayerView;
+  private View cellLayerView;
+  private View particleLayerView;
 
   public BodyView(View parentView, BodyModel bodyModel) {
     super(parentView);
@@ -43,5 +43,17 @@ public class BodyView extends View {
         }
       }
     }
+  }
+
+  public BodyModel getBodyModel() {
+    return bodyModel;
+  }
+
+  public View getCellLayerView() {
+    return cellLayerView;
+  }
+
+  public View getParticleLayerView() {
+    return particleLayerView;
   }
 }

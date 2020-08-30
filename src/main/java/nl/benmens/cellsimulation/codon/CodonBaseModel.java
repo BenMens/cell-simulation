@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import nl.benmens.processing.SharedPApplet;
+import nl.benmens.processing.mvc.Model;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public abstract class CodonBaseModel {
+public abstract class CodonBaseModel extends Model {
   final float SEGMENT_CIRCLE_RADIUS = 0.15f;
 
   ArrayList<CodonModelClient> clients = new ArrayList<CodonModelClient>();

@@ -5,19 +5,16 @@ import nl.benmens.cellsimulation.body.BodyModel;
 import nl.benmens.cellsimulation.body.BodyModelClient;
 import nl.benmens.cellsimulation.cell.CellEditorController;
 import nl.benmens.cellsimulation.cell.CellModel;
-import nl.benmens.cellsimulation.codon.ControllerBase;
 import nl.benmens.cellsimulation.particle.ParticleBaseModel;
 import nl.benmens.cellsimulation.ui.ButtonView;
 import nl.benmens.cellsimulation.ui.ButtonViewClient;
 import nl.benmens.processing.SharedPApplet;
 import nl.benmens.processing.mvc.View;
-import nl.benmens.processing.observer.Subject;
-import nl.benmens.processing.observer.Subscription;
 import nl.benmens.processing.observer.SubscriptionManager;
 
 import java.awt.geom.Rectangle2D;
 
-public class GuiController extends ControllerBase implements BodyModelClient, ButtonViewClient {
+public class GuiController extends Controller implements BodyModelClient, ButtonViewClient {
   View parentView;
   BodyModel bodyModel;
   BodyController bodyController;
@@ -29,7 +26,7 @@ public class GuiController extends ControllerBase implements BodyModelClient, Bu
 
   public SubscriptionManager subscriptionManager = new SubscriptionManager();
 
-  GuiController(ControllerBase parentController, View parentView, BodyModel bodyModel) {
+  GuiController(Controller parentController, View parentView, BodyModel bodyModel) {
     super(parentController);
 
     this.parentView = parentView;
@@ -54,9 +51,9 @@ public class GuiController extends ControllerBase implements BodyModelClient, Bu
     pauzeButton.buttonImage = ImageCache.getImage("images/pauze-button.png");
     pauzeButton.subscribe(this, subscriptionManager);
 
-    bodyContainerView.setZoomView(bodyController.bodyView);
+    bodyContainerView.setZoomView(bodyController.getBodyView());
 
-    bodyModel.registerClient(this);
+    bodyModel.subscribe(this, subscriptionManager);
 
     this.updateLayout();
   }
@@ -73,7 +70,7 @@ public class GuiController extends ControllerBase implements BodyModelClient, Bu
     bodyContainerView.setFrameRect(20, 100, parentRect.height - 120, parentRect.height - 40);
 
     if (this.cellEditorController != null) {
-      this.cellEditorController.cellEditorView.setFrameRect(parentRect.height - 80, 100,
+      this.cellEditorController.getCellEditorView().setFrameRect(parentRect.height - 80, 100,
           parentRect.width - parentRect.height + 60, parentRect.height - 120);
     }
   }
