@@ -3,6 +3,7 @@ package nl.benmens.cellsimulation.codon;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import nl.benmens.cellsimulation.codon.none.CodonNoneModel;
 import nl.benmens.processing.SharedPApplet;
 import nl.benmens.processing.mvc.Model;
 import processing.core.PApplet;
@@ -11,22 +12,22 @@ import processing.core.PVector;
 public abstract class CodonBaseModel extends Model {
   final float SEGMENT_CIRCLE_RADIUS = 0.15f;
 
-  ArrayList<CodonModelEventHandler> clients = new ArrayList<CodonModelEventHandler>();
-  CodonModelParent parentModel;
+  protected ArrayList<CodonModelEventHandler> clients = new ArrayList<CodonModelEventHandler>();
+  protected CodonModelParent parentModel;
 
   public boolean isDead = false;
 
-  int indexInCodonArray;
-  float segmentSizeInCodonCircle;
-  public float segmentAngleInCodonCircle;
+  protected int indexInCodonArray;
+  protected float segmentSizeInCodonCircle;
+  private  float segmentAngleInCodonCircle;
   protected PVector position = new PVector();
 
-  public ArrayList<String> possibleCodonParameters = new ArrayList<String>();
+  private  ArrayList<String> possibleCodonParameters = new ArrayList<String>();
   protected String codonParameter = "none";
 
-  float baseEnergyCost = 0.01f;
-  float degradation = 0;
-  float degradationRate = 0.0002f;
+  protected float baseEnergyCost = 0.01f;
+  protected float degradation = 0;
+  protected float degradationRate = 0.0002f;
 
   protected int mainColor = SharedPApplet.color(0);
   protected HashMap<String, Integer> secondaryColors = new HashMap<String, Integer>();
@@ -41,6 +42,22 @@ public abstract class CodonBaseModel extends Model {
     secondaryColors.put("wall", SharedPApplet.color(250, 90, 70));
     secondaryColors.put("energy", SharedPApplet.color(245, 239, 50));
     secondaryColors.put("codons", SharedPApplet.color(45, 240, 190));
+  }
+
+  public float getSegmentAngleInCodonCircle() {
+    return segmentAngleInCodonCircle;
+  }
+
+  public void setSegmentAngleInCodonCircle(float segmentAngleInCodonCircle) {
+    this.segmentAngleInCodonCircle = segmentAngleInCodonCircle;
+  }
+
+  public ArrayList<String> getPossibleCodonParameters() {
+    return possibleCodonParameters;
+  }
+
+  public void setPossibleCodonParameters(ArrayList<String> possibleCodonParameters) {
+    this.possibleCodonParameters = possibleCodonParameters;
   }
 
   public void registerClient(CodonModelEventHandler client) {
@@ -63,10 +80,10 @@ public abstract class CodonBaseModel extends Model {
     segmentSizeInCodonCircle = PApplet.TWO_PI / codonArray.size();
     indexInCodonArray = codonArray.indexOf(this);
 
-    segmentAngleInCodonCircle = indexInCodonArray * segmentSizeInCodonCircle;
+    setSegmentAngleInCodonCircle(indexInCodonArray * segmentSizeInCodonCircle);
 
-    position.x = parentModel.getPosition().x + 0.5f + PApplet.sin(segmentAngleInCodonCircle) * SEGMENT_CIRCLE_RADIUS;
-    position.y = parentModel.getPosition().y + 0.5f + -PApplet.cos(segmentAngleInCodonCircle) * SEGMENT_CIRCLE_RADIUS;
+    position.x = parentModel.getPosition().x + 0.5f + PApplet.sin(getSegmentAngleInCodonCircle()) * SEGMENT_CIRCLE_RADIUS;
+    position.y = parentModel.getPosition().y + 0.5f + -PApplet.cos(getSegmentAngleInCodonCircle()) * SEGMENT_CIRCLE_RADIUS;
   }
 
   public PVector getPosition() {
@@ -74,7 +91,7 @@ public abstract class CodonBaseModel extends Model {
   }
 
   public void setCodonParameter(String parameter) {
-    if (possibleCodonParameters.contains(parameter)) {
+    if (getPossibleCodonParameters().contains(parameter)) {
       codonParameter = parameter;
     }
   }

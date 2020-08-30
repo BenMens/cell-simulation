@@ -100,16 +100,17 @@ public class CellView extends View {
           SharedPApplet.endShape(PApplet.CLOSE);
 
           if (screenSize > 80) {
-            float progressToNextCodonTick = PApplet.norm(cellModel.getTicksSinceLastCodonTick(), 0, CellModel.TICKS_PER_CODON_TICK);
+            float progressToNextCodonTick = PApplet.norm(cellModel.getTicksSinceLastCodonTick(), 0,
+                CellModel.TICKS_PER_CODON_TICK);
             ArrayList<CodonBaseModel> codonModels = new ArrayList<CodonBaseModel>(cellModel.getCodonModels());
 
             // calculating codon hand angle
             float codonHandAngle = 0;
             if (cellModel.getCodonModels().size() != 0) {
-              float currentCodonAngle = codonModels
-                  .get(cellModel.getCurrentCodon() % codonModels.size()).segmentAngleInCodonCircle;
-              float nextCodonAngle = codonModels
-                  .get((cellModel.getCurrentCodon() + 1) % codonModels.size()).segmentAngleInCodonCircle;
+              float currentCodonAngle = codonModels.get(cellModel.getCurrentCodon() % codonModels.size())
+                  .getSegmentAngleInCodonCircle();
+              float nextCodonAngle = codonModels.get((cellModel.getCurrentCodon() + 1) % codonModels.size())
+                  .getSegmentAngleInCodonCircle();
               if (cellModel.getCurrentCodon() >= codonModels.size()) {
                 currentCodonAngle += PApplet.TWO_PI;
               }
@@ -137,10 +138,10 @@ public class CellView extends View {
             // calculating execution hand angle
             float executeHandAngle = 0;
             if (cellModel.getCodonModels().size() != 0) {
-              float previousCodonAngle = cellModel.getCodonModels()
-                  .get(cellModel.getExecuteHandPosition()).segmentAngleInCodonCircle;
-              float currentCodonAngle = cellModel.getCodonModels()
-                  .get(cellModel.getExecuteHandPosition()).segmentAngleInCodonCircle;
+              float previousCodonAngle = cellModel.getCodonModels().get(cellModel.getExecuteHandPosition())
+                  .getSegmentAngleInCodonCircle();
+              float currentCodonAngle = cellModel.getCodonModels().get(cellModel.getExecuteHandPosition())
+                  .getSegmentAngleInCodonCircle();
               if (currentCodonAngle < previousCodonAngle) {
                 currentCodonAngle += PApplet.TWO_PI;
               }

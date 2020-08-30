@@ -1,24 +1,25 @@
-package nl.benmens.cellsimulation.particle;
+package nl.benmens.cellsimulation.particle.oxygene;
 
 import nl.benmens.cellsimulation.body.BodyModel;
 import nl.benmens.cellsimulation.cell.CellModel;
+import nl.benmens.cellsimulation.particle.ParticleBaseModel;
 
-public class ParticleCO2Model extends ParticleBaseModel {
+public class OxygeneParticleModel extends ParticleBaseModel {
 
-  public ParticleCO2Model(BodyModel bodyModel) {
+  public OxygeneParticleModel(BodyModel bodyModel) {
     super(bodyModel);
   }
 
-  public ParticleCO2Model(BodyModel bodyModel, float positionX, float positionY) {
+  public OxygeneParticleModel(BodyModel bodyModel, float positionX, float positionY) {
     super(bodyModel, positionX, positionY);
   }
 
-  public ParticleCO2Model(BodyModel bodyModel, float positionX, float positionY, float speedX, float speedY) {
+  public OxygeneParticleModel(BodyModel bodyModel, float positionX, float positionY, float speedX, float speedY) {
     super(bodyModel, positionX, positionY, speedX, speedY);
   }
 
   public String getImageName() {
-    return "co2";
+    return "oxygene";
   }
 
   public float getImageScale() {
@@ -26,7 +27,7 @@ public class ParticleCO2Model extends ParticleBaseModel {
   };
 
   public String getTypeName() {
-    return "co2";
+    return "oxygene";
   }
 
   public void onCellCollide(CellModel currendTouchedCell, CellModel previousTouchedCell) {
@@ -37,6 +38,7 @@ public class ParticleCO2Model extends ParticleBaseModel {
     if (currendTouchedCell != null) {
       currendTouchedCell.handleCollision(this);
     }
+
   }
 
 }

@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import nl.benmens.cellsimulation.body.BodyModel;
 import nl.benmens.cellsimulation.codon.CodonBaseModel;
 import nl.benmens.cellsimulation.codon.CodonModelParent;
-import nl.benmens.cellsimulation.codon.CodonNoneModel;
-import nl.benmens.cellsimulation.codon.CodonRemoveModel;
+import nl.benmens.cellsimulation.codon.none.CodonNoneModel;
+import nl.benmens.cellsimulation.codon.remove.CodonRemoveModel;
 import nl.benmens.cellsimulation.particle.ParticleBaseModel;
-import nl.benmens.cellsimulation.particle.ParticleWasteModel;
+import nl.benmens.cellsimulation.particle.waste.WasteParticleModel;
 import nl.benmens.processing.PApplet;
 import nl.benmens.processing.SharedPApplet;
 import nl.benmens.processing.mvc.Model;
@@ -55,8 +55,8 @@ public class CellModel extends Model implements CodonModelParent {
     }
 
     CodonBaseModel removeCodon = new CodonRemoveModel(this);
-    removeCodon.setCodonParameter(removeCodon.possibleCodonParameters
-        .get(PApplet.floor(SharedPApplet.random(removeCodon.possibleCodonParameters.size()))));
+    removeCodon.setCodonParameter(removeCodon.getPossibleCodonParameters()
+        .get(PApplet.floor(SharedPApplet.random(removeCodon.getPossibleCodonParameters().size()))));
   }
 
   public Subscription<?> subscribe(CellModelEventHandler observer, SubscriptionManager subscriptionManager) {
@@ -150,7 +150,7 @@ public class CellModel extends Model implements CodonModelParent {
       for (int i = getCodonModels().size() - 1; i >= 0; i--) {
         CodonBaseModel codonModel = getCodonModels().get(i);
 
-        new ParticleWasteModel(bodyModel, codonModel.getPosition().x, codonModel.getPosition().y);
+        new WasteParticleModel(bodyModel, codonModel.getPosition().x, codonModel.getPosition().y);
 
         codonModel.isDead = true;
         codonModel.cleanUpTick();

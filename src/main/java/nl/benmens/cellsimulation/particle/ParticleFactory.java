@@ -1,6 +1,10 @@
 package nl.benmens.cellsimulation.particle;
 
 import nl.benmens.cellsimulation.body.BodyModel;
+import nl.benmens.cellsimulation.particle.co2.CO2ParticleModel;
+import nl.benmens.cellsimulation.particle.food.FoodParticleModel;
+import nl.benmens.cellsimulation.particle.oxygene.OxygeneParticleModel;
+import nl.benmens.cellsimulation.particle.waste.WasteParticleModel;
 
 public class ParticleFactory {
 
@@ -20,13 +24,13 @@ public class ParticleFactory {
   public ParticleBaseModel createParticle(String type, BodyModel body) {
     switch (type) {
       case "food":
-        return new ParticleFoodModel(body);
+        return new FoodParticleModel(body);
       case "waste":
-        return new ParticleWasteModel(body);
+        return new WasteParticleModel(body);
       case "oxygene":
-        return new ParticleOxygeneModel(body);
+        return new OxygeneParticleModel(body);
       case "co2":
-        return new ParticleCO2Model(body);
+        return new CO2ParticleModel(body);
     }
 
     return null;

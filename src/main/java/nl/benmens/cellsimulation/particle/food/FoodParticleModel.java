@@ -1,19 +1,20 @@
-package nl.benmens.cellsimulation.particle;
+package nl.benmens.cellsimulation.particle.food;
 
 import nl.benmens.cellsimulation.body.BodyModel;
 import nl.benmens.cellsimulation.cell.CellModel;
+import nl.benmens.cellsimulation.particle.ParticleBaseModel;
 
-public class ParticleFoodModel extends ParticleBaseModel {
+public class FoodParticleModel extends ParticleBaseModel {
 
-  public ParticleFoodModel(BodyModel bodyModel) {
+  public FoodParticleModel(BodyModel bodyModel) {
     super(bodyModel);
   }
 
-  public ParticleFoodModel(BodyModel bodyModel, float positionX, float positionY) {
+  public FoodParticleModel(BodyModel bodyModel, float positionX, float positionY) {
     super(bodyModel, positionX, positionY);
   }
 
-  public ParticleFoodModel(BodyModel bodyModel, float positionX, float positionY, float speedX, float speedY) {
+  public FoodParticleModel(BodyModel bodyModel, float positionX, float positionY, float speedX, float speedY) {
     super(bodyModel, positionX, positionY, speedX, speedY);
   }
 

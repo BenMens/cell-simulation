@@ -41,7 +41,7 @@ public class CodonView extends View {
       PVector degradatedY2Point = new PVector(0,
           -PApplet.lerp(SEGMENT_CIRCLE_INNER_RADIUS, SEGMENT_CIRCLE_CENTER_RADIUS, codonModel.degradation));
 
-      SharedPApplet.rotate(codonModel.segmentAngleInCodonCircle);
+      SharedPApplet.rotate(codonModel.getSegmentAngleInCodonCircle());
 
       SharedPApplet.noStroke();
       SharedPApplet.fill(SharedPApplet.color(0));
@@ -70,7 +70,7 @@ public class CodonView extends View {
       float segmentCircleRadius = SEGMENT_CIRCLE_OUTER_RADIUS - SEGMENT_CIRCLE_INNER_RADIUS;
 
       SharedPApplet.pushMatrix();
-      SharedPApplet.rotate(codonModel.segmentAngleInCodonCircle + PApplet.PI);
+      SharedPApplet.rotate(codonModel.getSegmentAngleInCodonCircle() + PApplet.PI);
 
       SharedPApplet.stroke(SharedPApplet.lerpColor(codonModel.getMainColor(), SharedPApplet.color(0), codonModel.degradation));
       SharedPApplet.strokeWeight(segmentCircleRadius * 0.5f);

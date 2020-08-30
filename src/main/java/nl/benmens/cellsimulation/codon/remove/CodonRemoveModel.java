@@ -1,7 +1,9 @@
-package nl.benmens.cellsimulation.codon;
+package nl.benmens.cellsimulation.codon.remove;
 
 import java.util.ArrayList;
 
+import nl.benmens.cellsimulation.codon.CodonBaseModel;
+import nl.benmens.cellsimulation.codon.CodonModelParent;
 import nl.benmens.processing.SharedPApplet;
 import processing.core.PApplet;
 
@@ -13,10 +15,10 @@ public class CodonRemoveModel extends CodonBaseModel {
     super(parentModel);
 
     mainColor = SharedPApplet.color(255, 190, 35);
-    possibleCodonParameters.add("none");
-    possibleCodonParameters.add("wall");
-    possibleCodonParameters.add("energy");
-    possibleCodonParameters.add("codons");
+    getPossibleCodonParameters().add("none");
+    getPossibleCodonParameters().add("wall");
+    getPossibleCodonParameters().add("energy");
+    getPossibleCodonParameters().add("codons");
   }
 
   public float getEnergyCost() {

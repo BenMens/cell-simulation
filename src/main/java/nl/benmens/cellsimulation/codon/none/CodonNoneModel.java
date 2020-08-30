@@ -1,5 +1,7 @@
-package nl.benmens.cellsimulation.codon;
+package nl.benmens.cellsimulation.codon.none;
 
+import nl.benmens.cellsimulation.codon.CodonBaseModel;
+import nl.benmens.cellsimulation.codon.CodonModelParent;
 import nl.benmens.processing.SharedPApplet;
 
 public class CodonNoneModel extends CodonBaseModel {
@@ -8,10 +10,10 @@ public class CodonNoneModel extends CodonBaseModel {
 
     baseEnergyCost = 0;
     mainColor = SharedPApplet.color(0);
-    possibleCodonParameters.add("none");
-    possibleCodonParameters.add("wall");
-    possibleCodonParameters.add("energy");
-    possibleCodonParameters.add("codons");
+    getPossibleCodonParameters().add("none");
+    getPossibleCodonParameters().add("wall");
+    getPossibleCodonParameters().add("energy");
+    getPossibleCodonParameters().add("codons");
   }
 
   public float getEnergyCost() {

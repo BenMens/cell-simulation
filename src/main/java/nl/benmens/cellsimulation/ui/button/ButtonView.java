@@ -1,4 +1,4 @@
-package nl.benmens.cellsimulation.ui;
+package nl.benmens.cellsimulation.ui.button;
 
 import processing.core.PImage;
 import java.awt.geom.Rectangle2D;

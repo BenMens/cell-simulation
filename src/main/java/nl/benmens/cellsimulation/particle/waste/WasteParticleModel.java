@@ -1,21 +1,22 @@
-package nl.benmens.cellsimulation.particle;
+package nl.benmens.cellsimulation.particle.waste;
 
 import nl.benmens.cellsimulation.body.BodyModel;
 import nl.benmens.cellsimulation.cell.CellModel;
+import nl.benmens.cellsimulation.particle.ParticleBaseModel;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class ParticleWasteModel extends ParticleBaseModel {
+public class WasteParticleModel extends ParticleBaseModel {
 
-  public ParticleWasteModel(BodyModel bodyModel) {
+  public WasteParticleModel(BodyModel bodyModel) {
     super(bodyModel);
   }
 
-  public ParticleWasteModel(BodyModel bodyModel, float positionX, float positionY) {
+  public WasteParticleModel(BodyModel bodyModel, float positionX, float positionY) {
     super(bodyModel, positionX, positionY);
   }
 
-  public ParticleWasteModel(BodyModel bodyModel, float positionX, float positionY, float speedX, float speedY) {
+  public WasteParticleModel(BodyModel bodyModel, float positionX, float positionY, float speedX, float speedY) {
     super(bodyModel, positionX, positionY, speedX, speedY);
   }
 
