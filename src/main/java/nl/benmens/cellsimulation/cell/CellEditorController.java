@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import nl.benmens.cellsimulation.codon.CodonBaseModel;
 import nl.benmens.cellsimulation.codon.CodonDetailsView;
-import nl.benmens.cellsimulation.Controller;
+import nl.benmens.processing.mvc.Controller;
 import nl.benmens.processing.mvc.View;
 
 import java.awt.geom.Rectangle2D;

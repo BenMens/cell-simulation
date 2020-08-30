@@ -7,7 +7,7 @@ import processing.core.PVector;
 
 public class ParticleWasteModel extends ParticleBaseModel {
 
-  ParticleWasteModel(BodyModel bodyModel) {
+  public ParticleWasteModel(BodyModel bodyModel) {
     super(bodyModel);
   }
 
@@ -15,7 +15,7 @@ public class ParticleWasteModel extends ParticleBaseModel {
     super(bodyModel, positionX, positionY);
   }
 
-  ParticleWasteModel(BodyModel bodyModel, float positionX, float positionY, float speedX, float speedY) {
+  public ParticleWasteModel(BodyModel bodyModel, float positionX, float positionY, float speedX, float speedY) {
     super(bodyModel, positionX, positionY, speedX, speedY);
   }
 

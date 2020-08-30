@@ -59,11 +59,10 @@ public class CellModel extends Model implements CodonModelParent {
         .get(PApplet.floor(SharedPApplet.random(removeCodon.possibleCodonParameters.size()))));
   }
 
-
-public Subscription<?> subscribe(CellModelClient observer, SubscriptionManager subscriptionManager) {    
+  public Subscription<?> subscribe(CellModelClient observer, SubscriptionManager subscriptionManager) {
     boolean isNewClient = !cellModelEvents.getSubscribers().contains(observer);
 
-    Subscription<?> result =  cellModelEvents.subscribe(observer, subscriptionManager);
+    Subscription<?> result = cellModelEvents.subscribe(observer, subscriptionManager);
 
     if (isNewClient) {
       for (CodonBaseModel codonModel : getCodonModels()) {
@@ -73,7 +72,6 @@ public Subscription<?> subscribe(CellModelClient observer, SubscriptionManager s
 
     return result;
   }
-
 
   public void addCodon(CodonBaseModel newCodonModel) {
     getCodonModels().add(newCodonModel);
@@ -119,7 +117,7 @@ public Subscription<?> subscribe(CellModelClient observer, SubscriptionManager s
       setTicksSinceLastCodonTick(getTicksSinceLastCodonTick() + 1);
     }
 
-    ArrayList<CodonBaseModel> codonModelsCopy = new ArrayList<CodonBaseModel>(getCodonModels()) ;
+    ArrayList<CodonBaseModel> codonModelsCopy = new ArrayList<CodonBaseModel>(getCodonModels());
     for (CodonBaseModel codonModel : codonModelsCopy) {
       codonModel.tick();
     }
@@ -187,7 +185,7 @@ public Subscription<?> subscribe(CellModelClient observer, SubscriptionManager s
   }
 
   public void handleCollision(ParticleBaseModel particle) {
-    wallHealth -= particle.cellWallHarmfulness;
+    wallHealth -= particle.getCellWallHarmfulness();
   }
 
   public void replaceCodon(CodonBaseModel oldCodon, CodonBaseModel newCodon) {

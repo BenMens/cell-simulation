@@ -6,8 +6,8 @@ import nl.benmens.processing.SharedPApplet;
 import processing.core.PApplet;
 
 public class CodonRemoveModel extends CodonBaseModel {
-  int removeCodonsFirstPoint = PApplet.floor(SharedPApplet.random(5) - 2);
-  int removeCodonsSecondPoint = PApplet.floor(SharedPApplet.random(5) - 2);
+  private int removeCodonsFirstPoint = PApplet.floor(SharedPApplet.random(5) - 2);
+  private int removeCodonsSecondPoint = PApplet.floor(SharedPApplet.random(5) - 2);
 
   public CodonRemoveModel(CodonModelParent parentModel) {
     super(parentModel);

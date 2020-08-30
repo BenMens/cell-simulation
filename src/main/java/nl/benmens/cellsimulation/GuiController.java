@@ -9,6 +9,7 @@ import nl.benmens.cellsimulation.particle.ParticleBaseModel;
 import nl.benmens.cellsimulation.ui.ButtonView;
 import nl.benmens.cellsimulation.ui.ButtonViewClient;
 import nl.benmens.processing.SharedPApplet;
+import nl.benmens.processing.mvc.Controller;
 import nl.benmens.processing.mvc.View;
 import nl.benmens.processing.observer.SubscriptionManager;
 
@@ -43,12 +44,12 @@ public class GuiController extends Controller implements BodyModelClient, Button
 
     playButton = new ButtonView(toolbarView);
     playButton.shouldClip = true;
-    playButton.buttonImage = ImageCache.getImage("images/play-button.png");
+    playButton.setButtonImage(ImageCache.getImageCache().getImage("images/play-button.png"));
     playButton.subscribe(this, subscriptionManager);
 
     pauzeButton = new ButtonView(toolbarView);
     pauzeButton.shouldClip = true;
-    pauzeButton.buttonImage = ImageCache.getImage("images/pauze-button.png");
+    pauzeButton.setButtonImage(ImageCache.getImageCache().getImage("images/pauze-button.png"));
     pauzeButton.subscribe(this, subscriptionManager);
 
     bodyContainerView.setZoomView(bodyController.getBodyView());

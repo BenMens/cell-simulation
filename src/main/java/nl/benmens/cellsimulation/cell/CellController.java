@@ -2,7 +2,7 @@ package nl.benmens.cellsimulation.cell;
 
 import nl.benmens.cellsimulation.codon.CodonBaseModel;
 import nl.benmens.cellsimulation.codon.CodonController;
-import nl.benmens.cellsimulation.Controller;
+import nl.benmens.processing.mvc.Controller;
 import nl.benmens.processing.mvc.View;
 
 public class CellController extends Controller implements CellModelClient {

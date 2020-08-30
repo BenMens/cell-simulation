@@ -5,15 +5,15 @@ import nl.benmens.cellsimulation.cell.CellModel;
 
 public class ParticleCO2Model extends ParticleBaseModel {
 
-  ParticleCO2Model(BodyModel bodyModel) {
+  public ParticleCO2Model(BodyModel bodyModel) {
     super(bodyModel);
   }
 
-  ParticleCO2Model(BodyModel bodyModel, float positionX, float positionY) {
+  public ParticleCO2Model(BodyModel bodyModel, float positionX, float positionY) {
     super(bodyModel, positionX, positionY);
   }
 
-  ParticleCO2Model(BodyModel bodyModel, float positionX, float positionY, float speedX, float speedY) {
+  public ParticleCO2Model(BodyModel bodyModel, float positionX, float positionY, float speedX, float speedY) {
     super(bodyModel, positionX, positionY, speedX, speedY);
   }
 

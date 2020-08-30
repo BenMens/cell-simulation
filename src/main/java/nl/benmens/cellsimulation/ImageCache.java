@@ -7,14 +7,25 @@ import nl.benmens.processing.SharedPApplet;
 
 public class ImageCache {
 
-  static HashMap<String, PImage> imageCache = new HashMap<String, PImage>();
+  private static ImageCache imageCache;
+  private HashMap<String, PImage> cache = new HashMap<String, PImage>();
 
-  public static PImage getImage(String name) {
-    PImage resultImage = imageCache.get(name);
+  private ImageCache() {
+  }
+
+  public static ImageCache getImageCache() {
+    if (imageCache == null) {
+      imageCache = new ImageCache();
+    }
+    return imageCache;
+  }
+
+  public PImage getImage(String name) {
+    PImage resultImage = cache.get(name);
 
     if (resultImage == null) {
       resultImage = SharedPApplet.loadImage(name);
-      imageCache.put(name, resultImage);
+      cache.put(name, resultImage);
     }
 
     return resultImage;

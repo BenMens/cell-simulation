@@ -11,19 +11,27 @@ import nl.benmens.processing.observer.SubscriptionManager;
 
 public class ButtonView extends View {
 
-  public PImage buttonImage;
+  private PImage buttonImage;
 
-  Subject<ButtonViewClient> buttonEvents = new Subject<ButtonViewClient>(this);
+  private Subject<ButtonViewClient> buttonEvents = new Subject<ButtonViewClient>(this);
 
   public ButtonView(View parentView) {
     super(parentView);
   }
 
+  public PImage getButtonImage() {
+    return buttonImage;
+  }
+
+  public void setButtonImage(PImage buttonImage) {
+    this.buttonImage = buttonImage;
+  }
+
   public void beforeDrawChildren() {
-    if (buttonImage != null) {
+    if (getButtonImage() != null) {
       Rectangle2D.Float boundsRect = getBoundsRect();
 
-      SharedPApplet.image(buttonImage, boundsRect.x, boundsRect.y, boundsRect.width, boundsRect.height);
+      SharedPApplet.image(getButtonImage(), boundsRect.x, boundsRect.y, boundsRect.width, boundsRect.height);
     }
   }
 

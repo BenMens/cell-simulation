@@ -1,11 +1,11 @@
 package nl.benmens.cellsimulation.particle;
 
-import nl.benmens.cellsimulation.Controller;
+import nl.benmens.processing.mvc.Controller;
 import nl.benmens.processing.mvc.View;
 
 public class ParticleController extends Controller implements ParticleModelClient {
-  ParticleBaseModel particleModel;
-  ParticleView particleView;
+  private ParticleBaseModel particleModel;
+  private ParticleView particleView;
 
   public ParticleController(Controller parentController, View parentView, ParticleBaseModel particleModel) {
     super(parentController);

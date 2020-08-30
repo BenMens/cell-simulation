@@ -5,15 +5,15 @@ import nl.benmens.cellsimulation.cell.CellModel;
 
 public class ParticleOxygeneModel extends ParticleBaseModel {
 
-  ParticleOxygeneModel(BodyModel bodyModel) {
+  public ParticleOxygeneModel(BodyModel bodyModel) {
     super(bodyModel);
   }
 
-  ParticleOxygeneModel(BodyModel bodyModel, float positionX, float positionY) {
+  public ParticleOxygeneModel(BodyModel bodyModel, float positionX, float positionY) {
     super(bodyModel, positionX, positionY);
   }
 
-  ParticleOxygeneModel(BodyModel bodyModel, float positionX, float positionY, float speedX, float speedY) {
+  public ParticleOxygeneModel(BodyModel bodyModel, float positionX, float positionY, float speedX, float speedY) {
     super(bodyModel, positionX, positionY, speedX, speedY);
   }
 

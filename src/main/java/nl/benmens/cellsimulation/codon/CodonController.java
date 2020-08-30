@@ -1,6 +1,6 @@
 package nl.benmens.cellsimulation.codon;
 
-import nl.benmens.cellsimulation.Controller;
+import nl.benmens.processing.mvc.Controller;
 import nl.benmens.processing.mvc.View;
 
 public class CodonController extends Controller implements CodonModelClient {

@@ -10,17 +10,17 @@ import processing.core.PVector;
 public class ParticleView extends View {
   final float PARTICLE_SIZE = 15;
 
-  ParticleBaseModel particleModel;
+  private ParticleBaseModel particleModel;
 
-  PImage images[] = new PImage[7];
+  private PImage images[] = new PImage[7];
 
-  ParticleView(View parentView, ParticleBaseModel particleModel) {
+  public ParticleView(View parentView, ParticleBaseModel particleModel) {
     super(parentView);
 
     this.particleModel = particleModel;
 
     for (int i = 0; i < 7; i++) {
-      images[i] = ImageCache.getImage(
+      images[i] = ImageCache.getImageCache().getImage(
           "images/" + particleModel.getImageName() + "_" + String.format("%d", (long) Math.pow(2, i + 3)) + ".png");
     }
   }

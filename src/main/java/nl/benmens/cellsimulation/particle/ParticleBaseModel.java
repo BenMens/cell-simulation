@@ -12,24 +12,28 @@ import processing.core.PApplet;
 import processing.core.PVector;
 
 public abstract class ParticleBaseModel extends Model implements CellModelClient {
-  ArrayList<ParticleModelClient> clients = new ArrayList<ParticleModelClient>();
-  BodyModel bodyModel;
+  private ArrayList<ParticleModelClient> clients = new ArrayList<ParticleModelClient>();
+  private BodyModel bodyModel;
 
-  float ticksPerMovementTick = 1;
-  float ticksSinceLastMovementTick;
+  private float ticksPerMovementTick = 1;
+  private float ticksSinceLastMovementTick;
 
-  boolean isDead = false;
+  private boolean isDead = false;
 
   private PVector position = new PVector(0, 0);
   private PVector speed = new PVector(0, 0);
 
-  CellModel previousTouchedCell;
-  public float cellWallHarmfulness = 0.0003f;
+  private CellModel previousTouchedCell;
+  private final float cellWallHarmfulness = 0.0003f;
 
   private CellModel containingCell;
 
   public ParticleBaseModel(BodyModel bodyModel) {
     this(bodyModel, SharedPApplet.random(bodyModel.gridSize.x), SharedPApplet.random(bodyModel.gridSize.y));
+  }
+
+  public float getCellWallHarmfulness() {
+    return cellWallHarmfulness;
   }
 
   public ParticleBaseModel(BodyModel bodyModel, float positionX, float positionY) {

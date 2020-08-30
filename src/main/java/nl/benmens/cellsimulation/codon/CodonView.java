@@ -12,7 +12,7 @@ public class CodonView extends View {
   final float SEGMENT_CIRCLE_CENTER_RADIUS = PApplet.lerp(SEGMENT_CIRCLE_INNER_RADIUS, SEGMENT_CIRCLE_OUTER_RADIUS, 0.5f);
   final float MAX_CODON_WIDTH = 7;
 
-  CodonBaseModel codonModel;
+  private CodonBaseModel codonModel;
 
   CodonView(View parentView, CodonBaseModel codonModel) {
     super(parentView);

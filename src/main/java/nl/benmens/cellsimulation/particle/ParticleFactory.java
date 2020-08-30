@@ -7,7 +7,6 @@ public class ParticleFactory {
   static private ParticleFactory particleFactory;
 
   private ParticleFactory() {
-
   }
 
   public static ParticleFactory sharedFactory() {
