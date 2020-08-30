@@ -3,7 +3,7 @@ package nl.benmens.cellsimulation.codon.remove;
 import java.util.ArrayList;
 
 import nl.benmens.cellsimulation.codon.CodonBaseModel;
-import nl.benmens.cellsimulation.codon.CodonModelParent;
+import nl.benmens.cellsimulation.codon.CodonModelContainer;
 import nl.benmens.processing.SharedPApplet;
 import processing.core.PApplet;
 
@@ -11,7 +11,7 @@ public class CodonRemoveModel extends CodonBaseModel {
   private int removeCodonsFirstPoint = PApplet.floor(SharedPApplet.random(5) - 2);
   private int removeCodonsSecondPoint = PApplet.floor(SharedPApplet.random(5) - 2);
 
-  public CodonRemoveModel(CodonModelParent parentModel) {
+  public CodonRemoveModel(CodonModelContainer parentModel) {
     super(parentModel);
 
     mainColor = SharedPApplet.color(255, 190, 35);

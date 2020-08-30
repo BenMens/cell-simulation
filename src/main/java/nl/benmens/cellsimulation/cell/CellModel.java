@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import nl.benmens.cellsimulation.body.BodyModel;
 import nl.benmens.cellsimulation.codon.CodonBaseModel;
-import nl.benmens.cellsimulation.codon.CodonModelParent;
+import nl.benmens.cellsimulation.codon.CodonModelContainer;
 import nl.benmens.cellsimulation.codon.none.CodonNoneModel;
 import nl.benmens.cellsimulation.codon.remove.CodonRemoveModel;
 import nl.benmens.cellsimulation.particle.ParticleBaseModel;
@@ -17,7 +17,7 @@ import nl.benmens.processing.observer.Subscription;
 import nl.benmens.processing.observer.SubscriptionManager;
 import processing.core.PVector;
 
-public class CellModel extends Model implements CodonModelParent {
+public class CellModel extends Model implements CodonModelContainer {
   public static final float TICKS_PER_CODON_TICK = 50;
 
   private Subject<CellModelEventHandler> cellModelEvents = new Subject<CellModelEventHandler>(this);

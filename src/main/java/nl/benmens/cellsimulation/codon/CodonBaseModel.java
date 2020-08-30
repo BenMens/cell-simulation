@@ -13,7 +13,7 @@ public abstract class CodonBaseModel extends Model {
   final float SEGMENT_CIRCLE_RADIUS = 0.15f;
 
   protected ArrayList<CodonModelEventHandler> clients = new ArrayList<CodonModelEventHandler>();
-  protected CodonModelParent parentModel;
+  protected CodonModelContainer parentModel;
 
   public boolean isDead = false;
 
@@ -32,7 +32,7 @@ public abstract class CodonBaseModel extends Model {
   protected int mainColor = SharedPApplet.color(0);
   protected HashMap<String, Integer> secondaryColors = new HashMap<String, Integer>();
 
-  public CodonBaseModel(CodonModelParent parentModel) {
+  public CodonBaseModel(CodonModelContainer parentModel) {
     this.parentModel = parentModel;
     parentModel.addCodon(this);
 

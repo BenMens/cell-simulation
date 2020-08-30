@@ -1,11 +1,11 @@
 package nl.benmens.cellsimulation.codon.none;
 
 import nl.benmens.cellsimulation.codon.CodonBaseModel;
-import nl.benmens.cellsimulation.codon.CodonModelParent;
+import nl.benmens.cellsimulation.codon.CodonModelContainer;
 import nl.benmens.processing.SharedPApplet;
 
 public class CodonNoneModel extends CodonBaseModel {
-  public CodonNoneModel(CodonModelParent parentModel) {
+  public CodonNoneModel(CodonModelContainer parentModel) {
     super(parentModel);
 
     baseEnergyCost = 0;

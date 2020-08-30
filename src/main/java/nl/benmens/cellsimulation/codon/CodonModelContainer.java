@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import processing.core.PVector;
 
-public interface CodonModelParent {
+public interface CodonModelContainer {
   public void addCodon(CodonBaseModel codonModel);
 
   public void removeCodon(CodonBaseModel codonModel);
