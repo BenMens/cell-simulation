@@ -11,7 +11,7 @@ import processing.core.PVector;
 public abstract class CodonBaseModel extends Model {
   final float SEGMENT_CIRCLE_RADIUS = 0.15f;
 
-  ArrayList<CodonModelClient> clients = new ArrayList<CodonModelClient>();
+  ArrayList<CodonModelEventHandler> clients = new ArrayList<CodonModelEventHandler>();
   CodonModelParent parentModel;
 
   public boolean isDead = false;
@@ -43,13 +43,13 @@ public abstract class CodonBaseModel extends Model {
     secondaryColors.put("codons", SharedPApplet.color(45, 240, 190));
   }
 
-  public void registerClient(CodonModelClient client) {
+  public void registerClient(CodonModelEventHandler client) {
     if (!clients.contains(client)) {
       clients.add(client);
     }
   }
 
-  public void unregisterClient(CodonModelClient client) {
+  public void unregisterClient(CodonModelEventHandler client) {
     clients.remove(client);
   }
 
@@ -97,13 +97,20 @@ public abstract class CodonBaseModel extends Model {
 
   public void cleanUpTick() {
     if (isDead) {
-      parentModel.removeCodon(this);
-
-      for (CodonModelClient client : new ArrayList<CodonModelClient>(clients)) {
-        client.onDestroy(this);
-      }
+      destroy();
     }
   }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+
+    parentModel.removeCodon(this);
+
+    for (CodonModelEventHandler client : new ArrayList<CodonModelEventHandler>(clients)) {
+      client.onDestroy(this);
+    }
+}
 
   public abstract float getEnergyCost();
 

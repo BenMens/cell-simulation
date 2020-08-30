@@ -19,13 +19,13 @@ public class BodyView extends View {
 
     particleLayerView = new View(this);
 
-    setFrameRect(0, 0, bodyModel.gridSize.x * 100 + 20, bodyModel.gridSize.y * 100 + 20);
+    setFrameRect(0, 0, bodyModel.getGridSize().x * 100 + 20, bodyModel.getGridSize().y * 100 + 20);
 
     setBoundsRect(-10, -10, getFrameRect().width, getFrameRect().height);
   }
 
   public void beforeDrawChildren() {
-    PVector gridSize = bodyModel.gridSize;
+    PVector gridSize = bodyModel.getGridSize();
 
     SharedPApplet.strokeWeight(10);
     SharedPApplet.stroke(0);

@@ -5,7 +5,7 @@ import nl.benmens.cellsimulation.codon.CodonController;
 import nl.benmens.processing.mvc.Controller;
 import nl.benmens.processing.mvc.View;
 
-public class CellController extends Controller implements CellModelClient {
+public class CellController extends Controller implements CellModelEventHandler {
 
   private CellModel cellModel;
   private CellView cellView;

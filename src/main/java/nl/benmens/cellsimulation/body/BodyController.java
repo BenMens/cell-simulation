@@ -7,7 +7,7 @@ import nl.benmens.cellsimulation.particle.ParticleController;
 import nl.benmens.processing.mvc.Controller;
 import nl.benmens.processing.mvc.View;
 
-public class BodyController extends Controller implements BodyModelClient {
+public class BodyController extends Controller implements BodyModelEventHandler {
   private BodyModel bodyModel;
   private BodyView bodyView;
 

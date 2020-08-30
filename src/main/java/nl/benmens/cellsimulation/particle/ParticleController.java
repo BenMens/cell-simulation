@@ -3,7 +3,7 @@ package nl.benmens.cellsimulation.particle;
 import nl.benmens.processing.mvc.Controller;
 import nl.benmens.processing.mvc.View;
 
-public class ParticleController extends Controller implements ParticleModelClient {
+public class ParticleController extends Controller implements ParticleModelEventHandler {
   private ParticleBaseModel particleModel;
   private ParticleView particleView;
 

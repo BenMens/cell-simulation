@@ -1,7 +1,10 @@
-package nl.benmens.cellsimulation.cell;
+package nl.benmens.cellsimulation.celleditor;
 
 import java.util.ArrayList;
 
+import nl.benmens.cellsimulation.cell.CellController;
+import nl.benmens.cellsimulation.cell.CellModel;
+import nl.benmens.cellsimulation.cell.CellModelEventHandler;
 import nl.benmens.cellsimulation.codon.CodonBaseModel;
 import nl.benmens.cellsimulation.codon.CodonDetailsView;
 import nl.benmens.processing.mvc.Controller;
@@ -9,7 +12,7 @@ import nl.benmens.processing.mvc.View;
 
 import java.awt.geom.Rectangle2D;
 
-public class CellEditorController extends Controller implements CellModelClient {
+public class CellEditorController extends Controller implements CellModelEventHandler {
   private CellModel cellModel;
   private CellEditorView cellEditorView;
   private CellController cellController;

@@ -13,7 +13,7 @@ public class ButtonView extends View {
 
   private PImage buttonImage;
 
-  private Subject<ButtonViewClient> buttonEvents = new Subject<ButtonViewClient>(this);
+  private Subject<ButtonViewEventHandler> buttonEvents = new Subject<ButtonViewEventHandler>(this);
 
   public ButtonView(View parentView) {
     super(parentView);
@@ -37,13 +37,13 @@ public class ButtonView extends View {
 
   @Override
   public boolean mousePressed(float mouseX, float mouseY, float pmouseX, float pmouseY) {
-    for (ButtonViewClient s: buttonEvents.getSubscribers()) {
+    for (ButtonViewEventHandler s: buttonEvents.getSubscribers()) {
       s.onClick(this);
     } 
     return true;
   }
 
-  public Subscription<?> subscribe(ButtonViewClient observer, SubscriptionManager subscriptionManager) {
+  public Subscription<?> subscribe(ButtonViewEventHandler observer, SubscriptionManager subscriptionManager) {
     return buttonEvents.subscribe(observer, subscriptionManager);
   }
 

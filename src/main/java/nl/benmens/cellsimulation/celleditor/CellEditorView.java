@@ -1,5 +1,6 @@
-package nl.benmens.cellsimulation.cell;
+package nl.benmens.cellsimulation.celleditor;
 
+import nl.benmens.cellsimulation.cell.CellModel;
 import nl.benmens.processing.PApplet;
 import nl.benmens.processing.SharedPApplet;
 import nl.benmens.processing.mvc.View;

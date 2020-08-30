@@ -18,9 +18,9 @@ import nl.benmens.processing.observer.SubscriptionManager;
 import processing.core.PVector;
 
 public class CellModel extends Model implements CodonModelParent {
-  static final float TICKS_PER_CODON_TICK = 50;
+  public static final float TICKS_PER_CODON_TICK = 50;
 
-  private Subject<CellModelClient> cellModelEvents = new Subject<CellModelClient>(this);
+  private Subject<CellModelEventHandler> cellModelEvents = new Subject<CellModelEventHandler>(this);
   private BodyModel bodyModel;
 
   private ArrayList<CodonBaseModel> codonModels = new ArrayList<CodonBaseModel>();
@@ -59,7 +59,7 @@ public class CellModel extends Model implements CodonModelParent {
         .get(PApplet.floor(SharedPApplet.random(removeCodon.possibleCodonParameters.size()))));
   }
 
-  public Subscription<?> subscribe(CellModelClient observer, SubscriptionManager subscriptionManager) {
+  public Subscription<?> subscribe(CellModelEventHandler observer, SubscriptionManager subscriptionManager) {
     boolean isNewClient = !cellModelEvents.getSubscribers().contains(observer);
 
     Subscription<?> result = cellModelEvents.subscribe(observer, subscriptionManager);
@@ -76,7 +76,7 @@ public class CellModel extends Model implements CodonModelParent {
   public void addCodon(CodonBaseModel newCodonModel) {
     getCodonModels().add(newCodonModel);
 
-    for (CellModelClient client : cellModelEvents.getSubscribers()) {
+    for (CellModelEventHandler client : cellModelEvents.getSubscribers()) {
       client.onAddCodon(newCodonModel);
     }
 
@@ -90,7 +90,7 @@ public class CellModel extends Model implements CodonModelParent {
   public void removeCodon(CodonBaseModel oldCodonModel) {
     getCodonModels().remove(oldCodonModel);
 
-    for (CellModelClient client : cellModelEvents.getSubscribers()) {
+    for (CellModelEventHandler client : cellModelEvents.getSubscribers()) {
       client.onRemoveCodon(oldCodonModel);
     }
 
@@ -304,7 +304,7 @@ public class CellModel extends Model implements CodonModelParent {
   public void onDestroy() {
     super.onDestroy();
 
-    for (CellModelClient client: cellModelEvents.getSubscribers()) {
+    for (CellModelEventHandler client: cellModelEvents.getSubscribers()) {
       client.onDestroy(this);
     }
     this.bodyModel.removeCell(this);

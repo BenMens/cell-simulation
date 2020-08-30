@@ -14,17 +14,14 @@ import nl.benmens.processing.observer.SubscriptionManager;
 
 public class BodyModel extends Model {
 
-  private Subject<BodyModelClient> bodyModelEvents = new Subject<BodyModelClient>(this);
-
-  ArrayList<CellModel> cellModels = new ArrayList<CellModel>();
+  private Subject<BodyModelEventHandler> bodyModelEvents = new Subject<BodyModelEventHandler>(this);
   private CellModel selectedCell = null;
+  private ArrayList<CellModel> cellModels = new ArrayList<CellModel>();
+  private ArrayList<ParticleBaseModel> particleModels = new ArrayList<ParticleBaseModel>();
+  private PVector gridSize;
 
-  ArrayList<ParticleBaseModel> particleModels = new ArrayList<ParticleBaseModel>();
-
-  public PVector gridSize;
-
-  int lastTickTimestamp = SharedPApplet.millis();
-  int millisPerTick = 20;
+  private int lastTickTimestamp = SharedPApplet.millis();
+  private int millisPerTick = 20;
 
   public boolean pauzed = false;
 
@@ -62,13 +59,16 @@ public class BodyModel extends Model {
         }
       }
     }
+  }
 
+  public PVector getGridSize() {
+    return gridSize;
   }
 
   public void addCell(CellModel cellModel) {
     cellModels.add(cellModel);
 
-    for (BodyModelClient client : bodyModelEvents.getSubscribers()) {
+    for (BodyModelEventHandler client : bodyModelEvents.getSubscribers()) {
       client.onAddCell(cellModel);
     }
   }
@@ -79,19 +79,26 @@ public class BodyModel extends Model {
     if (selectedCell == cellModel) {
       unSelectCell(selectedCell);
     }
+
+    for (BodyModelEventHandler client : bodyModelEvents.getSubscribers()) {
+      client.onRemoveCell(cellModel);
+    }
   }
 
   public void addParticle(ParticleBaseModel particleModel) {
-
     particleModels.add(particleModel);
 
-    for (BodyModelClient client : bodyModelEvents.getSubscribers()) {
+    for (BodyModelEventHandler client : bodyModelEvents.getSubscribers()) {
       client.onAddParticle(particleModel);
     }
   }
 
   public void removeParticle(ParticleBaseModel particleModel) {
     particleModels.remove(particleModel);
+
+    for (BodyModelEventHandler client : bodyModelEvents.getSubscribers()) {
+      client.onRemoveParticle(particleModel);
+    }
   }
 
   public CellModel getSelectedCell() {
@@ -101,7 +108,7 @@ public class BodyModel extends Model {
   public void selectCell(CellModel cell) {
     selectedCell = cell;
 
-    for (BodyModelClient client : bodyModelEvents.getSubscribers()) {
+    for (BodyModelEventHandler client : bodyModelEvents.getSubscribers()) {
       client.onSelectCell(selectedCell);
     }
   }
@@ -110,7 +117,7 @@ public class BodyModel extends Model {
     if (cell == selectedCell) {
       selectedCell = null;
 
-      for (BodyModelClient client : bodyModelEvents.getSubscribers()) {
+      for (BodyModelEventHandler client : bodyModelEvents.getSubscribers()) {
         client.onSelectCell(selectedCell);
       }
     }
@@ -153,7 +160,7 @@ public class BodyModel extends Model {
     }
   }
 
-  public Subscription<?> subscribe(BodyModelClient observer, SubscriptionManager subscriptionManager) {
+  public Subscription<?> subscribe(BodyModelEventHandler observer, SubscriptionManager subscriptionManager) {
     boolean newObserver = !bodyModelEvents.getSubscribers().contains(observer);
     Subscription<?> result = bodyModelEvents.subscribe(observer, subscriptionManager);
 
@@ -169,4 +176,12 @@ public class BodyModel extends Model {
 
     return result;
   }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+
+    bodyModelEvents.unsubscribeAll();
+  }
+  
 }

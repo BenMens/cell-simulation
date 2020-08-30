@@ -1,6 +1,6 @@
 package nl.benmens.cellsimulation.particle;
 
-interface ParticleModelClient {
+interface ParticleModelEventHandler {
 
   default public void onDestroy(ParticleBaseModel particleModel) {};
 

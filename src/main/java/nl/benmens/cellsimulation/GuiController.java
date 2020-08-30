@@ -2,12 +2,12 @@ package nl.benmens.cellsimulation;
 
 import nl.benmens.cellsimulation.body.BodyController;
 import nl.benmens.cellsimulation.body.BodyModel;
-import nl.benmens.cellsimulation.body.BodyModelClient;
-import nl.benmens.cellsimulation.cell.CellEditorController;
+import nl.benmens.cellsimulation.body.BodyModelEventHandler;
 import nl.benmens.cellsimulation.cell.CellModel;
+import nl.benmens.cellsimulation.celleditor.CellEditorController;
 import nl.benmens.cellsimulation.particle.ParticleBaseModel;
 import nl.benmens.cellsimulation.ui.ButtonView;
-import nl.benmens.cellsimulation.ui.ButtonViewClient;
+import nl.benmens.cellsimulation.ui.ButtonViewEventHandler;
 import nl.benmens.processing.SharedPApplet;
 import nl.benmens.processing.mvc.Controller;
 import nl.benmens.processing.mvc.View;
@@ -15,7 +15,7 @@ import nl.benmens.processing.observer.SubscriptionManager;
 
 import java.awt.geom.Rectangle2D;
 
-public class GuiController extends Controller implements BodyModelClient, ButtonViewClient {
+public class GuiController extends Controller implements BodyModelEventHandler, ButtonViewEventHandler {
   View parentView;
   BodyModel bodyModel;
   BodyController bodyController;

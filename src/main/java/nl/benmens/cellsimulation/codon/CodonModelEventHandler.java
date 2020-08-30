@@ -1,5 +1,5 @@
 package nl.benmens.cellsimulation.codon;
 
-interface CodonModelClient {
+public interface CodonModelEventHandler {
   default public void onDestroy(CodonBaseModel codonModel) {};
 }

@@ -4,15 +4,15 @@ import java.util.ArrayList;
 
 import nl.benmens.cellsimulation.body.BodyModel;
 import nl.benmens.cellsimulation.cell.CellModel;
-import nl.benmens.cellsimulation.cell.CellModelClient;
+import nl.benmens.cellsimulation.cell.CellModelEventHandler;
 import nl.benmens.cellsimulation.codon.CodonBaseModel;
 import nl.benmens.processing.SharedPApplet;
 import nl.benmens.processing.mvc.Model;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public abstract class ParticleBaseModel extends Model implements CellModelClient {
-  private ArrayList<ParticleModelClient> clients = new ArrayList<ParticleModelClient>();
+public abstract class ParticleBaseModel extends Model implements CellModelEventHandler {
+  private ArrayList<ParticleModelEventHandler> clients = new ArrayList<ParticleModelEventHandler>();
   private BodyModel bodyModel;
 
   private float ticksPerMovementTick = 1;
@@ -29,7 +29,7 @@ public abstract class ParticleBaseModel extends Model implements CellModelClient
   private CellModel containingCell;
 
   public ParticleBaseModel(BodyModel bodyModel) {
-    this(bodyModel, SharedPApplet.random(bodyModel.gridSize.x), SharedPApplet.random(bodyModel.gridSize.y));
+    this(bodyModel, SharedPApplet.random(bodyModel.getGridSize().x), SharedPApplet.random(bodyModel.getGridSize().y));
   }
 
   public float getCellWallHarmfulness() {
@@ -48,13 +48,13 @@ public abstract class ParticleBaseModel extends Model implements CellModelClient
     this.speed = new PVector(speedX, speedY);
   }
 
-  public void registerClient(ParticleModelClient client) {
+  public void registerClient(ParticleModelEventHandler client) {
     if (!clients.contains(client)) {
       clients.add(client);
     }
   }
 
-  public void unregisterClient(ParticleModelClient client) {
+  public void unregisterClient(ParticleModelEventHandler client) {
     clients.remove(client);
   }
 
@@ -83,7 +83,7 @@ public abstract class ParticleBaseModel extends Model implements CellModelClient
   }
 
   public void movementTick() {
-    PVector bodySize = bodyModel.gridSize.copy();
+    PVector bodySize = bodyModel.getGridSize().copy();
 
     position.add(speed);
 
