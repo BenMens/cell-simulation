@@ -24,7 +24,7 @@ public abstract class ParticleBaseModel extends Model implements CellModelClient
   private PVector speed = new PVector(0, 0);
 
   private CellModel previousTouchedCell;
-  private final float cellWallHarmfulness = 0.0003f;
+  private final float cellWallHarmfulness = 0.003f;
 
   private CellModel containingCell;
 

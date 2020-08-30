@@ -156,11 +156,7 @@ public class CellModel extends Model implements CodonModelParent {
         codonModel.cleanUpTick();
       }
 
-      for (CellModelClient client : cellModelEvents.getSubscribers()) {
-        client.onDestroy(this);
-      }
-
-      bodyModel.removeCell(this);
+      destroy();
     }
   }
 
@@ -304,5 +300,14 @@ public class CellModel extends Model implements CodonModelParent {
     return codonModels;
   }
 
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+
+    for (CellModelClient client: cellModelEvents.getSubscribers()) {
+      client.onDestroy(this);
+    }
+    this.bodyModel.removeCell(this);
+  }
   
 }
