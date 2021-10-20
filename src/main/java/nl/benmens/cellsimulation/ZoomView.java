@@ -21,9 +21,15 @@ class ZoomView extends View {
     shouldClip = true;
   }
 
+
   public void onFrameRectChange(Rectangle2D.Float oldRect) {
-    if (zoomView != null && (zoomViewFrameRect == null || zoomView.frameRect.width != zoomViewFrameRect.width
-        || zoomView.frameRect.height != zoomViewFrameRect.height)) {
+    if (zoomView != null && 
+        (
+          zoomViewFrameRect == null || 
+          zoomView.frameRect.width != zoomViewFrameRect.width || 
+          zoomView.frameRect.height != zoomViewFrameRect.height
+        )
+      ) {
       setBoundsRect(0, 0, getFrameRect().width, getFrameRect().height);
 
       zoomViewFrameRect = (Rectangle2D.Float) zoomView.frameRect.clone();
@@ -34,6 +40,7 @@ class ZoomView extends View {
       zoomView.setScale(scaleMin);
     }
   }
+
 
   public void setZoomView(View zoomView) {
     this.zoomView = zoomView;
@@ -63,6 +70,7 @@ class ZoomView extends View {
     return true;
   }
 
+
   @Override
   public boolean mouseWheel(float mouseX, float mouseY, int count) {
     PVector screenPos = viewPosToScreenPos(new PVector(mouseX, mouseY));
@@ -86,7 +94,8 @@ class ZoomView extends View {
 
     clipMovement();
 
-    return true;  }
+    return true;  
+  }
 
 
   public void clipMovement() {

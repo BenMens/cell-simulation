@@ -6,11 +6,10 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Debug (Launch) - CellSimulation",
+            "name": "Launch CellSimulation",
             "request": "launch",
             "mainClass": "nl.benmens.cellsimulation.CellSimulation",
-            "projectName": "plotter",
-            "vmArgs": "-Dsun.stdout.encoding=UTF-8 -Dsun.err.encoding=UTF-8"
+            "projectName": "cell-simulation"
         },
         {
             "type": "java",

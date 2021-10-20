@@ -16,11 +16,17 @@ public class CellSimulation extends PApplet {
 
 	public void settings() {
 		SharedPApplet.setSharedApplet(this);
-		fullScreen(P2D);
+
+		String os = System.getProperty("os.name");
+
+		if (os.equals("Mac OS X")) {
+			fullScreen();
+		} else {
+			fullScreen(P2D);
+		}
 	}
 
 	public void setup() {
-
 		rootView = new View(null);
 		rootView.hasBackground = true;
 		rootView.backgroundColor = color(255);
