@@ -13,7 +13,7 @@
   <repositories>
     <repository>
       <id>processing-bridge-mvn</id>
-      <url>https://raw.github.com/BenMens/processing-bridge/mvn</url>
+      <url>https://raw.github.com/BenMens/maven-repo/main</url>
       <snapshots>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>
