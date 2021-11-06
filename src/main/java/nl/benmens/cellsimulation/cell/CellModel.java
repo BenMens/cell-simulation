@@ -60,7 +60,7 @@ public class CellModel extends Model implements CodonModelContainer {
   }
 
   public Subscription<?> subscribe(CellModelEventHandler observer, SubscriptionManager subscriptionManager) {
-    boolean isNewClient = !cellModelEvents.getSubscribers().contains(observer);
+    boolean isNewClient = !cellModelEvents.hasObserver(observer);
 
     Subscription<?> result = cellModelEvents.subscribe(observer, subscriptionManager);
 
@@ -76,8 +76,8 @@ public class CellModel extends Model implements CodonModelContainer {
   public void addCodon(CodonBaseModel newCodonModel) {
     getCodonModels().add(newCodonModel);
 
-    for (CellModelEventHandler client : cellModelEvents.getSubscribers()) {
-      client.onAddCodon(newCodonModel);
+    for (CellModelEventHandler observer : cellModelEvents.getObservers()) {
+      observer.onAddCodon(newCodonModel);
     }
 
     for (CodonBaseModel codonModel : getCodonModels()) {
@@ -90,8 +90,8 @@ public class CellModel extends Model implements CodonModelContainer {
   public void removeCodon(CodonBaseModel oldCodonModel) {
     getCodonModels().remove(oldCodonModel);
 
-    for (CellModelEventHandler client : cellModelEvents.getSubscribers()) {
-      client.onRemoveCodon(oldCodonModel);
+    for (CellModelEventHandler observer : cellModelEvents.getObservers()) {
+      observer.onRemoveCodon(oldCodonModel);
     }
 
     for (CodonBaseModel codonModel : getCodonModels()) {
@@ -304,8 +304,8 @@ public class CellModel extends Model implements CodonModelContainer {
   public void onDestroy() {
     super.onDestroy();
 
-    for (CellModelEventHandler client: cellModelEvents.getSubscribers()) {
-      client.onDestroy(this);
+    for (CellModelEventHandler observer: cellModelEvents.getObservers()) {
+      observer.onDestroy(this);
     }
     this.bodyModel.removeCell(this);
   }

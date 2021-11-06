@@ -50,7 +50,7 @@
     <dependency>
       <groupId> nl.benmens</groupId>
       <artifactId>processing-bridge</artifactId>
-      <version>3.5.4</version>
+      <version>3.5.5-SNAPSHOT</version>
     </dependency>
 
     <dependency>

@@ -37,8 +37,8 @@ public class ButtonView extends View {
 
   @Override
   public boolean mousePressed(float mouseX, float mouseY, float pmouseX, float pmouseY) {
-    for (ButtonViewEventHandler s: buttonEvents.getSubscribers()) {
-      s.onClick(this);
+    for (ButtonViewEventHandler observer: buttonEvents.getObservers()) {
+      observer.onClick(this);
     } 
     return true;
   }

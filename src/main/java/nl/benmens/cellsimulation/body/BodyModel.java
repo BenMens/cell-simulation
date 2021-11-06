@@ -68,8 +68,8 @@ public class BodyModel extends Model {
   public void addCell(CellModel cellModel) {
     cellModels.add(cellModel);
 
-    for (BodyModelEventHandler client : bodyModelEvents.getSubscribers()) {
-      client.onAddCell(cellModel);
+    for (BodyModelEventHandler observer : bodyModelEvents.getObservers()) {
+      observer.onAddCell(cellModel);
     }
   }
 
@@ -80,24 +80,24 @@ public class BodyModel extends Model {
       unSelectCell(selectedCell);
     }
 
-    for (BodyModelEventHandler client : bodyModelEvents.getSubscribers()) {
-      client.onRemoveCell(cellModel);
+    for (BodyModelEventHandler observer : bodyModelEvents.getObservers()) {
+      observer.onRemoveCell(cellModel);
     }
   }
 
   public void addParticle(ParticleBaseModel particleModel) {
     particleModels.add(particleModel);
 
-    for (BodyModelEventHandler client : bodyModelEvents.getSubscribers()) {
-      client.onAddParticle(particleModel);
+    for (BodyModelEventHandler observer : bodyModelEvents.getObservers()) {
+      observer.onAddParticle(particleModel);
     }
   }
 
   public void removeParticle(ParticleBaseModel particleModel) {
     particleModels.remove(particleModel);
 
-    for (BodyModelEventHandler client : bodyModelEvents.getSubscribers()) {
-      client.onRemoveParticle(particleModel);
+    for (BodyModelEventHandler observer : bodyModelEvents.getObservers()) {
+      observer.onRemoveParticle(particleModel);
     }
   }
 
@@ -108,8 +108,8 @@ public class BodyModel extends Model {
   public void selectCell(CellModel cell) {
     selectedCell = cell;
 
-    for (BodyModelEventHandler client : bodyModelEvents.getSubscribers()) {
-      client.onSelectCell(selectedCell);
+    for (BodyModelEventHandler observer : bodyModelEvents.getObservers()) {
+      observer.onSelectCell(selectedCell);
     }
   }
 
@@ -117,8 +117,8 @@ public class BodyModel extends Model {
     if (cell == selectedCell) {
       selectedCell = null;
 
-      for (BodyModelEventHandler client : bodyModelEvents.getSubscribers()) {
-        client.onSelectCell(selectedCell);
+      for (BodyModelEventHandler observer : bodyModelEvents.getObservers()) {
+        observer.onSelectCell(selectedCell);
       }
     }
   }
@@ -161,7 +161,7 @@ public class BodyModel extends Model {
   }
 
   public Subscription<?> subscribe(BodyModelEventHandler observer, SubscriptionManager subscriptionManager) {
-    boolean newObserver = !bodyModelEvents.getSubscribers().contains(observer);
+    boolean newObserver = !bodyModelEvents.hasObserver(observer);
     Subscription<?> result = bodyModelEvents.subscribe(observer, subscriptionManager);
 
     if (newObserver) {
