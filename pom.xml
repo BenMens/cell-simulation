@@ -7,7 +7,7 @@
   <artifactId>cell-simulation</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>evolution-game</name>
+  <name>cell-simulation</name>
   <url>https://raw.githubusercontent.com/BenMens/evolution-game/master/readme.md</url>
 
   <repositories>
