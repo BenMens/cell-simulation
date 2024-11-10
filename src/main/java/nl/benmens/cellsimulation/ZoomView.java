@@ -7,7 +7,7 @@ import processing.core.PApplet;
 import processing.core.PVector;
 
 class ZoomView extends View {
-  final float MAX_SCALE_FACTOR = 1.f / 100;
+  static final float MAX_SCALE_FACTOR = 1.f / 100;
   float scaleMin;
   float scaleMax;
   View zoomView = null;
@@ -21,15 +21,12 @@ class ZoomView extends View {
     shouldClip = true;
   }
 
-
+  @Override
   public void onFrameRectChange(Rectangle2D.Float oldRect) {
-    if (zoomView != null && 
-        (
-          zoomViewFrameRect == null || 
-          zoomView.frameRect.width != zoomViewFrameRect.width || 
-          zoomView.frameRect.height != zoomViewFrameRect.height
-        )
-      ) {
+    if (zoomView != null &&
+        (zoomViewFrameRect == null ||
+            zoomView.frameRect.width != zoomViewFrameRect.width ||
+            zoomView.frameRect.height != zoomViewFrameRect.height)) {
       setBoundsRect(0, 0, getFrameRect().width, getFrameRect().height);
 
       zoomViewFrameRect = (Rectangle2D.Float) zoomView.frameRect.clone();
@@ -41,11 +38,9 @@ class ZoomView extends View {
     }
   }
 
-
   public void setZoomView(View zoomView) {
     this.zoomView = zoomView;
   }
-
 
   public boolean onKeyEvent(boolean pressed, int key) {
     if (pressed && key == 'c') {
@@ -59,7 +54,6 @@ class ZoomView extends View {
     return false;
   }
 
-
   @Override
   public boolean mouseDragged(float mouseX, float mouseY, float pmouseX, float pmouseY) {
     zoomView.frameRect.x += (mouseX - pmouseX);
@@ -70,7 +64,6 @@ class ZoomView extends View {
     return true;
   }
 
-
   @Override
   public boolean mouseWheel(float mouseX, float mouseY, int count) {
     PVector screenPos = viewPosToScreenPos(new PVector(mouseX, mouseY));
@@ -80,7 +73,7 @@ class ZoomView extends View {
     float scale = zoomView.getScale().x;
 
     scale *= PApplet.pow(mouseScrollSensetivity, count);
-    zoomView.setScale(PApplet.constrain(scale, (float) scaleMin, (float) scaleMax));
+    zoomView.setScale(PApplet.constrain(scale, scaleMin, scaleMax));
 
     PVector mouseBodyPosPost = zoomView.viewPosToScreenPos(mouseBodyPosPre);
 
@@ -94,14 +87,14 @@ class ZoomView extends View {
 
     clipMovement();
 
-    return true;  
+    return true;
   }
-
 
   public void clipMovement() {
     PVector scale = zoomView.getScale();
 
-    float x, y;
+    float x;
+    float y;
 
     x = PApplet.max(zoomView.frameRect.x, -zoomView.getFrameRect().width * scale.x + getFrameRect().width);
     x = PApplet.min(x, 0);

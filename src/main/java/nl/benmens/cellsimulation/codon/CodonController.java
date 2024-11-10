@@ -16,11 +16,13 @@ public class CodonController extends Controller implements CodonModelEventHandle
     this.codonModel.registerClient(this);
   }
 
+  @Override
   public void onDestroy() {
     codonView.destroy();
     codonModel.unregisterClient(this);
   }
 
+  @Override
   public void onDestroy(CodonBaseModel codonModel) {
     destroy();
   }

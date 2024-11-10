@@ -24,6 +24,7 @@ public class BodyView extends View {
     setBoundsRect(-10, -10, getFrameRect().width, getFrameRect().height);
   }
 
+  @Override
   public void beforeDrawChildren() {
     PVector gridSize = bodyModel.getGridSize();
 
@@ -32,14 +33,14 @@ public class BodyView extends View {
     SharedPApplet.noFill();
     SharedPApplet.rect(-5, -5, gridSize.x * 100 + 10, gridSize.y * 100 + 10);
 
-    if (SharedPApplet.keysPressed['g'] == true) {
+    if (SharedPApplet.keysPressed['g']) {
       SharedPApplet.strokeWeight(4);
       SharedPApplet.stroke(100);
       SharedPApplet.noFill();
 
       for (int x = 0; x < gridSize.x; x++) {
         for (int y = 0; y < gridSize.y; y++) {
-          SharedPApplet.rect(x * 100, y * 100, 100, 100);
+          SharedPApplet.rect(x * 100f, y * 100f, 100, 100);
         }
       }
     }

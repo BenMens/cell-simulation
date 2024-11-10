@@ -20,7 +20,7 @@ public class CodonDetailsView extends View {
     this.shouldClip = true;
   }
 
-  public boolean onMouseButtonEvent(float mouseX, float mouseY, boolean mousePressed, int mouseButton) {
+  public boolean onMouseButtonEvent(boolean mousePressed) {
     if (mousePressed) {
       this.isSelected = !this.isSelected;
 
@@ -30,6 +30,7 @@ public class CodonDetailsView extends View {
     return false;
   }
 
+  @Override
   public void beforeDrawChildren() {
     Rectangle2D.Float boundsRect = getBoundsRect();
 
@@ -60,6 +61,7 @@ public class CodonDetailsView extends View {
     SharedPApplet.text(codonModel.codonParameter, boundsRect.width * 3 / 4, boundsRect.height / 2);
   }
 
+  @Override
   public void onFrameRectChange(Rectangle2D.Float oldRect) {
     setBoundsRect(0, 0, this.getFrameRect().width, this.getFrameRect().height);
   }

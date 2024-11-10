@@ -14,10 +14,10 @@ import nl.benmens.processing.observer.SubscriptionManager;
 
 public class BodyModel extends Model {
 
-  private Subject<BodyModelEventHandler> bodyModelEvents = new Subject<BodyModelEventHandler>(this);
+  private Subject<BodyModelEventHandler> bodyModelEvents = new Subject<>(this);
   private CellModel selectedCell = null;
-  private ArrayList<CellModel> cellModels = new ArrayList<CellModel>();
-  private ArrayList<ParticleBaseModel> particleModels = new ArrayList<ParticleBaseModel>();
+  private ArrayList<CellModel> cellModels = new ArrayList<>();
+  private ArrayList<ParticleBaseModel> particleModels = new ArrayList<>();
   private PVector gridSize;
 
   private int lastTickTimestamp = SharedPApplet.millis();

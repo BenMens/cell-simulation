@@ -1,6 +1,6 @@
 package nl.benmens.cellsimulation.codon;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import processing.core.PVector;
 
@@ -9,7 +9,7 @@ public interface CodonModelContainer {
 
   public void removeCodon(CodonBaseModel codonModel);
 
-  public ArrayList<CodonBaseModel> getCodonList();
+  public List<CodonBaseModel> getCodonList();
 
   public PVector getPosition();
 

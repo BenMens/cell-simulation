@@ -21,15 +21,18 @@ public class CellController extends Controller implements CellModelEventHandler 
     this.cellModel.subscribe(this, subscriptionManager);
   }
 
+  @Override
   public void onDestroy() {
     cellView.destroy();
     subscriptionManager.unsubscribeAll(cellModel);
   }
 
+  @Override
   public void onAddCodon(CodonBaseModel codonModel) {
     new CodonController(this, cellView, codonModel);
   }
 
+  @Override
   public void onDestroy(CellModel cellModel) {
     destroy();
   }

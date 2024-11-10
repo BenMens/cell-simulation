@@ -24,10 +24,12 @@ public class BodyController extends Controller implements BodyModelEventHandler 
 	  return bodyView;
   }
 
+  @Override
   public void onAddCell(CellModel cellModel) {
     new CellController(this, getBodyView().getCellLayerView(), cellModel);
   }
 
+  @Override
   public void onAddParticle(ParticleBaseModel particleModel) {
     new ParticleController(this, getBodyView().getParticleLayerView(), particleModel);
   }

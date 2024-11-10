@@ -8,7 +8,7 @@ import nl.benmens.processing.SharedPApplet;
 public class ImageCache {
 
   private static ImageCache imageCache;
-  private HashMap<String, PImage> cache = new HashMap<String, PImage>();
+  private HashMap<String, PImage> cache = new HashMap<>();
 
   private ImageCache() {
   }

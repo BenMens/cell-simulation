@@ -14,6 +14,7 @@ public class CellSimulation extends PApplet {
 	BodyModel bodyModel;
 	GuiController guiController;
 
+	@Override
 	public void settings() {
 		SharedPApplet.setSharedApplet(this);
 
@@ -26,6 +27,7 @@ public class CellSimulation extends PApplet {
 		}
 	}
 
+	@Override
 	public void setup() {
 		rootView = new View(null);
 		rootView.hasBackground = true;
@@ -39,6 +41,7 @@ public class CellSimulation extends PApplet {
 		frameRate(30);
 	}
 
+	@Override
 	public void draw() {
 		bodyModel.loop();
 
@@ -81,12 +84,12 @@ public class CellSimulation extends PApplet {
 	// 	rootView.processMouseDraggedEvent(mouseX, mouseY, pmouseX, pmouseY);
 	// }
 
-	static public void main(String[] passedArgs) {
+	public static void main(String[] passedArgs) {
 		if (passedArgs != null) {
-			PApplet.main(new Object() {
+			main(new Object() {
 			}.getClass().getEnclosingClass(), passedArgs);
 		} else {
-			PApplet.main(new Object() {
+			main(new Object() {
 			}.getClass().getEnclosingClass());
 		}
 	}

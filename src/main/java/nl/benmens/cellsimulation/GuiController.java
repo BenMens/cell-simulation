@@ -59,6 +59,7 @@ public class GuiController extends Controller implements BodyModelEventHandler, 
     this.updateLayout();
   }
 
+  @Override
   public void beforeLayoutChildren() {
     Rectangle2D.Float parentRect = this.parentView.getFrameRect();
 
@@ -76,6 +77,7 @@ public class GuiController extends Controller implements BodyModelEventHandler, 
     }
   }
 
+  @Override
   public void onSelectCell(CellModel selectedCell) {
     if (this.cellEditorController != null) {
       this.cellEditorController.destroy();
@@ -89,12 +91,15 @@ public class GuiController extends Controller implements BodyModelEventHandler, 
     this.updateLayout();
   }
 
+  @Override
   public void onAddCell(CellModel cellModel) {
   }
 
+  @Override
   public void onAddParticle(ParticleBaseModel particleModel) {
   }
 
+  @Override
   public void onClick(ButtonView button) {
     if (button == pauzeButton) {
       bodyModel.pauzed = true;

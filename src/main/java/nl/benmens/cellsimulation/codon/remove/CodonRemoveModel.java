@@ -1,6 +1,6 @@
 package nl.benmens.cellsimulation.codon.remove;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import nl.benmens.cellsimulation.codon.CodonBaseModel;
 import nl.benmens.cellsimulation.codon.CodonModelContainer;
@@ -39,7 +39,7 @@ public class CodonRemoveModel extends CodonBaseModel {
         if (parentModel.getIsExecuteHandPointingOutward()) {
           return 0;
         } else {
-          ArrayList<CodonBaseModel> codonList = parentModel.getCodonList();
+          List<CodonBaseModel> codonList = parentModel.getCodonList();
           return baseEnergyCost
               + baseEnergyCost * PApplet.min(PApplet.abs(removeCodonsFirstPoint - removeCodonsSecondPoint), codonList.size());
         }
@@ -62,7 +62,7 @@ public class CodonRemoveModel extends CodonBaseModel {
         break;
       case "codons":
         if (!parentModel.getIsExecuteHandPointingOutward()) {
-          ArrayList<CodonBaseModel> codonList = parentModel.getCodonList();
+          List<CodonBaseModel> codonList = parentModel.getCodonList();
           int index = parentModel.getExecuteHandPosition();
           for (int i = index + PApplet.min(removeCodonsFirstPoint, removeCodonsSecondPoint); i <= index
               + PApplet.max(removeCodonsFirstPoint, removeCodonsSecondPoint); i++) {
@@ -76,5 +76,5 @@ public class CodonRemoveModel extends CodonBaseModel {
 
   public String getDisplayName() {
     return "remove";
-  };
+  }
 }

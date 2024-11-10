@@ -8,11 +8,11 @@ import nl.benmens.processing.SharedPApplet;
 import nl.benmens.processing.mvc.View;
 
 public class CellView extends View {
-  final float HAND_CIRCLE_RADIUS = 28;
-  final float HAND_CIRCLE_WIDTH = 1.3f;
-  final float HAND_SIZE = 6.5f;
-  final float WALL_SIZE_ON_MAX_HEALTH = 10;
-  final float ENERGY_SYMBOL_SIZE_ON_MAX_ENERGY = 8;
+  static final float HAND_CIRCLE_RADIUS = 28;
+  static final float HAND_CIRCLE_WIDTH = 1.3f;
+  static final float HAND_SIZE = 6.5f;
+  static final float WALL_SIZE_ON_MAX_HEALTH = 10;
+  static final float ENERGY_SYMBOL_SIZE_ON_MAX_ENERGY = 8;
 
   private CellModel cellModel;
 
@@ -52,6 +52,7 @@ public class CellView extends View {
     return PApplet.lerp(start, end, lerpFraction);
   }
 
+  @Override
   public void beforeDrawChildren() {
     float screenSize = composedScale().x * 100;
     makeChildsInvisible();
@@ -66,7 +67,7 @@ public class CellView extends View {
       SharedPApplet.fill(250, 90, 70);
       SharedPApplet.rect(0, 0, 100, 100);
 
-      if (cellModel.isEdited() == true) {
+      if (cellModel.isEdited()) {
         SharedPApplet.fill(115, 230, 155);
 
       } else if (!isDisabled && cellModel.isSelected()) {
@@ -106,7 +107,7 @@ public class CellView extends View {
 
             // calculating codon hand angle
             float codonHandAngle = 0;
-            if (cellModel.getCodonModels().size() != 0) {
+            if (!cellModel.getCodonModels().isEmpty()) {
               float currentCodonAngle = codonModels.get(cellModel.getCurrentCodon() % codonModels.size())
                   .getSegmentAngleInCodonCircle();
               float nextCodonAngle = codonModels.get((cellModel.getCurrentCodon() + 1) % codonModels.size())
@@ -137,7 +138,7 @@ public class CellView extends View {
 
             // calculating execution hand angle
             float executeHandAngle = 0;
-            if (cellModel.getCodonModels().size() != 0) {
+            if (!cellModel.getCodonModels().isEmpty()) {
               float previousCodonAngle = cellModel.getCodonModels().get(cellModel.getExecuteHandPosition())
                   .getSegmentAngleInCodonCircle();
               float currentCodonAngle = cellModel.getCodonModels().get(cellModel.getExecuteHandPosition())

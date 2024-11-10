@@ -6,11 +6,11 @@ import nl.benmens.processing.mvc.View;
 import processing.core.PVector;
 
 public class CodonView extends View {
-  final float SEGMENT_SPACING_PERCENTAGE = 0.2f;
-  final float SEGMENT_CIRCLE_INNER_RADIUS = 10;
-  final float SEGMENT_CIRCLE_OUTER_RADIUS = 20;
-  final float SEGMENT_CIRCLE_CENTER_RADIUS = PApplet.lerp(SEGMENT_CIRCLE_INNER_RADIUS, SEGMENT_CIRCLE_OUTER_RADIUS, 0.5f);
-  final float MAX_CODON_WIDTH = 7;
+  static final float SEGMENT_SPACING_PERCENTAGE = 0.2f;
+  static final float SEGMENT_CIRCLE_INNER_RADIUS = 10;
+  static final float SEGMENT_CIRCLE_OUTER_RADIUS = 20;
+  static final float SEGMENT_CIRCLE_CENTER_RADIUS = PApplet.lerp(SEGMENT_CIRCLE_INNER_RADIUS, SEGMENT_CIRCLE_OUTER_RADIUS, 0.5f);
+  static final float MAX_CODON_WIDTH = 7;
 
   private CodonBaseModel codonModel;
 
@@ -22,6 +22,7 @@ public class CodonView extends View {
     this.setBoundsRect(-50, -50, getBoundsRect().width, getBoundsRect().height);
   }
 
+  @Override
   public void beforeDrawChildren() {
     float screenSize = composedScale().x * 100;
     makeChildsInvisible();

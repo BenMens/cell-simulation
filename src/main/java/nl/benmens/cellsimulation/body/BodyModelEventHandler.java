@@ -4,13 +4,13 @@ import nl.benmens.cellsimulation.cell.CellModel;
 import nl.benmens.cellsimulation.particle.ParticleBaseModel;
 
 public interface BodyModelEventHandler {
-  default public void onAddCell(CellModel cellModel) {};
+  public default void onAddCell(CellModel cellModel) {}
 
-  default public void onRemoveCell(CellModel cellModel) {};
+  public default void onRemoveCell(CellModel cellModel) {}
 
-  default public void onAddParticle(ParticleBaseModel particleModel) {};
+  public default void onAddParticle(ParticleBaseModel particleModel) {}
 
-  default public void onRemoveParticle(ParticleBaseModel particleModel) {};
+  public default void onRemoveParticle(ParticleBaseModel particleModel) {}
 
-  default public void onSelectCell(CellModel selectedCell) {};
+  public default void onSelectCell(CellModel selectedCell) {}
 }

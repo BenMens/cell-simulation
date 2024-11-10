@@ -2,6 +2,7 @@ package nl.benmens.cellsimulation.codon;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import nl.benmens.cellsimulation.codon.none.CodonNoneModel;
 import nl.benmens.processing.SharedPApplet;
@@ -10,9 +11,9 @@ import processing.core.PApplet;
 import processing.core.PVector;
 
 public abstract class CodonBaseModel extends Model {
-  final float SEGMENT_CIRCLE_RADIUS = 0.15f;
+  static final float SEGMENT_CIRCLE_RADIUS = 0.15f;
 
-  protected ArrayList<CodonModelEventHandler> clients = new ArrayList<CodonModelEventHandler>();
+  protected ArrayList<CodonModelEventHandler> clients = new ArrayList<>();
   protected CodonModelContainer parentModel;
 
   public boolean isDead = false;
@@ -22,7 +23,7 @@ public abstract class CodonBaseModel extends Model {
   private  float segmentAngleInCodonCircle;
   protected PVector position = new PVector();
 
-  private  ArrayList<String> possibleCodonParameters = new ArrayList<String>();
+  private  List<String> possibleCodonParameters = new ArrayList<>();
   protected String codonParameter = "none";
 
   protected float baseEnergyCost = 0.01f;
@@ -30,7 +31,7 @@ public abstract class CodonBaseModel extends Model {
   protected float degradationRate = 0.0002f;
 
   protected int mainColor = SharedPApplet.color(0);
-  protected HashMap<String, Integer> secondaryColors = new HashMap<String, Integer>();
+  protected HashMap<String, Integer> secondaryColors = new HashMap<>();
 
   public CodonBaseModel(CodonModelContainer parentModel) {
     this.parentModel = parentModel;
@@ -52,11 +53,11 @@ public abstract class CodonBaseModel extends Model {
     this.segmentAngleInCodonCircle = segmentAngleInCodonCircle;
   }
 
-  public ArrayList<String> getPossibleCodonParameters() {
+  public List<String> getPossibleCodonParameters() {
     return possibleCodonParameters;
   }
 
-  public void setPossibleCodonParameters(ArrayList<String> possibleCodonParameters) {
+  public void setPossibleCodonParameters(List<String> possibleCodonParameters) {
     this.possibleCodonParameters = possibleCodonParameters;
   }
 
@@ -70,12 +71,12 @@ public abstract class CodonBaseModel extends Model {
     clients.remove(client);
   }
 
-  public ArrayList<CodonBaseModel> getParentCodonList() {
+  public List<CodonBaseModel> getParentCodonList() {
     return parentModel.getCodonList();
   }
 
   public void updatePosition() {
-    ArrayList<CodonBaseModel> codonArray = getParentCodonList();
+    List<CodonBaseModel> codonArray = getParentCodonList();
 
     segmentSizeInCodonCircle = PApplet.TWO_PI / codonArray.size();
     indexInCodonArray = codonArray.indexOf(this);

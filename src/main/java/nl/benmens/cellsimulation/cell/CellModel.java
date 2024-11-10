@@ -1,6 +1,7 @@
 package nl.benmens.cellsimulation.cell;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import nl.benmens.cellsimulation.body.BodyModel;
 import nl.benmens.cellsimulation.codon.CodonBaseModel;
@@ -20,12 +21,12 @@ import processing.core.PVector;
 public class CellModel extends Model implements CodonModelContainer {
   public static final float TICKS_PER_CODON_TICK = 50;
 
-  private Subject<CellModelEventHandler> cellModelEvents = new Subject<CellModelEventHandler>(this);
+  private Subject<CellModelEventHandler> cellModelEvents = new Subject<>(this);
   private BodyModel bodyModel;
 
-  private ArrayList<CodonBaseModel> codonModels = new ArrayList<CodonBaseModel>();
+  private ArrayList<CodonBaseModel> codonModels = new ArrayList<>();
 
-  private ArrayList<ParticleBaseModel> containingParticles = new ArrayList<ParticleBaseModel>();
+  private ArrayList<ParticleBaseModel> containingParticles = new ArrayList<>();
 
   private float ticksSinceLastCodonTick;
 
@@ -117,7 +118,7 @@ public class CellModel extends Model implements CodonModelContainer {
       setTicksSinceLastCodonTick(getTicksSinceLastCodonTick() + 1);
     }
 
-    ArrayList<CodonBaseModel> codonModelsCopy = new ArrayList<CodonBaseModel>(getCodonModels());
+    ArrayList<CodonBaseModel> codonModelsCopy = new ArrayList<>(getCodonModels());
     for (CodonBaseModel codonModel : codonModelsCopy) {
       codonModel.tick();
     }
@@ -128,7 +129,7 @@ public class CellModel extends Model implements CodonModelContainer {
   }
 
   public void codonTick() {
-    if (getCodonModels().size() != 0) {
+    if (!getCodonModels().isEmpty()) {
       energyLevel = PApplet.max(energyLevel - energyCostPerTick, 0);
 
       if (energyLevel > getCodonModels().get(currentCodon).getEnergyCost()) {
@@ -160,7 +161,7 @@ public class CellModel extends Model implements CodonModelContainer {
     }
   }
 
-  public ArrayList<CodonBaseModel> getCodonList() {
+  public List<CodonBaseModel> getCodonList() {
     return getCodonModels();
   }
 
@@ -260,15 +261,15 @@ public class CellModel extends Model implements CodonModelContainer {
     containingParticles.remove(particle);
   }
 
-  public ArrayList<ParticleBaseModel> getContainingParticles() {
-    return new ArrayList<ParticleBaseModel>(containingParticles) ;
+  public List<ParticleBaseModel> getContainingParticles() {
+    return new ArrayList<>(containingParticles) ;
   }
 
-  public ArrayList<ParticleBaseModel> getContainingParticles(String type) {
-    ArrayList<ParticleBaseModel> result = new ArrayList<ParticleBaseModel>();
+  public List<ParticleBaseModel> getContainingParticles(String type) {
+    ArrayList<ParticleBaseModel> result = new ArrayList<>();
 
     for (ParticleBaseModel particle : containingParticles) {
-      if (particle.getTypeName() == type) {
+      if (particle.getTypeName().equals(type)) {
         result.add(particle);
       }
     }
@@ -296,7 +297,7 @@ public class CellModel extends Model implements CodonModelContainer {
     this.ticksSinceLastCodonTick = ticksSinceLastCodonTick;
   }
   
-  public ArrayList<CodonBaseModel> getCodonModels() {
+  public List<CodonBaseModel> getCodonModels() {
     return codonModels;
   }
 

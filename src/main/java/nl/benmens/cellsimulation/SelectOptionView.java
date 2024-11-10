@@ -13,7 +13,7 @@ public class SelectOptionView extends View {
     this.shouldClip = true;
   }
 
-  public boolean onMouseButtonEvent(float mouseX, float mouseY, boolean mousePressed, int mouseButton) {
+  public boolean onMouseButtonEvent(boolean mousePressed) {
     if (mousePressed) {
       this.isSelected = !this.isSelected;
 
@@ -23,6 +23,7 @@ public class SelectOptionView extends View {
     return false;
   }
 
+  @Override
   public void beforeDrawChildren() {
     if (isSelected) {
       SharedPApplet.background(10, 10, 50);
